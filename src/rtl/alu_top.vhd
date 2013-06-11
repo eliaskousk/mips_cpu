@@ -15,7 +15,8 @@ entity alu_top is
             Zero        : out std_logic;
             ov          : out std_logic;
             Bus_S       : out std_logic_vector(31 downto 0);
-            Bus_mult    : out std_logic_vector(63 downto 0));
+            Bus_mult_HI : out std_logic_vector(31 downto 0);
+            Bus_mult_LO : out std_logic_vector(31 downto 0));
 end alu_top;
 
 architecture Behavioral of alu_top is
@@ -29,36 +30,37 @@ architecture Behavioral of alu_top is
     end component;
 
     component alu_mult_top is
-        port(   clk     : in  std_logic;
-                rst     : in  std_logic;
-                sel     : in  std_logic;
-                seed    : in  std_logic_vector(63 downto 0);
-                X       : in  std_logic_vector(31 downto 0);
-                Y       : in  std_logic_vector(31 downto 0);
-                P       : out std_logic_vector(63 downto 0);
-                Fail    : out std_logic);
+        port(   clk         : in  std_logic;
+                rst         : in  std_logic;
+                bist_start  : in  std_logic;
+                X           : in  std_logic_vector(31 downto 0);
+                Y           : in  std_logic_vector(31 downto 0);
+                P_HI        : out std_logic_vector(31 downto 0);
+                P_LO        : out std_logic_vector(31 downto 0);
+                Fail        : out std_logic);
     end component;
 
-    signal tmp_result   : std_logic_vector(63 downto 0);
-    signal L_out        : std_logic_vector(63 downto 0);
-    signal A_out        : std_logic_vector(31 downto 0);
-    signal Sh_out       : std_logic_vector(31 downto 0);
-    signal SLT_out      : std_logic_vector(31 downto 0);
-    signal output       : std_logic_vector(31 downto 0);
-    signal shift        : std_logic_vector(4 downto 0);
-    signal left         : std_logic;
-    signal logical      : std_logic;
+    signal tmp_result_hi    : std_logic_vector(31 downto 0);
+    signal tmp_result_lo    : std_logic_vector(31 downto 0);
+    signal L_out            : std_logic_vector(63 downto 0);
+    signal A_out            : std_logic_vector(31 downto 0);
+    signal Sh_out           : std_logic_vector(31 downto 0);
+    signal SLT_out          : std_logic_vector(31 downto 0);
+    signal output           : std_logic_vector(31 downto 0);
+    signal shift            : std_logic_vector(4 downto 0);
+    signal left             : std_logic;
+    signal logical          : std_logic;
 
 begin
 
     MULT : alu_mult_top
     port map(   clk         => clk,
                 rst         => rst,
-                sel         => TestMult,
-                seed        => X"0000000000000000",
+                bist_start  => TestMult,
                 X           => Bus_A,
                 Y           => Bus_B,
-                P           => tmp_result,
+                P_HI        => tmp_result_hi,
+                P_LO        => tmp_result_lo,
                 Fail        => open);
 
     SHIFTER : alu_shifter
@@ -69,7 +71,8 @@ begin
                 shift_out   => output);
 
     shift       <= Bus_A(4 downto 0) when (sv = '1') else shamt;
-    Bus_mult    <= tmp_result when (ALUop(1 downto 0) = "00") else (others => 'Z');
+    Bus_mult_HI <= tmp_result_hi when (ALUop(1 downto 0) = "00") else (others => 'Z');
+    Bus_mult_LO <= tmp_result_lo when (ALUop(1 downto 0) = "00") else (others => 'Z');
     Zero        <= '1' when (A_out = X"00000000") else '0';
 
     process(Bus_A, Bus_B, ALUop, output)

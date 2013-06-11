@@ -2,23 +2,28 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity alu_mult_misr is
-    port(   clk         : in  std_logic;
-            rst         : in  std_logic;
-            data_in     : in  std_logic_vector(63 downto 0);
-            signature   : out std_logic_vector(63 downto 0));
+    port(   clk             : in  std_logic;
+            rst             : in  std_logic;
+            data_in_hi      : in  std_logic_vector(31 downto 0);
+            data_in_lo      : in  std_logic_vector(31 downto 0);
+            signature_hi    : out std_logic_vector(31 downto 0);
+            signature_lo    : out std_logic_vector(31 downto 0));
 end alu_mult_misr;
 
 architecture Behavioral of alu_mult_misr is
 
     signal lfsr_reg : std_logic_vector(63 downto 0);
+    signal data_in  : std_logic_vector(63 downto 0);
 
 begin
+
+    data_in <= data_in_hi & data_in_lo;
 
     process (clk)
         variable lfsr_tap : std_logic;
     begin
 
-    if (clk'EVENT and clk='1') then
+    if (clk'event and clk = '1') then
         if rst = '1' then
             lfsr_reg <= data_in;
         else
@@ -29,6 +34,7 @@ begin
 
     end process;
 
-    signature <= lfsr_reg;
+    signature_hi    <= lfsr_reg(63 downto 0);
+    signature_lo    <= lfsr_reg(31 downto 0);
 
 end Behavioral;
