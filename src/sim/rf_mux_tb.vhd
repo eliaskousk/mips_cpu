@@ -53,8 +53,26 @@ begin
     -- Stimulus process
     stim_proc: process
     begin
-        -- hold reset state for 100 ns.
-        wait for 100 ns;
+        -- hold reset state for 20 ns.
+        wait for 20 ns;
+
+        data_alu_in <= X"AAAAAAAA";
+        data_dm_in  <= X"BBBBBBBB";
+        data_npc_in <= X"CCCCCCCC";
+        data_mlo_in <= X"DDDDDDDD";
+        data_mhi_in <= X"EEEEEEEE";
+
+        Link    <= '0';
+        DMorALU <= '0';
+        MF      <= '0';
+        HIorLO  <= '0';
+        wait for 20 ns;
+
+        Link    <= '1';
+        DMorALU <= '0';
+        MF      <= '0';
+        HIorLO  <= '0';
+        wait for 20 ns;
 
         wait;
     end process;

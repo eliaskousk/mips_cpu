@@ -32,8 +32,20 @@ begin
     -- Stimulus process
     stim_proc: process
     begin
-        -- hold reset state for 100 ns.
-        wait for 100 ns;
+        -- hold reset state for 20 ns.
+        wait for 20 ns;
+
+        dataP_in <= "0010";
+        dataA_in <= "00" & X"AAAAAA";
+        wait for 20 ns;
+
+        dataP_in <= "1000";
+        dataA_in <= "01" & X"BBBBBB";
+        wait for 20 ns;
+
+        dataP_in <= "1111";
+        dataA_in <= "11" & X"FFFFFF";
+        wait for 20 ns;
 
         wait;
     end process;
