@@ -213,7 +213,7 @@ begin
     Bus_ALUout      <= Bus_ALU;
     Bus_MULTout     <= Bus_MULT;
     Bus_Wout        <= Bus_W;
-    
+
     Bus_ALUFLAGS    <= Overflow & Bus_ALU(31) & Zero;
 
     PC : reg_we
