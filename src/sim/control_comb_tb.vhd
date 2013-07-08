@@ -76,6 +76,17 @@ begin
     begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
+        
+        -- SLL (4 clock cycles)
+        OPCODE  <= "000000";
+        FUNCT   <= "000000";
+        wait for clk_period * 4;
+        
+        -- SRL (4 clock cycles)
+        OPCODE  <= "000000";
+        FUNCT   <= "000010";
+        
+        -- Fill the rest (same as control_fsm)
 
         wait;
     end process;

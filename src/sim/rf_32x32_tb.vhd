@@ -65,7 +65,6 @@ begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
 
-        
 
         wait;
     end process;

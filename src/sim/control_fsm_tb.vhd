@@ -69,6 +69,17 @@ begin
         wait for clk_period * 2.5;
         rst <= '0';
 
+        -- SLL (4 clock cycles)
+        OPCODE  <= "000000";
+        FUNCT   <= "000000";
+        wait for clk_period * 4;
+        
+        -- SRL (4 clock cycles)
+        OPCODE  <= "000000";
+        FUNCT   <= "000010";
+        
+        -- Fill the rest
+
         wait;
     end process;
 

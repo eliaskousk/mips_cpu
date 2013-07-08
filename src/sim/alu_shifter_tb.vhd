@@ -40,7 +40,72 @@ begin
     begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
+        
+        -- Left Logical
+        left    <= '1';
+        logical <= '1';
+        shift   <= "00011";
+        
+        
+        shift_in    <= X"00000001";
+        wait for 20 ns;
+        
+        shift_in    <= X"00010001";
+        wait for 20 ns;
+        
+        shift_in    <= X"01010001";
+        wait for 20 ns;
+        
+        
+        -- Right Logical
+        left    <= '0';
+        logical <= '1';
+        shift   <= "00011";
+        
+        
+        shift_in    <= X"00000001";
+        wait for 20 ns;
+        
+        shift_in    <= X"00010001";
+        wait for 20 ns;
+        
+        shift_in    <= X"01010001";
+        wait for 20 ns;
 
+        -- Left Arithmetic
+        left    <= '1';
+        logical <= '0';
+        shift   <= "00011";
+        
+        
+        shift_in    <= X"00000001";
+        wait for 20 ns;
+        
+        shift_in    <= X"00010001";
+        wait for 20 ns;
+        
+        shift_in    <= X"01010001";
+        wait for 20 ns;
+        
+        
+        -- Right Arithmetic
+        left    <= '0';
+        logical <= '0';
+        shift   <= "00011";
+        
+        
+        shift_in    <= X"00000001";
+        wait for 20 ns;
+        
+        shift_in    <= X"00010001";
+        wait for 20 ns;
+        
+        shift_in    <= X"01010001";
+        wait for 20 ns;
+        
+        
+        -- Fill in the rest
+        
         wait;
     end process;
 

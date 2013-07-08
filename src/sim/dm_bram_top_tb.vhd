@@ -58,6 +58,41 @@ begin
     begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
+         
+        en <= "1111";
+        ssr <= "0000";
+        
+        -- Writes
+
+        we      <= "1111";
+        
+        address <= "000" & X"00";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+        
+        address <= "000" & X"01";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+        
+        -- Fill the rest writes
+
+        -- End writes
+        
+        -- Reads
+
+        we      <= "0000";
+        
+        address <= "000" & X"00";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+        
+        address <= "000" & X"01";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+        
+        -- Fill the rest reads
+        
+        -- End reads
 
         wait;
     end process;

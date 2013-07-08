@@ -44,6 +44,17 @@ begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
 
+        data_regA_in    <= X"AAAAAAAA";
+        data_regB_in    <= X"BBBBBBBB";
+        data_imm_in     <= X"CCCCCCCC";
+        AluSelect       <= '0';
+        wait for 20 ns;
+
+        data_regA_in    <= X"AAAAAAAA";
+        data_regB_in    <= X"BBBBBBBB";
+        data_imm_in     <= X"CCCCCCCC";
+        AluSelect       <= '1';
+
         wait;
     end process;
 
