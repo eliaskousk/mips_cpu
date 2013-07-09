@@ -87,7 +87,6 @@ begin
         wait for clk_period;
         we      <= '0';
 
-
         wait;
     end process;
 

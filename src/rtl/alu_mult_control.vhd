@@ -5,7 +5,7 @@ entity alu_mult_control is
     port (
         clk             : in  std_logic;
         rst             : in  std_logic;
-        start           : in  std_logic;
+        bist_init       : in  std_logic;
         bist_mode       : out std_logic_vector(1 downto 0);
         bist_start      : out std_logic_vector(2 downto 0);
         lfsr_seed_hi    : out std_logic_vector(31 downto 0);
@@ -42,7 +42,7 @@ begin
     -- Combinational process, changes state based on current state and input
     -- =====================================================================
 
-    combinational : process (state, start)
+    combinational : process (state, bist_init)
     begin
 
         next_state <= state;
@@ -54,7 +54,7 @@ begin
                 -- ==============
 
                 -- Normal operation
-                when s0 =>      if start = '1' then
+                when s0 =>      if bist_init = '1' then
                                     next_state <= s1;
                                 else
                                     next_state <= s0;
@@ -80,7 +80,7 @@ begin
     -- ============
 
     bist_mode   <= "01" when state = s1 else "10" when state = s2 else "11" when state = s3 else "00";
-    bist_start  <= "001" when state = s1 else "010" when state = s2 else "100" when state = s3 else "00";
+    bist_start  <= "001" when state = s1 else "010" when state = s2 else "100" when state = s3 else "000";
 
     lfsr_seed_hi    <= (others => '0'); -- Insert LFSR HI seed here
     lfsr_seed_lo    <= (others => '0'); -- Insert LFSR LO seed here

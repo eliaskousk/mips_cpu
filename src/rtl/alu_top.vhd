@@ -14,6 +14,7 @@ entity alu_top is
             Bus_B       : in  std_logic_vector(31 downto 0);
             Zero        : out std_logic;
             ov          : out std_logic;
+            Fail        : out std_logic;
             Bus_S       : out std_logic_vector(31 downto 0);
             Bus_mult_HI : out std_logic_vector(31 downto 0);
             Bus_mult_LO : out std_logic_vector(31 downto 0));
@@ -32,12 +33,12 @@ architecture Behavioral of alu_top is
     component alu_mult_top is
         port(   clk         : in  std_logic;
                 rst         : in  std_logic;
-                bist_start  : in  std_logic;
+                bist_init   : in  std_logic;
                 X           : in  std_logic_vector(31 downto 0);
                 Y           : in  std_logic_vector(31 downto 0);
                 P_HI        : out std_logic_vector(31 downto 0);
                 P_LO        : out std_logic_vector(31 downto 0);
-                Fail        : out std_logic);
+                bist_result : out std_logic);
     end component;
 
     signal tmp_result_hi    : std_logic_vector(31 downto 0);
@@ -56,12 +57,12 @@ begin
     MULT : alu_mult_top
     port map(   clk         => clk,
                 rst         => rst,
-                bist_start  => TestMult,
+                bist_init   => TestMult,
                 X           => Bus_A,
                 Y           => Bus_B,
                 P_HI        => tmp_result_hi,
                 P_LO        => tmp_result_lo,
-                Fail        => open);
+                bist_result => Fail);
 
     SHIFTER : alu_shifter
     port map(   left        => left,

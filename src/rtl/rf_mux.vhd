@@ -20,25 +20,20 @@ begin
 
     process(DMorALU, Link, MF, HIorLO)
     begin
-
-    if(DMorALU = '0') then
-        data_out <= data_alu_in;
-    elsif(DMorALU = '1') then
-        data_out <= data_dm_in;
-    end if;
-
-    if(Link = '1') then
-        data_out <= data_npc_in;
-    elsif(MF = '1') then
-        if(HIorLO = '0') then
+        if(DMorALU = '0') then
+            data_out <= data_alu_in;
+        elsif(DMorALU = '1') then
+            data_out <= data_dm_in;
+        elsif(Link = '1') then
+            data_out <= data_npc_in;
+        elsif(MF = '1' and HIorLO = '0') then
             data_out <= data_mlo_in;
-        else
+        elsif(MF = '1' and HIorLO = '1') then
             data_out <= data_mhi_in;
+        else
+            data_out <= (others => '0');
         end if;
-    end if;
-
     end process;
-
 
 end Behavioral;
 

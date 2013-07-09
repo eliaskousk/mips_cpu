@@ -47,8 +47,127 @@ begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
 
+        -- Sequential   (JumpSelect will be set to "00")
         
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "00";
+        NEorEQ      <= '-';
+        Zero        <= '-';
+        Negative    <= '-';
+        
+        -- Branch       (JumpSelect will be set to "01")
 
+        -- BEQ F (results in Sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '0';
+        Zero        <= '0';
+        Negative    <= '-';
+        
+        -- BEQ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '0';
+        Zero        <= '1';
+        Negative    <= '-';
+        
+        -- BNE T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '1';
+        Zero        <= '0';
+        Negative    <= '-';
+        
+        -- BNE F (results in Sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '1';
+        Zero        <= '1';
+        Negative    <= '-';
+        
+        --BGTZ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '-';
+        Zero        <= '0';
+        Negative    <= '0';
+        
+        -- ???
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '-';
+        Zero        <= '1';
+        Negative    <= '0';
+        
+        -- BLTZ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '-';
+        Zero        <= '0';
+        Negative    <= '1';
+        
+        -- ???
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '-';
+        Zero        <= '1';
+        Negative    <= '1';
+        
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '0';
+        Zero        <= '-';
+        Negative    <= '0';
+        
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '0';
+        Zero        <= '-';
+        Negative    <= '1';
+        
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '1';
+        Zero        <= '-';
+        Negative    <= '0';
+        
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '1';
+        Zero        <= '-';
+        Negative    <= '1';
+        
+        -- JR and JALR  (JumpSelect will be set to "10")
+
+        Jump        <= '1';
+        JumpPSD     <= '0';
+        BranchType  <= "--";
+        NEorEQ      <= '-';
+        Zero        <= '-';
+        Negative    <= '-';
+        
+        -- J  and JAL   (JumpSelect will be set to "11")
+
+        Jump        <= '1';
+        JumpPSD     <= '1';
+        BranchType  <= "--";
+        NEorEQ      <= '-';
+        Zero        <= '-';
+        Negative    <= '-';
+        
         wait;
     end process;
 

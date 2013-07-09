@@ -10,6 +10,6 @@ architecture Structural of npc_sl2 is
 
 begin
 
-    data_out    <= data_in(29 downto 0) & "00";
+    data_out <= data_in(29 downto 0) & "00";
 
 end Structural;

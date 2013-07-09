@@ -27,7 +27,7 @@ entity datapath_top is
             Bus_DMDin       : in std_logic_vector(31 downto 0);
             opcode          : out std_logic_vector(5 downto 0);
             funct           : out std_logic_vector(5 downto 0);
-            Bus_FLAGSout    : out std_logic_vector(3 downto 0);
+            Bus_FLAGSout    : out std_logic_vector(4 downto 0);
             Bus_PCout       : out std_logic_vector(31 downto 0);
             Bus_ALUout      : out std_logic_vector(31 downto 0);
             Bus_MULTout     : out std_logic_vector(63 downto 0);
@@ -140,6 +140,7 @@ architecture Structural of datapath_top is
                 Bus_B       : in  std_logic_vector(31 downto 0);
                 Zero        : out std_logic;
                 ov          : out std_logic;
+                Fail        : out std_logic;
                 Bus_S       : out std_logic_vector(31 downto 0);
                 Bus_mult    : out std_logic_vector(63 downto 0));
     end component;
@@ -189,10 +190,11 @@ architecture Structural of datapath_top is
     signal Bus_ALUMUXB  : std_logic_vector(31 downto 0);
     signal Bus_ALU      : std_logic_vector(31 downto 0);
     signal Bus_MULT     : std_logic_vector(63 downto 0);
-    signal Bus_ALUFLAGS : std_logic_vector(2 downto 0);
-    signal Bus_FLAGS    : std_logic_vector(2 downto 0);
+    signal Bus_ALUFLAGS : std_logic_vector(3 downto 0);
+    signal Bus_FLAGS    : std_logic_vector(3 downto 0);
     signal Zero         : std_logic;
     signal Overflow     : std_logic;
+    signal Fail         : std_logic;
 
     signal Bus_ALUO     : std_logic_vector(31 downto 0);
     signal Bus_HI       : std_logic_vector(31 downto 0);
@@ -214,7 +216,7 @@ begin
     Bus_MULTout     <= Bus_MULT;
     Bus_Wout        <= Bus_W;
 
-    Bus_ALUFLAGS    <= Overflow & Bus_ALU(31) & Zero;
+    Bus_ALUFLAGS    <= Fail & Overflow & Bus_ALU(31) & Zero;
 
     PC : reg_we
     port map(   clk         => clk,
@@ -285,7 +287,7 @@ begin
                 data_out    => Bus_LO);
 
     FLAGS : reg
-    generic map(    W       => 3)
+    generic map(    W       => 4)
     port map(   clk         => clk,
                 rst         => rst,
                 data_in     => Bus_ALUFLAGS,
@@ -386,6 +388,7 @@ begin
                 Bus_B       => Bus_ALUMUXB,
                 Zero        => Zero,
                 ov          => Overflow,
+                Fail        => Fail,
                 Bus_S       => Bus_ALU,
                 Bus_mult    => Bus_MULT);
 

@@ -4,12 +4,12 @@ use ieee.std_logic_1164.all;
 entity alu_mult_top is
     port(   clk         : in  std_logic;
             rst         : in  std_logic;
-            start       : in  std_logic;
+            bist_init   : in  std_logic;
             X           : in  std_logic_vector(31 downto 0);
             Y           : in  std_logic_vector(31 downto 0);
             P_HI        : out std_logic_vector(31 downto 0);
             P_LO        : out std_logic_vector(31 downto 0);
-            Fail        : out std_logic);
+            bist_result : out std_logic);
 end alu_mult_top;
 
 architecture Structural of alu_mult_top is
@@ -17,7 +17,7 @@ architecture Structural of alu_mult_top is
     component alu_mult_control
         port(clk          : in  std_logic;
              rst          : in  std_logic;
-             start        : in  std_logic;
+             bist_init    : in  std_logic;
              bist_mode    : out std_logic_vector(1 downto 0);
              bist_start   : out std_logic_vector(2 downto 0);
              lfsr_seed_hi : out std_logic_vector(31 downto 0);
@@ -114,7 +114,7 @@ begin
     MULT_CONTROL : alu_mult_control
         port map(clk          => clk,
                  rst          => rst,
-                 start        => start,
+                 bist_init    => bist_init,
                  bist_mode    => bist_mode,
                  bist_start   => bist_start,
                  lfsr_seed_hi => lfsr_seed_hi,
@@ -181,8 +181,8 @@ begin
                  result     => compare_result);
 
 
-    P_HI    <= product_hi;
-    P_LO    <= product_lo;
-    Fail    <= compare_result;
+    P_HI        <= product_hi;
+    P_LO        <= product_lo;
+    bist_result <= compare_result;
 
 end Structural;
