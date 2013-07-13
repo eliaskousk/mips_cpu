@@ -53,6 +53,7 @@ architecture Structural of cpu_top is
                 RorI        : out std_logic;
                 BranchType  : out std_logic_vector(1 downto 0);
                 NEorEQ      : out std_logic;
+                RTZero      : out std_logic;
                 Jump        : out std_logic;
                 JumpPSD     : out std_logic;
                 TestMult    : out std_logic);
@@ -88,6 +89,7 @@ architecture Structural of cpu_top is
                 JumpPSD         : in  std_logic;
                 BranchType      : in  std_logic_vector(1 downto 0);
                 NEorEQ          : in  std_logic;
+                RTZero          : in  std_logic;
                 Link            : in  std_logic;
                 DMorALU         : in  std_logic;
                 DMWT            : in  std_logic_vector(2 downto 0);
@@ -123,6 +125,7 @@ architecture Structural of cpu_top is
     signal JumpPSD      : std_logic;
     signal BranchType   : std_logic_vector(1 downto 0);
     signal NEorEQ       : std_logic;
+    signal RTZero       : std_logic;
     signal Link         : std_logic;
     signal DMorALU      : std_logic;
     signal DMWT         : std_logic_vector(2 downto 0);
@@ -172,6 +175,7 @@ architecture Structural of cpu_top is
                 RorI        => RorI,
                 BranchType  => BranchType,
                 NEorEQ      => NEorEQ,
+                RTZero      => RTZero,
                 Jump        => Jump,
                 JumpPSD     => JumpPSD,
                 TestMult    => TestMult);
@@ -205,6 +209,7 @@ architecture Structural of cpu_top is
                 JumpPSD         => JumpPSD,
                 BranchType      => BranchType,
                 NEorEQ          => NEorEQ,
+                RTZero          => RTZero,
                 Link            => Link,
                 DMorALU         => DMorALU,
                 DMWT            => DMWT,

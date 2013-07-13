@@ -19,6 +19,7 @@ entity datapath_top is
             JumpPSD         : in  std_logic;
             BranchType      : in  std_logic_vector(1 downto 0);
             NEorEQ          : in  std_logic;
+            RTZero          : in  std_logic;
             Link            : in  std_logic;
             DMorALU         : in  std_logic;
             DMWT            : in  std_logic_vector(2 downto 0);
@@ -61,6 +62,7 @@ architecture Structural of datapath_top is
         port(   clk         : in  std_logic;
                 RegWrite    : in  std_logic;
                 RegImmNot   : in  std_logic;
+                RTZero      : in  std_logic;
                 rs          : in  std_logic_vector(4 downto 0);
                 rt          : in  std_logic_vector(4 downto 0);
                 rd          : in  std_logic_vector(4 downto 0);
@@ -123,7 +125,7 @@ architecture Structural of datapath_top is
                 dataA_in    : in  std_logic_vector(25 downto 0);
                 data_out    : out std_logic_vector(31 downto 0));
     end component;
-    
+
     component npc_sl2 is
         port(   data_in     : in  std_logic_vector(31 downto 0);
                 data_out    : out std_logic_vector(31 downto 0));
@@ -134,7 +136,8 @@ architecture Structural of datapath_top is
                 rst         : in  std_logic;
                 sv          : in  std_logic;
                 TestMult    : in  std_logic;
-                mult_mode   : in  std_logic;
+                MT          : in  std_logic;
+                HIorLO      : in  std_logic;
                 ALUop       : in  std_logic_vector(3 downto 0);
                 shamt       : in  std_logic_vector(4 downto 0);
                 Bus_A       : in  std_logic_vector(31 downto 0);
@@ -319,6 +322,7 @@ begin
     port map(   clk         => clk,
                 RegWrite    => RF_write,
                 RegImmNot   => RorI,
+                RTZero      => RTZero,
                 rs          => Bus_IRin(25 downto 21),
                 rt          => Bus_IRin(20 downto 16),
                 rd          => Bus_IRin(15 downto 11),
@@ -383,7 +387,8 @@ begin
                 rst         => rst,
                 sv          => sv,
                 TestMult    => TestMult,
-                mult_mode   => MT,
+                MT          => MT,
+                HIorLO      => HIorLO,
                 ALUop       => ALUop,
                 shamt       => Bus_IRin(10 downto 6),
                 Bus_A       => Bus_ALUMUXA,

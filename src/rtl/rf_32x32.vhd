@@ -6,6 +6,7 @@ entity rf_32x32 is
     port(   clk         : in  std_logic;
             RegWrite    : in  std_logic;
             RegImmNot   : in  std_logic;
+            RTZero      : in  std_logic;
             rs          : in  std_logic_vector(4 downto 0);
             rt          : in  std_logic_vector(4 downto 0);
             rd          : in  std_logic_vector(4 downto 0);
@@ -16,34 +17,31 @@ end rf_32x32;
 
 architecture Behavioral of rf_32x32 is
 
-    -- Declarations of Register File type & signal
-
-    type Regfile_type is array (natural range<>) of std_logic_vector(31 downto 0);
-    signal Regfile_Coff : Regfile_type(0 to 31) := ((others=> (others=>'0')));
-    signal Addr_in      : std_logic_vector(4 downto 0);
+    type ram_distr is array (0 to 31) of std_logic_vector(31 downto 0);
+    signal regfile  : ram_distr := (others => (others=>'0'));
+    signal rd_a     : std_logic_vector(4 downto 0);
+    signal rs_a     : std_logic_vector(4 downto 0);
+    signal rt_a     : std_logic_vector(4 downto 0);
 
 begin
 
-    process(clk, RegWrite, RegImmNot, rs, rt, rd, dataW_in, Regfile_Coff)
+    rd_a    <= rd when RegImmNot = '1' else rt;
+    rs_a    <= rs;
+    rt_a    <= (others => '0') when RTZero = '1' else rt;
+
+    process(clk, RegWrite, rd_a, rs_a, rt_a, dataW_in, regfile)
     begin
 
-        -- Regfile_Read Assignments
-        dataA_out <= Regfile_Coff(to_integer(unsigned(rs)));
-        dataB_out <= Regfile_Coff(to_integer(unsigned(rt)));
-
-        -- Write Address Assignment
-        if (RegImmNot = '1') then
-            Addr_in <= rd;
-        elsif (RegImmNot = '0') then
-            Addr_in <= rt;
-        end if;
-
-        -- Regfile_Write Assignments
+        -- Single Port Write (Synchronous)
         if(rising_edge(clk))then
-            if(RegWrite = '1' and Addr_in /= "00000") then
-                Regfile_Coff(to_integer(unsigned(Addr_in))) <= dataW_in;
+            if(RegWrite = '1' and rd_a /= "00000") then
+                regfile(to_integer(unsigned(rd_a))) <= dataW_in;
             end if;
         end if;
+
+        -- Dual Port Read (Asynchronous, infers distributed ram)
+        dataA_out <= regfile(to_integer(unsigned(rs_a)));
+        dataB_out <= regfile(to_integer(unsigned(rt_a)));
 
     end process;
 

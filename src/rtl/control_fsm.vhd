@@ -101,13 +101,13 @@ architecture Behavioral of control_fsm is
     constant ORI    : std_logic_vector(5 downto 0) := "001101"; -- 0x0D
     constant XORI   : std_logic_vector(5 downto 0) := "001110"; -- 0x0E
     constant LUI    : std_logic_vector(5 downto 0) := "001111"; -- 0x0F
-    --constant LB   : std_logic_vector(5 downto 0) := "100000"; -- 0x20
-    --constant LH   : std_logic_vector(5 downto 0) := "100001"; -- 0x21
+    constant LB     : std_logic_vector(5 downto 0) := "100000"; -- 0x20
+    constant LH     : std_logic_vector(5 downto 0) := "100001"; -- 0x21
     constant LW     : std_logic_vector(5 downto 0) := "100011"; -- 0x23
-    --constant LBU  : std_logic_vector(5 downto 0) := "100100"; -- 0x24
-    --constant LHU  : std_logic_vector(5 downto 0) := "100101"; -- 0x25
-    --constant SB   : std_logic_vector(5 downto 0) := "101000"; -- 0x28
-    --constant SH   : std_logic_vector(5 downto 0) := "101001"; -- 0x29
+    constant LBU    : std_logic_vector(5 downto 0) := "100100"; -- 0x24
+    constant LHU    : std_logic_vector(5 downto 0) := "100101"; -- 0x25
+    constant SB     : std_logic_vector(5 downto 0) := "101000"; -- 0x28
+    constant SH     : std_logic_vector(5 downto 0) := "101001"; -- 0x29
     constant SW     : std_logic_vector(5 downto 0) := "101011"; -- 0x2B
     constant TEST   : std_logic_vector(5 downto 0) := "110000"; -- 0x30
 
@@ -160,7 +160,7 @@ begin
         case current_state is
 
             when S0 =>      -- IF
-            
+
                 if(OPCODE = "000000" AND FUNCT = "000000") then
                     next_state      <= S0;
                 elsif(OPCODE = "000000" and (FUNCT = MFHI or FUNCT = MFLO)) then
@@ -190,7 +190,13 @@ begin
                     when XORI   =>  next_state  <= S2B;
                     when LUI    =>  next_state  <= S2B;
                     when LW     =>  next_state  <= S2A;
+                    when LH     =>  next_state  <= S2A;
+                    when LHU    =>  next_state  <= S2A;
+                    when LB     =>  next_state  <= S2A;
+                    when LBU    =>  next_state  <= S2A;
                     when SW     =>  next_state  <= S2A;
+                    when SH     =>  next_state  <= S2A;
+                    when SB     =>  next_state  <= S2A;
                     when TEST   =>  next_state  <= S1;
                     when RTYPE =>
 
@@ -225,12 +231,18 @@ begin
 
                 end case;
 
-            when S2A =>      -- EX (LW & SW)
+            when S2A =>      -- EX (LW, LH, LHU, LB, LBU & SW, SH, SB)
 
                 case OPCODE is
 
-                    when LW =>      next_state  <= S3;
-                    when SW =>      next_state  <= S4B;
+                    when LW  =>     next_state  <= S3;
+                    when LH  =>     next_state  <= S3;
+                    when LHU =>     next_state  <= S3;
+                    when LB  =>     next_state  <= S3;
+                    when LBU =>     next_state  <= S3;
+                    when SW  =>     next_state  <= S4B;
+                    when SH  =>     next_state  <= S4B;
+                    when SB  =>     next_state  <= S4B;
                     when others =>  next_state  <= S0;
 
                 end case;
@@ -260,13 +272,14 @@ begin
 
             when S2C =>     next_state  <= S0;  -- EX & WB (MTHI & MTLO & MULT)
 
-            when S3 =>      next_state  <= S4A; -- MEM (LW)
+            when S3 =>      next_state  <= S4A; -- MEM (LW, LH, LHU, LB, LBU)
 
             when S4A =>     next_state  <= S0;  -- WB (Normal)
-            when S4B =>     next_state  <= S0;  -- WB (SW)
+            when S4B =>     next_state  <= S0;  -- WB (SW, SH, SB)
             when S4C =>     next_state  <= S0;  -- WB (Jumps without link and Branches)
 
-    --        when others =>  next_state    <= S0;
+            -- Other case not needed because we have a path for all the states
+            -- when others =>  next_state    <= S0;
 
         end case;
 

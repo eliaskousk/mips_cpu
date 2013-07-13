@@ -7,7 +7,8 @@ entity alu_top is
             rst         : in  std_logic;
             sv          : in  std_logic;
             TestMult    : in  std_logic;
-            mult_mode   : in  std_logic;
+            MT          : in  std_logic;
+            HIorLO      : in  std_logic;
             ALUop       : in  std_logic_vector(3 downto 0);
             shamt       : in  std_logic_vector(4 downto 0);
             Bus_A       : in  std_logic_vector(31 downto 0);
@@ -72,8 +73,8 @@ begin
                 shift_out   => output);
 
     shift       <= Bus_A(4 downto 0) when (sv = '1') else shamt;
-    Bus_mult_HI <= tmp_result_hi when (ALUop(1 downto 0) = "00") else (others => 'Z');
-    Bus_mult_LO <= tmp_result_lo when (ALUop(1 downto 0) = "00") else (others => 'Z');
+    Bus_mult_HI <= tmp_result_hi when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '1') else (others => 'Z');
+    Bus_mult_LO <= tmp_result_lo when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '0') else (others => 'Z');
     Zero        <= '1' when (A_out = X"00000000") else '0';
 
     process(Bus_A, Bus_B, ALUop, output)

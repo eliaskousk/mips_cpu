@@ -84,6 +84,7 @@ entity control_comb is
             RorI        : out std_logic;
             BranchType  : out std_logic_vector(1 downto 0);
             NEorEQ      : out std_logic;
+            RTZero      : out std_logic;
             Jump        : out std_logic;
             JumpPSD     : out std_logic;
             TestMult    : out std_logic);
@@ -118,7 +119,7 @@ architecture Behavioral of control_comb is
     constant SH     : std_logic_vector(5 downto 0) := "101001"; -- 0x29
     constant SW     : std_logic_vector(5 downto 0) := "101011"; -- 0x2B
     constant TEST   : std_logic_vector(5 downto 0) := "110000"; -- 0x30
-    
+
     -- FUNCT definition as constants
     constant SLLR   : std_logic_vector(5 downto 0) := "000000"; -- 0x00
     constant SRLR   : std_logic_vector(5 downto 0) := "000010"; -- 0x02
@@ -164,6 +165,7 @@ begin
         RorI        <= '0';
         BranchType  <=  "00";
         NEorEQ      <= '0';
+        RTZero      <= '0';
         Jump        <= '0';
         JumpPSD     <= '0';
         TestMult    <= '0';
@@ -172,19 +174,21 @@ begin
 
             when TEST =>
                 SorZ        <= '-';
-                BorI        <= '1';
-                ALUop       <= "1000";
+                BorI        <= '-';
+                ALUop       <= "-";
                 sv          <= '-';
-                MF          <= '0';
-                MT          <= '0';
+                MF          <= '-';
+                MT          <= '-';
                 HIorLO      <= '-';
-                DMorALU     <= '0';
-                Link        <= '0';
-                RorI        <= '1';
-                BranchType  <= "00";
+                DMorALU     <= '-';
+                DMWT        <= "---";
+                Link        <= '-';
+                RorI        <= '-';
+                BranchType  <=  "--";
                 NEorEQ      <= '-';
-                Jump        <= '0';
-                JumpPSD     <= '0';
+                RTZero      <= '-';
+                Jump        <= '-';
+                JumpPSD     <= '-';
                 TestMult    <= '1';
 
             when LW =>
@@ -192,15 +196,16 @@ begin
                 BorI        <= '0';
                 ALUop       <= "1001";
                 sv          <= '-';
-                MF          <= '-';
+                MF          <= '0';
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '1';
                 DMWT        <= "100";
-                Link        <= '-';
+                Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -210,15 +215,16 @@ begin
                 BorI        <= '0';
                 ALUop       <= "1001";
                 sv          <= '-';
-                MF          <= '-';
+                MF          <= '0';
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '1';
                 DMWT        <= "011";
-                Link        <= '-';
+                Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -228,15 +234,16 @@ begin
                 BorI        <= '0';
                 ALUop       <= "1001";
                 sv          <= '-';
-                MF          <= '-';
+                MF          <= '0';
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '1';
                 DMWT        <= "010";
-                Link        <= '-';
+                Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -246,15 +253,16 @@ begin
                 BorI        <= '0';
                 ALUop       <= "1001";
                 sv          <= '-';
-                MF          <= '-';
+                MF          <= '0';
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '1';
                 DMWT        <= "001";
-                Link        <= '-';
+                Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -264,15 +272,16 @@ begin
                 BorI        <= '0';
                 ALUop       <= "1001";
                 sv          <= '-';
-                MF          <= '-';
+                MF          <= '0';
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '1';
                 DMWT        <= "000";
-                Link        <= '-';
+                Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -291,6 +300,7 @@ begin
                 RorI        <= '-';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -309,6 +319,7 @@ begin
                 RorI        <= '-';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -327,6 +338,7 @@ begin
                 RorI        <= '-';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
                 JumpPSD     <= '-';
                 TestMult    <= '0';
@@ -337,16 +349,18 @@ begin
                 BorI        <= '1';
                 ALUop       <= "1010";
                 sv          <= '-';
-                MF          <= '0';
-                MT          <= '0';
+                MF          <= '-';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
-                BranchType  <= "10";
-                NEorEQ      <= '1';
+                BranchType  <= "11";
+                NEorEQ      <= '1';     -- Wrong for BLTZ
+                RTZero      <= '1';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when BLEZ =>
@@ -354,16 +368,18 @@ begin
                 BorI        <= '1';
                 ALUop       <= "1010";
                 sv          <= '-';
-                MF          <= '0';
-                MT          <= '0';
+                MF          <= '-';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
-                BranchType  <= "11";
+                BranchType  <= "10";
                 NEorEQ      <= '0';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when BGTZ =>
@@ -371,16 +387,18 @@ begin
                 BorI        <= '1';
                 ALUop       <= "1010";
                 sv          <= '-';
-                MF          <= '0';
-                MT          <= '0';
+                MF          <= '-';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
-                BranchType  <= "11";
+                BranchType  <= "10";
                 NEorEQ      <= '1';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when BEQ =>
@@ -388,16 +406,18 @@ begin
                 BorI        <= '1';
                 ALUop       <= "1010";
                 sv          <= '-';
-                MF          <= '0';
-                MT          <= '0';
+                MF          <= '-';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
                 BranchType  <= "01";
                 NEorEQ      <= '0';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when BNE =>
@@ -405,16 +425,18 @@ begin
                 BorI        <= '1';
                 ALUop       <= "1010";
                 sv          <= '-';
-                MF          <= '0';
-                MT          <= '0';
+                MF          <= '-';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
-                BranchType  <= "11";
+                BranchType  <= "01";
                 NEorEQ      <= '1';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when ADDI =>
@@ -423,15 +445,17 @@ begin
                 ALUop       <= "1000";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when ADDIU =>
@@ -440,15 +464,17 @@ begin
                 ALUop       <= "1001";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when SLTI =>
@@ -457,15 +483,17 @@ begin
                 ALUop       <= "0110";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when SLTIU =>
@@ -474,15 +502,17 @@ begin
                 ALUop       <= "0111";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when ANDI =>
@@ -491,15 +521,17 @@ begin
                 ALUop       <= "1100";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when ORI =>
@@ -508,15 +540,17 @@ begin
                 ALUop       <= "1101";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when XORI =>
@@ -525,32 +559,36 @@ begin
                 ALUop       <= "1110";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when LUI =>
-                SorZ        <= '-';
+                SorZ        <= '0';
                 BorI        <= '0';
                 ALUop       <= "0000";
                 sv          <= '-';
                 MF          <= '0';
-                MT          <= '0';
+                MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '0';
+                DMWT        <= "---";
                 Link        <= '0';
                 RorI        <= '0';
                 BranchType  <= "00";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '0';
-                JumpPSD     <= '0';
+                JumpPSD     <= '-';
                 TestMult    <= '0';
 
             when J =>
@@ -562,10 +600,12 @@ begin
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
                 BranchType  <= "--";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '1';
                 JumpPSD     <= '1';
                 TestMult    <= '0';
@@ -579,10 +619,12 @@ begin
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '1';
                 RorI        <= '1';
                 BranchType  <= "--";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '1';
                 JumpPSD     <= '1';
                 TestMult    <= '0';
@@ -597,15 +639,17 @@ begin
                         ALUop       <= "1000";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when ADDRU =>
@@ -614,15 +658,17 @@ begin
                         ALUop       <= "1001";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SUBR =>
@@ -631,15 +677,17 @@ begin
                         ALUop       <= "1010";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SUBRU =>
@@ -648,32 +696,36 @@ begin
                         ALUop       <= "1011";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
-                        Jump        <= '0';   
-                        JumpPSD     <= '0';
+                        RTZero      <= '-';
+                        Jump        <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when MULTR =>
                         SorZ        <= '-';
                         BorI        <= '1';
-                        ALUop       <= "1000";
+                        ALUop       <= "----";
                         sv          <= '-';
-                        MF          <= '0';
-                        MT          <= '0';
+                        MF          <= '-';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
-                        Link        <= '0';
-                        RorI        <= '1';
+                        DMWT        <= "---";
+                        Link        <= '-';
+                        RorI        <= '-';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when MFHI =>
@@ -682,15 +734,17 @@ begin
                         ALUop       <= "----";
                         sv          <= '-';
                         MF          <= '1';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '1';
-                        DMorALU     <= '0';
+                        DMorALU     <= '-';
+                        DMWT        <= "---";
                         Link        <= '0';
-                        RorI        <= '0';
+                        RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when MTHI =>
@@ -698,16 +752,18 @@ begin
                         BorI        <= '-';
                         ALUop       <= "----";
                         sv          <= '-';
-                        MF          <= '0';
+                        MF          <= '-';
                         MT          <= '1';
                         HIorLO      <= '1';
-                        DMorALU     <= '0';
-                        Link        <= '0';
-                        RorI        <= '0';
+                        DMorALU     <= '-';
+                        DMWT        <= "---";
+                        Link        <= '-';
+                        RorI        <= '-';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when MFLO =>
@@ -716,32 +772,36 @@ begin
                         ALUop       <= "----";
                         sv          <= '-';
                         MF          <= '1';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '0';
-                        DMorALU     <= '0';
+                        DMorALU     <= '-';
+                        DMWT        <= "---";
                         Link        <= '0';
-                        RorI        <= '0';
+                        RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when MTLO =>
-                        SorZ        <= '0';
-                        BorI        <= '0';
+                        SorZ        <= '-';
+                        BorI        <= '-';
                         ALUop       <= "----";
                         sv          <= '-';
-                        MF          <= '0';
+                        MF          <= '-';
                         MT          <= '1';
                         HIorLO      <= '0';
-                        DMorALU     <= '0';
-                        Link        <= '0';
-                        RorI        <= '0';
+                        DMorALU     <= '-';
+                        DMWT        <= "---";
+                        Link        <= '-';
+                        RorI        <= '-';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when ANDR =>
@@ -750,15 +810,17 @@ begin
                         ALUop       <= "1100";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when ORR =>
@@ -767,15 +829,17 @@ begin
                         ALUop       <= "1101";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when XORR =>
@@ -784,15 +848,17 @@ begin
                         ALUop       <= "1110";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when NORR =>
@@ -801,15 +867,17 @@ begin
                         ALUop       <= "1111";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SLTR =>
@@ -818,15 +886,17 @@ begin
                         ALUop       <= "0110";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SLTRU =>
@@ -835,15 +905,17 @@ begin
                         ALUop       <= "0111";
                         sv          <= '-';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SLLR =>
@@ -852,15 +924,17 @@ begin
                         ALUop       <= "0000";
                         sv          <= '0';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SRLR =>
@@ -869,15 +943,17 @@ begin
                         ALUop       <= "0010";
                         sv          <= '0';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SRAR =>
@@ -886,15 +962,17 @@ begin
                         ALUop       <= "0011";
                         sv          <= '0';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SLLVR =>
@@ -903,15 +981,17 @@ begin
                         ALUop       <= "0000";
                         sv          <= '1';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SRLVR =>
@@ -920,15 +1000,17 @@ begin
                         ALUop       <= "0010";
                         sv          <= '1';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when SRAVR =>
@@ -937,15 +1019,17 @@ begin
                         ALUop       <= "0011";
                         sv          <= '1';
                         MF          <= '0';
-                        MT          <= '0';
+                        MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '0';
+                        DMWT        <= "---";
                         Link        <= '0';
                         RorI        <= '1';
                         BranchType  <= "00";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '0';
-                        JumpPSD     <= '0';
+                        JumpPSD     <= '-';
                         TestMult    <= '0';
 
                     when JR =>
@@ -957,10 +1041,12 @@ begin
                         MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '-';
+                        DMWT        <= "---";
                         Link        <= '-';
                         RorI        <= '-';
                         BranchType  <= "--";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '1';
                         JumpPSD     <= '0';
                         TestMult    <= '0';
@@ -974,10 +1060,12 @@ begin
                         MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '-';
+                        DMWT        <= "---";
                         Link        <= '1';
                         RorI        <= '1';
                         BranchType  <= "--";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '1';
                         JumpPSD     <= '0';
                         TestMult    <= '0';
@@ -991,10 +1079,12 @@ begin
                         MT          <= '-';
                         HIorLO      <= '-';
                         DMorALU     <= '-';
+                        DMWT        <= "---";
                         Link        <= '-';
                         RorI        <= '-';
                         BranchType  <= "--";
                         NEorEQ      <= '-';
+                        RTZero      <= '-';
                         Jump        <= '-';
                         JumpPSD     <= '-';
                         TestMult    <= '-';
@@ -1010,16 +1100,18 @@ begin
                 MT          <= '-';
                 HIorLO      <= '-';
                 DMorALU     <= '-';
+                DMWT        <= "---";
                 Link        <= '-';
                 RorI        <= '-';
                 BranchType  <= "--";
                 NEorEQ      <= '-';
+                RTZero      <= '-';
                 Jump        <= '-';
                 JumpPSD     <= '-';
                 TestMult    <= '-';
-    
+
         end case;
-    
+
     end process;
 
 end Behavioral;

@@ -18,36 +18,21 @@ architecture Behavioral of rf_mux is
 
 begin
 
-    process(DMorALU, Link, MF, HIorLO)
+    process(Link, DMorALU, MF, HIorLO)
     begin
-        if(DMorALU = '0') then
+        if(Link = '0' and MF = '0' and DMorALU = '0') then      -- Write register from ALU
             data_out <= data_alu_in;
-        elsif(DMorALU = '1') then
+        elsif(Link = '0' and MF = '0' and DMorALU = '1') then   -- Write register from DM
             data_out <= data_dm_in;
-        elsif(Link = '1') then
-            data_out <= data_npc_in;
-        elsif(MF = '1' and HIorLO = '0') then
-            data_out <= data_mlo_in;
-        elsif(MF = '1' and HIorLO = '1') then
+        elsif(Link = '0' and MF = '1' and HIorLO = '1') then    -- Write register from HI
             data_out <= data_mhi_in;
+        elsif(Link = '0' and MF = '1' and HIorLO = '0') then    -- Write register from LO
+            data_out <= data_mlo_in;
+        elsif(Link = '1') then                                  -- Write register from NPC
+            data_out <= data_npc_in;
         else
             data_out <= (others => '0');
         end if;
     end process;
 
 end Behavioral;
-
---  OLD STUFF
---
---  signal WriteSelect : std_logic_vector(3 downto 0);
---
---  WriteSelect <= HIorLO & MF & Link & DMorALU;
---
---    with WriteSelect select
---        
---        data_out        <=      data_alu_in  when "-000",
---                                data_dm_in   when "-001",
---                                data_npc_in  when "--1-",
---                                data_mlo_in  when "010-",
---                                data_mhi_in  when "110-",
---                                (others => '-') when others;

@@ -20,13 +20,13 @@ begin
     process(BranchType)
     begin
 
-        if(BranchType = "00") then
+        if(BranchType = "00") then              -- Sequential
             BranchSelect <= '0';
-        elsif(BranchType = "01") then
+        elsif(BranchType = "01") then           -- BEQ, BNE
             BranchSelect <= Zero xor NEorEQ;
-        elsif(BranchType = "10") then
+        elsif(BranchType = "10") then           -- BLEZ, BGTZ
             BranchSelect <= Zero xnor Negative;
-        elsif(BranchType = "11") then
+        elsif(BranchType = "11") then           -- BLTZ, BGEZ
             BranchSelect <= Negative xor NEorEQ;
         end if;
 
