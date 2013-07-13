@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity alu_mult_counter is
     port (
@@ -31,7 +32,7 @@ begin
                 if start = '1' then
                     counter <= (others => '0');
                 else
-                    counter <= counter + '1';
+                    counter <= std_logic_vector(unsigned(counter) + 1);
                 end if;
 
             end if;

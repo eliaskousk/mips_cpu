@@ -9,19 +9,20 @@ architecture Behavioral of cpu_top_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component cpu_top
-        port(clk     : in  std_logic;
-             rst     : in  std_logic;
-             IR      : out std_logic_vector(31 downto 0);
-             PC      : out std_logic_vector(31 downto 0);
-             DMA     : out std_logic_vector(31 downto 0);
-             DMD     : out std_logic_vector(31 downto 0);
-             W       : out std_logic_vector(31 downto 0);
-             ALUout  : out std_logic_vector(31 downto 0);
-             MULTout : out std_logic_vector(63 downto 0);
-             ZE      : out std_logic;
-             NE      : out std_logic;
-             OV      : out std_logic;
-             ER      : out std_logic);
+        port(clk    : in  std_logic;
+             rst    : in  std_logic;
+             IR     : out std_logic_vector(31 downto 0);
+             PC     : out std_logic_vector(31 downto 0);
+             DMA    : out std_logic_vector(31 downto 0);
+             DMD    : out std_logic_vector(31 downto 0);
+             W      : out std_logic_vector(31 downto 0);
+             ALUout : out std_logic_vector(31 downto 0);
+             HIout  : out std_logic_vector(31 downto 0);
+             LOout  : out std_logic_vector(31 downto 0);
+             ZE     : out std_logic;
+             NE     : out std_logic;
+             OV     : out std_logic;
+             ER     : out std_logic);
     end component cpu_top;
 
     --Inputs
@@ -35,7 +36,8 @@ architecture Behavioral of cpu_top_tb is
     signal DMD          : std_logic_vector(31 downto 0);
     signal W            : std_logic_vector(31 downto 0);
     signal ALUout       : std_logic_vector(31 downto 0);
-    signal MULTout      : std_logic_vector(63 downto 0);
+    signal HIout        : std_logic_vector(31 downto 0);
+    signal LOout        : std_logic_vector(31 downto 0);
     signal ZE           : std_logic;
     signal NE           : std_logic;
     signal OV           : std_logic;
@@ -56,7 +58,8 @@ begin
                  DMD     => DMD,
                  W       => W,
                  ALUout  => ALUout,
-                 MULTout => MULTout,
+                 HIout   => HIout,
+                 LOout   => LOout,
                  ZE      => ZE,
                  NE      => NE,
                  OV      => OV,

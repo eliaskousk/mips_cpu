@@ -175,7 +175,7 @@ begin
             when TEST =>
                 SorZ        <= '-';
                 BorI        <= '-';
-                ALUop       <= "-";
+                ALUop       <= "----";
                 sv          <= '-';
                 MF          <= '-';
                 MT          <= '-';

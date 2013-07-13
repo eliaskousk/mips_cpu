@@ -32,7 +32,8 @@ entity datapath_top is
             Bus_FLAGSout    : out std_logic_vector(4 downto 0);
             Bus_PCout       : out std_logic_vector(31 downto 0);
             Bus_ALUout      : out std_logic_vector(31 downto 0);
-            Bus_MULTout     : out std_logic_vector(63 downto 0);
+            Bus_MULTHIout   : out std_logic_vector(31 downto 0);
+            Bus_MULTLOout   : out std_logic_vector(31 downto 0);
             Bus_Wout        : out std_logic_vector(31 downto 0);
             Bus_DMWEout     : out std_logic_vector(3 downto 0);
             Bus_DMAout      : out std_logic_vector(31 downto 0);
@@ -146,7 +147,8 @@ architecture Structural of datapath_top is
                 ov          : out std_logic;
                 Fail        : out std_logic;
                 Bus_S       : out std_logic_vector(31 downto 0);
-                Bus_mult    : out std_logic_vector(63 downto 0));
+                Bus_mult_HI : out std_logic_vector(31 downto 0);
+                Bus_mult_LO : out std_logic_vector(31 downto 0));
     end component;
 
     component alu_mux is
@@ -194,7 +196,8 @@ architecture Structural of datapath_top is
     signal Bus_ALUMUXA  : std_logic_vector(31 downto 0);
     signal Bus_ALUMUXB  : std_logic_vector(31 downto 0);
     signal Bus_ALU      : std_logic_vector(31 downto 0);
-    signal Bus_MULT     : std_logic_vector(63 downto 0);
+    signal Bus_MULTHI   : std_logic_vector(31 downto 0);
+    signal Bus_MULTLO   : std_logic_vector(31 downto 0);
     signal Bus_ALUFLAGS : std_logic_vector(3 downto 0);
     signal Bus_FLAGS    : std_logic_vector(3 downto 0);
     signal Zero         : std_logic;
@@ -218,7 +221,8 @@ begin
     Bus_FLAGSout    <= FlagE(0) & Bus_FLAGS;
     Bus_PCout       <= Bus_PC;
     Bus_ALUout      <= Bus_ALU;
-    Bus_MULTout     <= Bus_MULT;
+    Bus_MULTHIout   <= Bus_MULTHI;
+    Bus_MULTLOout   <= Bus_MULTLO;
     Bus_Wout        <= Bus_W;
 
     Bus_ALUFLAGS    <= Fail & Overflow & Bus_ALU(31) & Zero;
@@ -282,13 +286,13 @@ begin
     HI : reg
     port map(   clk         => clk,
                 rst         => rst,
-                data_in     => Bus_MULT(63 downto 32),
+                data_in     => Bus_MULTHI,
                 data_out    => Bus_HI);
 
     LO : reg
     port map(   clk         => clk,
                 rst         => rst,
-                data_in     => Bus_MULT(31 downto 0),
+                data_in     => Bus_MULTLO,
                 data_out    => Bus_LO);
 
     FLAGS : reg
@@ -397,7 +401,8 @@ begin
                 ov          => Overflow,
                 Fail        => Fail,
                 Bus_S       => Bus_ALU,
-                Bus_mult    => Bus_MULT);
+                Bus_mult_HI => Bus_MULTHI,
+                Bus_mult_LO => Bus_MULTLO);
 
     ALUMUX : alu_mux
     port map(   data_regA_in    => Bus_A,

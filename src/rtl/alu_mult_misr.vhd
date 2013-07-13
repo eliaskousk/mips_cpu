@@ -34,7 +34,7 @@ begin
 
     end process;
 
-    signature_hi    <= lfsr_reg(63 downto 0);
+    signature_hi    <= lfsr_reg(63 downto 32);
     signature_lo    <= lfsr_reg(31 downto 0);
 
 end Behavioral;

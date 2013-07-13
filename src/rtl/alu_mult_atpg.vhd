@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity alu_mult_atpg is
     port (
@@ -53,7 +54,7 @@ begin
                 if start = '1' then
                     address <= (others => '0');
                 else
-                    address <= address + '1';
+                    address <= std_logic_vector(unsigned(address) + 1);
                 end if;
 
             end if;

@@ -44,7 +44,7 @@ architecture Behavioral of alu_top is
 
     signal tmp_result_hi    : std_logic_vector(31 downto 0);
     signal tmp_result_lo    : std_logic_vector(31 downto 0);
-    signal L_out            : std_logic_vector(63 downto 0);
+    signal L_out            : std_logic_vector(31 downto 0);
     signal A_out            : std_logic_vector(31 downto 0);
     signal Sh_out           : std_logic_vector(31 downto 0);
     signal SLT_out          : std_logic_vector(31 downto 0);

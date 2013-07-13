@@ -10,7 +10,8 @@ entity cpu_top is
             DMD     : out std_logic_vector(31 downto 0);
             W       : out std_logic_vector(31 downto 0);
             ALUout  : out std_logic_vector(31 downto 0);
-            MULTout : out std_logic_vector(63 downto 0);
+            HIout   : out std_logic_vector(31 downto 0);
+            LOout   : out std_logic_vector(31 downto 0);
             ZE      : out std_logic;
             NE      : out std_logic;
             OV      : out std_logic;
@@ -102,7 +103,8 @@ architecture Structural of cpu_top is
                 Bus_FLAGSout    : out std_logic_vector(4 downto 0);
                 Bus_PCout       : out std_logic_vector(31 downto 0);
                 Bus_ALUout      : out std_logic_vector(31 downto 0);
-                Bus_MULTout     : out std_logic_vector(63 downto 0);
+                Bus_MULTHIout   : out std_logic_vector(31 downto 0);
+                Bus_MULTLOout   : out std_logic_vector(31 downto 0);
                 Bus_Wout        : out std_logic_vector(31 downto 0);
                 Bus_DMWEout     : out std_logic_vector(3 downto 0);
                 Bus_DMAout      : out std_logic_vector(31 downto 0);
@@ -154,7 +156,7 @@ architecture Structural of cpu_top is
     port map(   clk         => clk,
                 en          => "1111",
                 we          => Bus_DMWE,
-                ssr         => (others => rst),
+                ssr         => "0000",
                 address     => Bus_DMA(12 downto 2),
                 data_in     => Bus_DMDin,
                 data_out    => Bus_DMDout);
@@ -221,7 +223,8 @@ architecture Structural of cpu_top is
                 funct           => funct,
                 Bus_PCout       => Bus_PCout,
                 Bus_ALUout      => ALUout,
-                Bus_MULTout     => MULTout,
+                Bus_MULTHIout   => HIout,
+                Bus_MULTLOout   => LOout,
                 Bus_FLAGSout    => Bus_Flags,
                 Bus_Wout        => W,
                 Bus_DMWEout     => Bus_DMWE,
