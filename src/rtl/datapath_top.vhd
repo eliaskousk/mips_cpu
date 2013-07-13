@@ -21,6 +21,7 @@ entity datapath_top is
             NEorEQ          : in  std_logic;
             Link            : in  std_logic;
             DMorALU         : in  std_logic;
+            DMWT            : in  std_logic_vector(2 downto 0);
             TestMult        : in  std_logic;
             ALUop           : in  std_logic_vector(3 downto 0);
             Bus_IRin        : in  std_logic_vector(31 downto 0);
@@ -158,6 +159,7 @@ architecture Structural of datapath_top is
         port(   data_mdr_in     : in  std_logic_vector(31 downto 0);
                 data_mar_in     : in  std_logic_vector(31 downto 0);
                 data_dmd_in     : in  std_logic_vector(31 downto 0);
+                DMWT            : in  std_logic_vector(2 downto 0);
                 DMD_we          : in  std_logic;
                 Error           : out std_logic_vector(0 downto 0);
                 data_mdr_out    : out std_logic_vector(31 downto 0);
@@ -404,6 +406,7 @@ begin
     port map(   data_mdr_in     => Bus_MDRI,
                 data_mar_in     => Bus_MAR,
                 data_dmd_in     => Bus_DMDin,
+                DMWT            => DMWT,
                 DMD_we          => DMD_write,
                 Error           => Error,
                 data_mdr_out    => Bus_MDRO,

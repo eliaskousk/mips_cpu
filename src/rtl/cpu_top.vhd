@@ -48,6 +48,7 @@ architecture Structural of cpu_top is
                 MT          : out std_logic;
                 HIorLO      : out std_logic;
                 DMorALU     : out std_logic;
+                DMWT        : out  std_logic_vector(2 downto 0);
                 Link        : out std_logic;
                 RorI        : out std_logic;
                 BranchType  : out std_logic_vector(1 downto 0);
@@ -89,6 +90,7 @@ architecture Structural of cpu_top is
                 NEorEQ          : in  std_logic;
                 Link            : in  std_logic;
                 DMorALU         : in  std_logic;
+                DMWT            : in  std_logic_vector(2 downto 0);
                 TestMult        : in  std_logic;
                 ALUop           : in  std_logic_vector(3 downto 0);
                 Bus_IRin        : in  std_logic_vector(31 downto 0);
@@ -123,6 +125,7 @@ architecture Structural of cpu_top is
     signal NEorEQ       : std_logic;
     signal Link         : std_logic;
     signal DMorALU      : std_logic;
+    signal DMWT         : std_logic_vector(2 downto 0);
     signal TestMult     : std_logic;
 
     signal ALUop        : std_logic_vector(3 downto 0);
@@ -164,6 +167,7 @@ architecture Structural of cpu_top is
                 MT          => MT,
                 HIorLO      => HIorLO,
                 DMorALU     => DMorALU,
+                DMWT        => DMWT,
                 Link        => Link,
                 RorI        => RorI,
                 BranchType  => BranchType,
@@ -171,7 +175,7 @@ architecture Structural of cpu_top is
                 Jump        => Jump,
                 JumpPSD     => JumpPSD,
                 TestMult    => TestMult);
-    
+
     CONTROLFSM : control_fsm
     port map(   clk         => clk,
                 rst         => rst,
@@ -203,6 +207,7 @@ architecture Structural of cpu_top is
                 NEorEQ          => NEorEQ,
                 Link            => Link,
                 DMorALU         => DMorALU,
+                DMWT            => DMWT,
                 ALUop           => ALUop,
                 TestMult        => TestMult,
                 Bus_IRin        => Bus_IRin,
