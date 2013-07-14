@@ -17,7 +17,7 @@ architecture Behavioral of npc_sel is
 
 begin
 
-    process(BranchType)
+    process(BranchType, Zero, NEorEQ, Negative)
     begin
 
         if(BranchType = "00") then              -- Sequential
@@ -25,7 +25,7 @@ begin
         elsif(BranchType = "01") then           -- BEQ, BNE
             BranchSelect <= Zero xor NEorEQ;
         elsif(BranchType = "10") then           -- BLEZ, BGTZ
-            BranchSelect <= Zero xnor Negative;
+            BranchSelect <= ((not NEorEQ) and (Zero or Negative)) or ((NEorEQ) and (Zero nor Negative));
         elsif(BranchType = "11") then           -- BLTZ, BGEZ
             BranchSelect <= Negative xor NEorEQ;
         end if;

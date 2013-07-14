@@ -13,7 +13,8 @@ architecture Behavioral of alu_top_tb is
              rst         : in  std_logic;
              sv          : in  std_logic;
              TestMult    : in  std_logic;
-             mult_mode   : in  std_logic;
+             MT          : in  std_logic;
+             HIorLO      : in  std_logic;
              ALUop       : in  std_logic_vector(3 downto 0);
              shamt       : in  std_logic_vector(4 downto 0);
              Bus_A       : in  std_logic_vector(31 downto 0);
@@ -30,6 +31,8 @@ architecture Behavioral of alu_top_tb is
     signal rst          : std_logic := '0';
     signal sv           : std_logic := '0';
     signal TestMult     : std_logic := '0';
+    signal MT           : std_logic := '0';
+    signal HIorLO       : std_logic := '0';
     signal mult_mode    : std_logic := '0';
     signal ALUop        : std_logic_vector(3 downto 0) := (others => '0');
     signal shamt        : std_logic_vector(4 downto 0) := (others => '0');
@@ -54,7 +57,8 @@ begin
                  rst         => rst,
                  sv          => sv,
                  TestMult    => TestMult,
-                 mult_mode   => mult_mode,
+                 MT          => MT,
+                 HIorLO      => HIorLO,
                  ALUop       => ALUop,
                  shamt       => shamt,
                  Bus_A       => Bus_A,

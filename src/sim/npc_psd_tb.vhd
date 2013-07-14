@@ -43,6 +43,10 @@ begin
         dataA_in <= "01" & X"BBBBBB";
         wait for 20 ns;
 
+        dataP_in <= "1100";
+        dataA_in <= "10" & X"CCCCCC";
+        wait for 20 ns;
+
         dataP_in <= "1111";
         dataA_in <= "11" & X"FFFFFF";
         wait for 20 ns;

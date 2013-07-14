@@ -1,14 +1,14 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity cpu_top_tb is
-end cpu_top_tb;
+entity mips_cpu_top_tb is
+end mips_cpu_top_tb;
 
-architecture Behavioral of cpu_top_tb is
+architecture Behavioral of mips_cpu_top_tb is
 
     -- Component Declaration for the Unit Under Test (UUT)
 
-    component cpu_top
+    component mips_cpu_top
         port(clk    : in  std_logic;
              rst    : in  std_logic;
              IR     : out std_logic_vector(31 downto 0);
@@ -16,14 +16,14 @@ architecture Behavioral of cpu_top_tb is
              DMA    : out std_logic_vector(31 downto 0);
              DMD    : out std_logic_vector(31 downto 0);
              W      : out std_logic_vector(31 downto 0);
-             ALUout : out std_logic_vector(31 downto 0);
-             HIout  : out std_logic_vector(31 downto 0);
-             LOout  : out std_logic_vector(31 downto 0);
+             ALU    : out std_logic_vector(31 downto 0);
+             HI     : out std_logic_vector(31 downto 0);
+             LO     : out std_logic_vector(31 downto 0);
              ZE     : out std_logic;
              NE     : out std_logic;
              OV     : out std_logic;
              ER     : out std_logic);
-    end component cpu_top;
+    end component mips_cpu_top;
 
     --Inputs
     signal clk          : std_logic := '0';
@@ -35,9 +35,9 @@ architecture Behavioral of cpu_top_tb is
     signal DMA          : std_logic_vector(31 downto 0);
     signal DMD          : std_logic_vector(31 downto 0);
     signal W            : std_logic_vector(31 downto 0);
-    signal ALUout       : std_logic_vector(31 downto 0);
-    signal HIout        : std_logic_vector(31 downto 0);
-    signal LOout        : std_logic_vector(31 downto 0);
+    signal ALU          : std_logic_vector(31 downto 0);
+    signal HI           : std_logic_vector(31 downto 0);
+    signal LO           : std_logic_vector(31 downto 0);
     signal ZE           : std_logic;
     signal NE           : std_logic;
     signal OV           : std_logic;
@@ -57,9 +57,9 @@ begin
                  DMA     => DMA,
                  DMD     => DMD,
                  W       => W,
-                 ALUout  => ALUout,
-                 HIout   => HIout,
-                 LOout   => LOout,
+                 ALU     => ALU,
+                 HI      => HI,
+                 LO      => LO,
                  ZE      => ZE,
                  NE      => NE,
                  OV      => OV,

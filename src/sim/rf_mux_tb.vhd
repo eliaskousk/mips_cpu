@@ -65,13 +65,31 @@ begin
         Link    <= '0';
         DMorALU <= '0';
         MF      <= '0';
-        HIorLO  <= '0';
+        HIorLO  <= '-';
         wait for 20 ns;
 
-        Link    <= '1';
-        DMorALU <= '0';
+        Link    <= '0';
+        DMorALU <= '1';
         MF      <= '0';
+        HIorLO  <= '-';
+        wait for 20 ns;
+        
+        Link    <= '1';
+        DMorALU <= '-';
+        MF      <= '-';
+        HIorLO  <= '-';
+        wait for 20 ns;
+        
+        Link    <= '0';
+        DMorALU <= '-';
+        MF      <= '1';
         HIorLO  <= '0';
+        wait for 20 ns;
+        
+        Link    <= '0';
+        DMorALU <= '-';
+        MF      <= '1';
+        HIorLO  <= '1';
         wait for 20 ns;
 
         wait;

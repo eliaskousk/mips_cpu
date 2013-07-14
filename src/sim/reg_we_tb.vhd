@@ -85,7 +85,7 @@ begin
         -- Write
         data_in <= X"FFFFFFFF";
         wait for clk_period;
-        we      <= '0';
+        we      <= '1';
 
         wait;
     end process;

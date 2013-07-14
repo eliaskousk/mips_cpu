@@ -12,6 +12,7 @@ architecture Behavioral of rf_32x32_tb is
         port(clk       : in  std_logic;
              RegWrite  : in  std_logic;
              RegImmNot : in  std_logic;
+             RTZero    : in  std_logic;
              rs        : in  std_logic_vector(4 downto 0);
              rt        : in  std_logic_vector(4 downto 0);
              rd        : in  std_logic_vector(4 downto 0);
@@ -24,6 +25,7 @@ architecture Behavioral of rf_32x32_tb is
     signal clk          : std_logic := '0';
     signal RegWrite     : std_logic := '0';
     signal RegImmNot    : std_logic := '0';
+    signal RTZero       : std_logic := '0';
     signal rs           : std_logic_vector(4 downto 0) := (others => '0');
     signal rt           : std_logic_vector(4 downto 0) := (others => '0');
     signal rd           : std_logic_vector(4 downto 0) := (others => '0');
@@ -43,6 +45,7 @@ begin
         port map(clk       => clk,
                  RegWrite  => RegWrite,
                  RegImmNot => RegImmNot,
+                 RTZero    => RTZero,
                  rs        => rs,
                  rt        => rt,
                  rd        => rd,

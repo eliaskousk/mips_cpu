@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity cpu_top is
+entity mips_cpu_top is
     port (  clk     : in  std_logic;
             rst     : in  std_logic;
             IR      : out std_logic_vector(31 downto 0);
@@ -9,17 +9,17 @@ entity cpu_top is
             DMA     : out std_logic_vector(31 downto 0);
             DMD     : out std_logic_vector(31 downto 0);
             W       : out std_logic_vector(31 downto 0);
-            ALUout  : out std_logic_vector(31 downto 0);
-            HIout   : out std_logic_vector(31 downto 0);
-            LOout   : out std_logic_vector(31 downto 0);
+            ALU     : out std_logic_vector(31 downto 0);
+            HI      : out std_logic_vector(31 downto 0);
+            LO      : out std_logic_vector(31 downto 0);
             ZE      : out std_logic;
             NE      : out std_logic;
             OV      : out std_logic;
             FL      : out std_logic;
             ER      : out std_logic);
-end cpu_top;
+end mips_cpu_top;
 
-architecture Structural of cpu_top is
+architecture Structural of mips_cpu_top is
 
     component im_bram_top is
         port(   clk         : in  std_logic;
@@ -222,9 +222,9 @@ architecture Structural of cpu_top is
                 opcode          => opcode,
                 funct           => funct,
                 Bus_PCout       => Bus_PCout,
-                Bus_ALUout      => ALUout,
-                Bus_MULTHIout   => HIout,
-                Bus_MULTLOout   => LOout,
+                Bus_ALUout      => ALU,
+                Bus_MULTHIout   => HI,
+                Bus_MULTLOout   => LO,
                 Bus_FLAGSout    => Bus_Flags,
                 Bus_Wout        => W,
                 Bus_DMWEout     => Bus_DMWE,

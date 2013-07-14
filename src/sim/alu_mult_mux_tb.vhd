@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity alu_mult_mux_tb is
 end alu_mult_mux_tb;
 
-architecture Behavioral of alu_mult_misr_tb is
+architecture Behavioral of alu_mult_mux_tb is
 
     -- Component Declaration for the Unit Under Test (UUT)
 

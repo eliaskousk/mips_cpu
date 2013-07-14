@@ -55,8 +55,22 @@ begin
         NEorEQ      <= '-';
         Zero        <= '-';
         Negative    <= '-';
+        wait for 20 ns;
         
         -- Branch       (JumpSelect will be set to "01")
+
+        -- ===
+        -- BEQ
+        -- ===
+
+        -- BEQ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "01";
+        NEorEQ      <= '0';
+        Zero        <= '1';
+        Negative    <= '-';
+        wait for 20 ns;
 
         -- BEQ F (results in Sequential)
         Jump        <= '0';
@@ -65,15 +79,12 @@ begin
         NEorEQ      <= '0';
         Zero        <= '0';
         Negative    <= '-';
+        wait for 20 ns;
         
-        -- BEQ T
-        Jump        <= '0';
-        JumpPSD     <= '-';
-        BranchType  <= "01";
-        NEorEQ      <= '0';
-        Zero        <= '1';
-        Negative    <= '-';
-        
+        -- ===
+        -- BNE
+        -- ===
+
         -- BNE T
         Jump        <= '0';
         JumpPSD     <= '-';
@@ -81,6 +92,7 @@ begin
         NEorEQ      <= '1';
         Zero        <= '0';
         Negative    <= '-';
+        wait for 20 ns;
         
         -- BNE F (results in Sequential)
         Jump        <= '0';
@@ -89,67 +101,132 @@ begin
         NEorEQ      <= '1';
         Zero        <= '1';
         Negative    <= '-';
+        wait for 20 ns;
         
-        --BGTZ T
+        -- ====
+        -- BLEZ
+        -- ====
+        
+        --BLEZ T
         Jump        <= '0';
         JumpPSD     <= '-';
         BranchType  <= "10";
-        NEorEQ      <= '-';
-        Zero        <= '0';
-        Negative    <= '0';
-        
-        -- ???
-        Jump        <= '0';
-        JumpPSD     <= '-';
-        BranchType  <= "10";
-        NEorEQ      <= '-';
-        Zero        <= '1';
-        Negative    <= '0';
-        
-        -- BLTZ T
-        Jump        <= '0';
-        JumpPSD     <= '-';
-        BranchType  <= "10";
-        NEorEQ      <= '-';
-        Zero        <= '0';
-        Negative    <= '1';
-        
-        -- ???
-        Jump        <= '0';
-        JumpPSD     <= '-';
-        BranchType  <= "10";
-        NEorEQ      <= '-';
+        NEorEQ      <= '0';
         Zero        <= '1';
         Negative    <= '1';
+        wait for 20 ns;
         
+        -- BLEZ T
         Jump        <= '0';
         JumpPSD     <= '-';
-        BranchType  <= "01";
+        BranchType  <= "10";
+        NEorEQ      <= '0';
+        Zero        <= '1';
+        Negative    <= '0';
+        wait for 20 ns;
+        
+        -- BLEZ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '0';
+        Zero        <= '0';
+        Negative    <= '1';
+        wait for 20 ns;
+        
+        -- BLEZ F (results in sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '0';
+        Zero        <= '0';
+        Negative    <= '0';
+        wait for 20 ns;
+        
+        -- ====
+        -- BGTZ
+        -- ====
+        
+        -- BGTZ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '1';
+        Zero        <= '0';
+        Negative    <= '0';
+        wait for 20 ns;
+        
+        -- BGTZ F (results (in sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '1';
+        Zero        <= '0';
+        Negative    <= '1';
+        wait for 20 ns;
+
+        -- BGTZ F (results (in sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '1';
+        Zero        <= '1';
+        Negative    <= '0';
+        wait for 20 ns;
+        
+        -- BGTZ F (results (in sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "10";
+        NEorEQ      <= '1';
+        Zero        <= '1';
+        Negative    <= '1';
+        wait for 20 ns;
+        
+        -- ====
+        -- BLTZ
+        -- ====
+        
+        --BLTZ T
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "11";
+        NEorEQ      <= '0';
+        Zero        <= '-';
+        Negative    <= '1';
+        wait for 20 ns;
+        
+        -- BLTZ F (results in sequential)
+        Jump        <= '0';
+        JumpPSD     <= '-';
+        BranchType  <= "11";
         NEorEQ      <= '0';
         Zero        <= '-';
         Negative    <= '0';
+        wait for 20 ns;
         
+        -- ====
+        -- BGEZ
+        -- ====
+        
+        -- BGEZ T
         Jump        <= '0';
         JumpPSD     <= '-';
-        BranchType  <= "01";
-        NEorEQ      <= '0';
-        Zero        <= '-';
-        Negative    <= '1';
-        
-        Jump        <= '0';
-        JumpPSD     <= '-';
-        BranchType  <= "01";
+        BranchType  <= "11";
         NEorEQ      <= '1';
         Zero        <= '-';
         Negative    <= '0';
+        wait for 20 ns;
         
+        -- BGEZ F (results (in sequential)
         Jump        <= '0';
         JumpPSD     <= '-';
-        BranchType  <= "01";
+        BranchType  <= "11";
         NEorEQ      <= '1';
         Zero        <= '-';
         Negative    <= '1';
-        
+        wait for 20 ns;
+
         -- JR and JALR  (JumpSelect will be set to "10")
 
         Jump        <= '1';
@@ -158,6 +235,7 @@ begin
         NEorEQ      <= '-';
         Zero        <= '-';
         Negative    <= '-';
+        wait for 20 ns;
         
         -- J  and JAL   (JumpSelect will be set to "11")
 
@@ -167,6 +245,7 @@ begin
         NEorEQ      <= '-';
         Zero        <= '-';
         Negative    <= '-';
+        wait for 20 ns;
         
         wait;
     end process;
