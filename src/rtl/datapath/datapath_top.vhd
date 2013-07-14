@@ -61,6 +61,7 @@ architecture Structural of datapath_top is
 
     component rf_32x32 is
         port(   clk         : in  std_logic;
+                rst         : in  std_logic;
                 RegWrite    : in  std_logic;
                 RegImmNot   : in  std_logic;
                 RTZero      : in  std_logic;
@@ -324,6 +325,7 @@ begin
 
     RF : rf_32x32
     port map(   clk         => clk,
+                rst         => rst,
                 RegWrite    => RF_write,
                 RegImmNot   => RorI,
                 RTZero      => RTZero,

@@ -4,6 +4,7 @@ use ieee.numeric_std.all;
 
 entity rf_32x32 is
     port(   clk         : in  std_logic;
+            rst         : in  std_logic;
             RegWrite    : in  std_logic;
             RegImmNot   : in  std_logic;
             RTZero      : in  std_logic;
@@ -29,19 +30,24 @@ begin
     rs_a    <= rs;
     rt_a    <= (others => '0') when RTZero = '1' else rt;
 
-    process(clk, RegWrite, rd_a, rs_a, rt_a, dataW_in, regfile)
+    process(clk, rst, RegWrite, rd_a, rs_a, rt_a, dataW_in, regfile)
     begin
 
-        -- Single Port Write (Synchronous)
-        if(rising_edge(clk))then
-            if(RegWrite = '1' and rd_a /= "00000") then
-                regfile(to_integer(unsigned(rd_a))) <= dataW_in;
+        if (rst = '1') then
+            dataA_out <= (others => '0');
+            dataB_out <= (others => '0');
+        else
+            -- Single Port Write (Synchronous)
+            if(rising_edge(clk))then
+                if(RegWrite = '1' and rd_a /= "00000") then
+                    regfile(to_integer(unsigned(rd_a))) <= dataW_in;
+                end if;
             end if;
-        end if;
 
-        -- Dual Port Read (Asynchronous, infers distributed ram)
-        dataA_out <= regfile(to_integer(unsigned(rs_a)));
-        dataB_out <= regfile(to_integer(unsigned(rt_a)));
+            -- Dual Port Read (Asynchronous, infers distributed ram)
+            dataA_out <= regfile(to_integer(unsigned(rs_a)));
+            dataB_out <= regfile(to_integer(unsigned(rt_a)));
+        end if;
 
     end process;
 
