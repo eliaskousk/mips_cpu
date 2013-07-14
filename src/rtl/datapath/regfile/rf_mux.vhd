@@ -18,7 +18,7 @@ architecture Behavioral of rf_mux is
 
 begin
 
-    process(Link, DMorALU, MF, HIorLO)
+    process(Link, DMorALU, MF, HIorLO, data_alu_in, data_dm_in, data_mhi_in, data_mlo_in, data_npc_in)
     begin
         if(Link = '0' and MF = '0' and DMorALU = '0') then      -- Write register from ALU
             data_out <= data_alu_in;
@@ -31,7 +31,7 @@ begin
         elsif(Link = '1') then                                  -- Write register from NPC
             data_out <= data_npc_in;
         else
-            data_out <= (others => '0');
+            data_out <= (others => '-');
         end if;
     end process;
 

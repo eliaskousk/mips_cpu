@@ -73,8 +73,8 @@ begin
                 shift_out   => output);
 
     shift       <= Bus_A(4 downto 0) when (sv = '1') else shamt;
-    Bus_mult_HI <= tmp_result_hi when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '1') else (others => 'Z');
-    Bus_mult_LO <= tmp_result_lo when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '0') else (others => 'Z');
+    Bus_mult_HI <= tmp_result_hi when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '1') else (others => '-');
+    Bus_mult_LO <= tmp_result_lo when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '0') else (others => '-');
     Zero        <= '1' when (A_out = X"00000000") else '0';
 
     process(Bus_A, Bus_B, ALUop, output)
@@ -82,8 +82,8 @@ begin
     begin
 
         ov      <= '0';
-        SLT_out <= (others=>'X');
-        A_out   <= (others=>'X');
+        SLT_out <= (others=>'-');
+        A_out   <= (others=>'-');
 
         -- Shift
         left    <='0';
@@ -108,7 +108,7 @@ begin
 
                 tmp_add_sub := std_logic_vector(unsigned('0' & Bus_A) + unsigned('0' & Bus_B));
 
-                Sh_out      <= (others=>'X');
+                Sh_out      <= (others => '-');
                 A_out       <= tmp_add_sub(31 downto 0);
                 L_out       <= Bus_A or Bus_B;
 
@@ -145,7 +145,7 @@ begin
 
             when others =>
 
-                L_out       <= (others=>'X');
+                L_out       <= (others=>'-');
 
         end case;
 
@@ -159,7 +159,7 @@ begin
             when "01"   =>  Bus_S <= SLT_out;   -- SLT
             when "10"   =>  Bus_S <= A_out;     -- Arithmetic
             when "11"   =>  Bus_S <= L_out;     -- Logical
-            when others =>  Bus_S <= A_out;
+            when others =>  Bus_S <= (others => '-');
         end case;
     end process;
 

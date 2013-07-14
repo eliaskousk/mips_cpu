@@ -18,9 +18,9 @@ architecture Behavioral of alu_mult_atpg is
                 we  : in  std_logic;
                 en  : in  std_logic;
                 ssr : in  std_logic;
-                dop : out std_logic_vector(0 downto 0);
+                dop : out std_logic_vector(3 downto 0);
                 a   : in  std_logic_vector(6 downto 0);
-                di  : in  std_logic_vector (31 downto 0);
+                di  : in  std_logic_vector(31 downto 0);
                 do  : out std_logic_vector(31 downto 0));
     end component;
 
@@ -29,9 +29,9 @@ architecture Behavioral of alu_mult_atpg is
                 we  : in  std_logic;
                 en  : in  std_logic;
                 ssr : in  std_logic;
-                dop : out std_logic_vector(0 downto 0);
+                dop : out std_logic_vector(3 downto 0);
                 a   : in  std_logic_vector(6 downto 0);
-                di  : in  std_logic_vector (31 downto 0);
+                di  : in  std_logic_vector(31 downto 0);
                 do  : out std_logic_vector(31 downto 0));
     end component;
 
@@ -71,6 +71,7 @@ begin
                 en  => start,
                 ssr => '0',
                 a   => address,
+                dop => open,
                 di  => (others => '0'),
                 do  => data_out_hi);
 
@@ -81,6 +82,7 @@ begin
                 en  => start,
                 ssr => '0',
                 a   => address,
+                dop => open,
                 di  => (others => '0'),
                 do  => data_out_lo);
 

@@ -49,7 +49,7 @@ architecture Behavioral of mips_cpu_top_tb is
 begin
 
     -- Instantiate the Unit Under Test (UUT)
-    uut: cpu_top
+    uut: mips_cpu_top
         port map(clk     => clk,
                  rst     => rst,
                  IR      => IR,
@@ -68,9 +68,9 @@ begin
     -- Clock process definitions
     clk_process :process
     begin
-        clk <= '0';
-        wait for clk_period/2;
         clk <= '1';
+        wait for clk_period/2;
+        clk <= '0';
         wait for clk_period/2;
     end process;
 
@@ -81,7 +81,7 @@ begin
         wait for 20 ns;
 
         rst <= '1';
-        wait for clk_period * 2.5;
+        wait for clk_period * 3;
         rst <= '0';
 
         wait;

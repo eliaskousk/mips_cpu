@@ -48,6 +48,10 @@ begin
     process(DMWT, lsbits, data_dmd_in, data_mdr_in, data_we)
     begin
 
+        data_read   <= (others => '-');
+        data_write  <= (others => '-');
+        data_we     <= "0000";
+
         -- Read or write the correct bytes
 
         if(DMWT(2) = '1') then      -- LW, SW
@@ -68,10 +72,6 @@ begin
                 data_write(15 downto 0)     <= data_mdr_in(31 downto 16);
                 data_write(31 downto 16)    <= (others => (data_mdr_in(31) and DMWT(0)));
                 data_we                     <= "1100";
-            else
-                data_read   <= (others => '0');
-                data_write  <= (others => '0');
-                data_we     <= "0000";
             end if;
             
         elsif(DMWT(1) = '0') then   -- LB, LBU, SB
@@ -106,11 +106,7 @@ begin
                 data_write(23 downto 0) <= (others => '0');
                 data_write(31 downto 24) <= data_mdr_in(7 downto 0);
                 data_we                 <= "1000";
-            else
-                data_read   <= (others => '0');
-                data_write  <= (others => '0');
-                data_we     <= "0000";
-            end if;
+            end if;            
         end if;
     end process;
 

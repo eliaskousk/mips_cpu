@@ -17,7 +17,7 @@ architecture Behavioral of alu_mult_lfsr is
 
 begin
 
-    process (clk)
+    process (clk, rst)
         variable lfsr_tap : std_logic;
     begin
 

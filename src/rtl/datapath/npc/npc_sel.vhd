@@ -39,24 +39,3 @@ begin
                      '0';
 
 end Behavioral;
-
--- OLD STUFF
---
---    JumpSelect <= Jump & ((Zero xor Negative) and Branch);
-
---    process(Jump, JumpPSD, BranchSelect)
---    begin
---
---        if(Jump = '0' and BranchSelect = '0') then
---            JumpSelect <= "00";                         -- Sequential
---        elsif(Jump = '0' and BranchSelect = '1') then
---            JumpSelect <= "01";                         -- Branch
---        elsif(Jump = '1' and JumpPSD = '0') then
---            JumpSelect <= "10";                         -- JR and JALR
---        elsif(Jump = '1' and JumpPSD = '1') then
---            JumpSelect <= "11";                         -- J  and JAL
---        else
---            JumpSelect <= "00";
---        end if;
---
---    end process;
