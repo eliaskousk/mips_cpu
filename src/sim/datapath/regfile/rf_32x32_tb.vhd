@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity rf_32x32_tb is
 end rf_32x32_tb;
@@ -84,9 +85,9 @@ begin
             -- =====
 
             -- Select read (rs, rt) and write (rd) registers
-            rs          <= std_logic_vector(i, 5);
-            rt          <= std_logic_vector(i + 1, 5);
-            rd          <= std_logic_vector(i, 5);
+            rs          <= std_logic_vector(to_unsigned(i, 5));
+            rt          <= std_logic_vector(to_unsigned(i + 1, 5));
+            rd          <= std_logic_vector(to_unsigned(i, 5));
 
             -- ===================================
             -- Try to write with RegWrite disabled
@@ -137,7 +138,7 @@ begin
             RegWrite                <= '1';
 
             -- Set write value in right halfword (the register's number)
-            dataW_in(4 downto 0)    <= std_logic_vector(i, 5);
+            dataW_in(4 downto 0)    <= std_logic_vector(to_unsigned(i, 5));
             dataW_in(31 downto 5)   <= (others => '0');
 
             -- ============================
@@ -156,7 +157,7 @@ begin
 
             -- Set write value in left halfword (the register's number)
             dataW_in(31 downto 24)  <= (others => '0');
-            dataW_in(23 downto 16)  <= std_logic_vector(i, 5);
+            dataW_in(23 downto 16)  <= std_logic_vector(to_unsigned(i, 5));
             dataW_in(15 downto 0)   <= (others => '0');
 
             -- =========
