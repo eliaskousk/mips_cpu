@@ -49,16 +49,41 @@ begin
     begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
-        
+
         en      <= '1';
-        
+
         address <= "00000000000";
         wait for clk_period * 1;
-        
+
         address <= "00000000001";
         wait for clk_period * 1;
 
-        -- Add more
+        address <= "00000000010";
+        wait for clk_period * 1;
+
+        address <= "00000000011";
+        wait for clk_period * 1;
+
+        address <= "00000000100";
+        wait for clk_period * 1;
+
+        address <= "00000000101";
+        wait for clk_period * 1;
+
+        address <= "00000000110";
+        wait for clk_period * 1;
+
+        address <= "00000000111";
+        wait for clk_period * 1;
+
+        address <= "00000001000";
+        wait for clk_period * 1;
+
+        address <= "00000001001";
+        wait for clk_period * 1;
+
+        address <= "00000001010";
+        wait for clk_period * 1;
 
         wait;
     end process;

@@ -58,40 +58,108 @@ begin
     begin
         -- hold reset state for 20 ns.
         wait for 20 ns;
-         
+
         en <= "1111";
         ssr <= "0000";
-        
+
         -- Writes
 
         we      <= "1111";
-        
+
         address <= "000" & X"00";
         data_in <= X"00000000";
         wait for clk_period * 1;
-        
+
         address <= "000" & X"01";
         data_in <= X"00000000";
         wait for clk_period * 1;
-        
-        -- Fill the rest writes
+
+        address <= "000" & X"02";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"03";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"04";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"05";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"06";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"07";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"08";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"09";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"0A";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
 
         -- End writes
-        
+
         -- Reads
 
         we      <= "0000";
-        
+
         address <= "000" & X"00";
         data_in <= X"00000000";
         wait for clk_period * 1;
-        
+
         address <= "000" & X"01";
         data_in <= X"00000000";
         wait for clk_period * 1;
-        
-        -- Fill the rest reads
-        
+
+        address <= "000" & X"02";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"03";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"04";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"05";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"06";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"07";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"08";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"09";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
+        address <= "000" & X"0A";
+        data_in <= X"00000000";
+        wait for clk_period * 1;
+
         -- End reads
 
         wait;
