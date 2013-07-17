@@ -1,5 +1,13 @@
-.text           # text section
-.globl main     # call main by SPIM
+# ==============================
+# Simple assembly program
+# ==============================
+# A simple program illustrating
+# some of the MIPS instructions
+# without any particular purpose
+# ==============================
+
+        .text                           # Text section
+        .globl main                     # Call main by SPIM
 
 main:
         addiu   $2, $0, 0x2222          # Reg[02] = x"00002222",                Bus_w = x"00002222"     PC=00 x"00" 
@@ -41,4 +49,4 @@ func1:  addiu   $6, 2                   # Reg[06] = x"00000001", inc by 2       
         sw      $6, 8($5)               # DM(1026) = x"0000000A",               Bus_w = x"XXXXXXXX"     PC=112 x"70"
         jr      $31                     # return from func1, PC = "56"          Bus_w = x"XXXXXXXX"     PC=116 x"74"
 
-cont:   sw      $13, 12($5)             # DM(1027) = x"000000A0",               Bus_w = x"XXXXXXXX"     PC=120 x"78"
+end:    sw      $13, 12($5)             # DM(1027) = x"000000A0",               Bus_w = x"XXXXXXXX"     PC=120 x"78"
