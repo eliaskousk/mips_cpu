@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity alu_mult_misr_tb is
 end alu_mult_misr_tb;
@@ -44,9 +45,9 @@ begin
     -- Clock process definitions
     clk_process :process
     begin
-        clk <= '0';
-        wait for clk_period/2;
         clk <= '1';
+        wait for clk_period/2;
+        clk <= '0';
         wait for clk_period/2;
     end process;
 
@@ -57,8 +58,17 @@ begin
         wait for 20 ns;
 
         rst <= '1';
-        wait for clk_period * 2.5;
+        wait for clk_period * 3;
         rst <= '0';
+
+        data_in_hi <= X"01234567";
+        data_in_lo <= X"89ABCDEF";
+
+        for i in 0 to 1023 loop
+            data_in_hi <= std_logic_vector(unsigned(data_in_hi) + to_unsigned(i, 32));
+            data_in_lo <= std_logic_vector(unsigned(data_in_lo) + to_unsigned(i, 32));
+            wait for clk_period;
+        end loop;
 
         wait;
     end process;

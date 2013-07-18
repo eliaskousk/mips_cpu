@@ -4,87 +4,66 @@ use ieee.numeric_std.all;
 
 entity alu_mult_atpg is
     port (
-        clk             : in std_logic;
-        rst             : in std_logic;
-        start           : in std_logic;
+        clk             : in  std_logic;
+        rst             : in  std_logic;
+        enable          : in  std_logic;
+        finish          : out std_logic;
         data_out_hi     : out std_logic_vector(31 downto 0);
         data_out_lo     : out std_logic_vector(31 downto 0));
 end entity alu_mult_atpg;
 
 architecture Behavioral of alu_mult_atpg is
 
-    component alu_mult_atpg_bram_hi is 
-        port(   clk : in  std_logic;
-                we  : in  std_logic;
-                en  : in  std_logic;
-                ssr : in  std_logic;
-                dop : out std_logic_vector(3 downto 0);
-                a   : in  std_logic_vector(6 downto 0);
-                di  : in  std_logic_vector(31 downto 0);
-                do  : out std_logic_vector(31 downto 0));
-    end component;
+    component alu_mult_atpg_bram_hi
+        port(clk         : in  std_logic;
+             en          : in  std_logic;
+             address     : in  std_logic_vector(6 downto 0);
+             data_vector : out std_logic_vector(31 downto 0));
+    end component alu_mult_atpg_bram_hi;
 
-    component alu_mult_atpg_bram_lo is 
-        port(   clk : in  std_logic;
-                we  : in  std_logic;
-                en  : in  std_logic;
-                ssr : in  std_logic;
-                dop : out std_logic_vector(3 downto 0);
-                a   : in  std_logic_vector(6 downto 0);
-                di  : in  std_logic_vector(31 downto 0);
-                do  : out std_logic_vector(31 downto 0));
-    end component;
+    component alu_mult_atpg_bram_lo
+        port(clk         : in  std_logic;
+             en          : in  std_logic;
+             address     : in  std_logic_vector(6 downto 0);
+             data_vector : out std_logic_vector(31 downto 0));
+    end component alu_mult_atpg_bram_lo;
 
     signal address  : std_logic_vector(6 downto 0);
 
 begin
 
     process(clk)
-
     begin
-
         if(rst = '1') then
-
             address <= (others => '0');
-
+            finish  <= '0';
         else
-
             if (clk'event and clk='1') then
-
-                if start = '1' then
+                if enable = '0' then
                     address <= (others => '0');
+                    finish  <= '0';
+                elsif enable = '1' and address = X"7F" then
+                    address <= (others => '0');
+                    finish  <= '1';
                 else
                     address <= std_logic_vector(unsigned(address) + 1);
+                    finish  <= '0';
                 end if;
-
             end if;
-
         end if;
-
     end process;
 
-
     BRAM_HI : alu_mult_atpg_bram_hi
-    port map(
-                clk => clk,
-                we  => '0',
-                en  => start,
-                ssr => '0',
-                a   => address,
-                dop => open,
-                di  => (others => '0'),
-                do  => data_out_hi);
+        port map(clk         => clk,
+                 en          => enable,
+                 address     => address,
+                 data_vector => data_out_hi);
 
     BRAM_LO : alu_mult_atpg_bram_lo
-    port map(
-                clk => clk,
-                we  => '0',
-                en  => start,
-                ssr => '0',
-                a   => address,
-                dop => open,
-                di  => (others => '0'),
-                do  => data_out_lo);
+        port map(clk         => clk,
+                 en          => enable,
+                 address     => address,
+                 data_vector => data_out_lo);
 
 
 end architecture Behavioral;

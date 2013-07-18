@@ -12,8 +12,9 @@ architecture Behavioral of alu_mult_control_tb is
         port(clk          : in  std_logic;
              rst          : in  std_logic;
              start        : in  std_logic;
+             finish       : out std_logic_vector(2 downto 0);
              bist_mode    : out std_logic_vector(1 downto 0);
-             bist_start   : out std_logic_vector(2 downto 0);
+             bist_enable  : out std_logic_vector(2 downto 0);
              lfsr_seed_hi : out std_logic_vector(31 downto 0);
              lfsr_seed_lo : out std_logic_vector(31 downto 0));
     end component alu_mult_control;
@@ -24,6 +25,7 @@ architecture Behavioral of alu_mult_control_tb is
     signal start        : std_logic := '0';
 
     --Outputs
+    signal finish       : std_logic_vector(2 downto 0);
     signal bist_mode    : std_logic_vector(1 downto 0);
     signal bist_start   : std_logic_vector(2 downto 0);
     signal lfsr_seed_hi : std_logic_vector(31 downto 0);
@@ -40,17 +42,18 @@ BEGIN
         port map(clk          => clk,
                  rst          => rst,
                  start        => start,
+                 finish       => finish,
                  bist_mode    => bist_mode,
-                 bist_start   => bist_start,
+                 bist_enable  => bist_start,
                  lfsr_seed_hi => lfsr_seed_hi,
                  lfsr_seed_lo => lfsr_seed_lo);
 
     -- Clock process definitions
     clk_process :process
     begin
-        clk <= '0';
-        wait for clk_period/2;
         clk <= '1';
+        wait for clk_period/2;
+        clk <= '0';
         wait for clk_period/2;
     end process;
 
@@ -61,8 +64,18 @@ BEGIN
         wait for 20 ns;
 
         rst <= '1';
-        wait for clk_period * 2.5;
+        wait for clk_period * 3;
         rst <= '0';
+
+        -- Should not start the tests
+        start <= '0';
+        wait for clk_period * 3;
+
+        -- Start the tests
+        start <= '1';
+        wait for clk_period * 3;
+
+        wait until finish = "111";
 
         wait;
     end process;

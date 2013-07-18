@@ -3,8 +3,6 @@ use ieee.std_logic_1164.all;
 
 entity alu_mult_mux is
     port (
-        clk                 : in std_logic;
-        rst                 : in std_logic;
         mux_select          : in std_logic_vector(1 downto 0);
         data_in_normal_hi   : in std_logic_vector(31 downto 0);
         data_in_normal_lo   : in std_logic_vector(31 downto 0);

@@ -18,6 +18,7 @@ architecture Structural of alu_mult_top is
         port(clk          : in  std_logic;
              rst          : in  std_logic;
              bist_init    : in  std_logic;
+             bist_check   : out std_logic;
              bist_mode    : out std_logic_vector(1 downto 0);
              bist_start   : out std_logic_vector(2 downto 0);
              lfsr_seed_hi : out std_logic_vector(31 downto 0);
@@ -51,9 +52,7 @@ architecture Structural of alu_mult_top is
     end component alu_mult_atpg;
 
     component alu_mult_mux
-        port(clk                : in  std_logic;
-             rst                : in  std_logic;
-             mux_select         : in  std_logic_vector(1 downto 0);
+        port(mux_select         : in  std_logic_vector(1 downto 0);
              data_in_normal_hi  : in  std_logic_vector(31 downto 0);
              data_in_normal_lo  : in  std_logic_vector(31 downto 0);
              data_in_lfsr_hi    : in  std_logic_vector(31 downto 0);
@@ -85,7 +84,8 @@ architecture Structural of alu_mult_top is
     component alu_mult_comparator
         port(clk        : in  std_logic;
              rst        : in  std_logic;
-             enable     : in  std_logic;
+             bist_check : in  std_logic;
+             bist_mode  : in  std_logic_vector(1 downto 0);
              data_in_hi : in  std_logic_vector(31 downto 0);
              data_in_lo : in  std_logic_vector(31 downto 0);
              result     : out std_logic);
@@ -107,6 +107,7 @@ architecture Structural of alu_mult_top is
     signal lfsr_seed_lo         : std_logic_vector(31 downto 0);
     signal bist_start           : std_logic_vector(2 downto 0);
     signal bist_mode            : std_logic_vector(1 downto 0);
+    signal bist_check           : std_logic;
     signal compare_result       : std_logic;
 
 begin
@@ -115,6 +116,7 @@ begin
         port map(clk          => clk,
                  rst          => rst,
                  bist_init    => bist_init,
+                 bist_check   => bist_check,
                  bist_mode    => bist_mode,
                  bist_start   => bist_start,
                  lfsr_seed_hi => lfsr_seed_hi,
@@ -144,9 +146,7 @@ begin
                  data_out_lo => data_in_atpg_lo);
 
     MULT_MUX : alu_mult_mux
-        port map(clk                => clk,
-                 rst                => rst,
-                 mux_select         => bist_mode,
+        port map(mux_select         => bist_mode,
                  data_in_normal_hi  => X,
                  data_in_normal_lo  => Y,
                  data_in_lfsr_hi    => data_in_lfsr_hi,
@@ -175,7 +175,8 @@ begin
     MULT_COMPARATOR : alu_mult_comparator
         port map(clk        => clk,
                  rst        => rst,
-                 enable     => '0',
+                 bist_check => bist_check,
+                 bist_mode  => bist_mode,
                  data_in_hi => signature_hi,
                  data_in_lo => signature_lo,
                  result     => compare_result);
