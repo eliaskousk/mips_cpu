@@ -33,10 +33,10 @@ main:   lw      $s1, 100($s2)
 
         mult    $s1, $s2
 
-        and     $r1, $r2, $r3
-        or      $r1, $r2, $r3
-        nor     $r1, $r2, $r3
-        xor     $r1, $r2, $r3
+        and     $s1, $s2, $s3
+        or      $s1, $s2, $s3
+        nor     $s1, $s2, $s3
+        xor     $s1, $s2, $s3
 
         mfhi    $t1
         mflo    $t1
@@ -47,9 +47,9 @@ main:   lw      $s1, 100($s2)
         srl     $s1, $s2, 3
         sra     $s1, $s2, 3
 
-        sllv    $s1, $s2, 3
-        srlv    $s1, $s2, 3
-        srav    $s1, $s2, 3
+        sllv    $s1, $s2, $s3
+        srlv    $s1, $s2, $s3
+        srav    $s1, $s2, $s3
 
         lui     $t1, 100
 
@@ -59,20 +59,20 @@ main:   lw      $s1, 100($s2)
         slt     $t0, $s0, $s1
         sltu    $t0, $s0, $s1
 
-        beq     $s1, $s2, L
-        bne     $s1, $s2, L
+        beq     $s1, $s2, end
+        bne     $s1, $s2, end
 
-        blez    $s1, L
-        bgtz    $s1, L
-        bltz    $s1, L
-        bgez    $s1, L
+        blez    $s1, end
+        bgtz    $s1, end
+        bltz    $s1, end
+        bgez    $s1, end
 
         jr      $t0
         jalr    $t0
 
-        j       target
-        jal     target
+        j       end
+        jal     end
 
-        test
+#        test
 
 end:

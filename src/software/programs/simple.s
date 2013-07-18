@@ -40,7 +40,7 @@ label1: addiu   $19, $0, 96             # Reg[19] = x"00000060",                
         jalr    $19                     # Reg[31] = x"00000054", PC = "96"      Bus_w = x"00000054"     PC=80 x"50"
         addiu   $13, $13, 16            # Reg[13] = x"00000020", inc by 10      Bus_w = x"00000020"     PC=84 x"54"
         slti    $20, $13, 0x00A0        # Reg[20] = x"0000000 1 or 0",          Bus_w = x"00000001"     PC=88 x"58"
-        bne     $10, $20, cont          # the condition is satisfied;           Bus_w = x"XXXXXXXX"     PC=92 x"5C"
+        bne     $10, $20, end           # the condition is satisfied;           Bus_w = x"XXXXXXXX"     PC=92 x"5C"
         jr      $31                     # PC = "54", loop until $13 < 160       Bus_w = x"XXXXXXXX"     PC=96 x"60"
 
 func1:  addiu   $6, 2                   # Reg[06] = x"00000001", inc by 2       Bus_w = x"00000002"     PC=100 x"64"
