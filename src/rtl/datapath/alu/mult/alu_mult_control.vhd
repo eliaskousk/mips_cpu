@@ -55,7 +55,7 @@ begin
                 -- ==============
 
                 -- Normal operation
-                when s0 =>      if bist_init = '1' and bist_finish = "000" then
+                when s0 =>      if bist_init = '1' and bist_finish /= "111" then
                                     next_state <= s1;
                                 else
                                     next_state <= s0;
