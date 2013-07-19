@@ -9,30 +9,33 @@ architecture Behavioral of alu_mult_control_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component alu_mult_control
-        port(clk          : in  std_logic;
-             rst          : in  std_logic;
-             start        : in  std_logic;
-             finish       : out std_logic_vector(2 downto 0);
-             bist_mode    : out std_logic_vector(1 downto 0);
-             bist_enable  : out std_logic_vector(2 downto 0);
-             lfsr_seed_hi : out std_logic_vector(31 downto 0);
-             lfsr_seed_lo : out std_logic_vector(31 downto 0));
+        port(clk            : in  std_logic;
+             rst            : in  std_logic;
+             bist_init      : in  std_logic;
+             bist_finish    : in  std_logic_vector(2 downto 0);
+             bist_check     : out std_logic;
+             bist_mode      : out std_logic_vector(1 downto 0);
+             bist_enable    : out std_logic_vector(2 downto 0);
+             lfsr_seed_hi   : out std_logic_vector(31 downto 0);
+             lfsr_seed_lo   : out std_logic_vector(31 downto 0));
     end component alu_mult_control;
 
     --Inputs
     signal clk          : std_logic := '0';
     signal rst          : std_logic := '0';
-    signal start        : std_logic := '0';
+    signal bist_init    : std_logic := '0';
+    signal bist_finish  : std_logic_vector(2 downto 0) := (others => '0');
+    
 
     --Outputs
-    signal finish       : std_logic_vector(2 downto 0);
+    signal bist_check   : std_logic;
     signal bist_mode    : std_logic_vector(1 downto 0);
-    signal bist_start   : std_logic_vector(2 downto 0);
+    signal bist_enable  : std_logic_vector(2 downto 0);
     signal lfsr_seed_hi : std_logic_vector(31 downto 0);
     signal lfsr_seed_lo : std_logic_vector(31 downto 0);
 
    -- Clock period definitions
-   constant clk_period  : time := 10 ns;
+   constant clk_period  : time := 20 ns;
 
 BEGIN
 
@@ -41,10 +44,11 @@ BEGIN
     uut: alu_mult_control
         port map(clk          => clk,
                  rst          => rst,
-                 start        => start,
-                 finish       => finish,
+                 bist_init    => bist_init,
+                 bist_finish  => bist_finish,
+                 bist_check   => bist_check,
                  bist_mode    => bist_mode,
-                 bist_enable  => bist_start,
+                 bist_enable  => bist_enable,
                  lfsr_seed_hi => lfsr_seed_hi,
                  lfsr_seed_lo => lfsr_seed_lo);
 
@@ -68,14 +72,23 @@ BEGIN
         rst <= '0';
 
         -- Should not start the tests
-        start <= '0';
+        bist_init <= '0';
         wait for clk_period * 3;
 
         -- Start the tests
-        start <= '1';
+        bist_init <= '1';
+
+        bist_finish <= "000";
         wait for clk_period * 3;
 
-        wait until finish = "111";
+        bist_finish <= "001";
+        wait for clk_period * 3;
+        
+        bist_finish <= "011";
+        wait for clk_period * 3;
+        
+        bist_finish <= "111";
+        wait for clk_period * 3;
 
         wait;
     end process;

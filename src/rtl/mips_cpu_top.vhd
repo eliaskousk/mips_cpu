@@ -2,21 +2,22 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity mips_cpu_top is
-    port (  clk     : in  std_logic;
-            rst     : in  std_logic;
-            IR      : out std_logic_vector(31 downto 0);
-            PC      : out std_logic_vector(31 downto 0);
-            DMA     : out std_logic_vector(31 downto 0);
-            DMD     : out std_logic_vector(31 downto 0);
-            W       : out std_logic_vector(31 downto 0);
-            ALU     : out std_logic_vector(31 downto 0);
-            HI      : out std_logic_vector(31 downto 0);
-            LO      : out std_logic_vector(31 downto 0);
-            ZE      : out std_logic;
-            NE      : out std_logic;
-            OV      : out std_logic;
-            FL      : out std_logic;
-            ER      : out std_logic);
+    generic(mult_pipe   : boolean := true);
+    port (  clk         : in  std_logic;
+            rst         : in  std_logic;
+            IR          : out std_logic_vector(31 downto 0);
+            PC          : out std_logic_vector(31 downto 0);
+            DMA         : out std_logic_vector(31 downto 0);
+            DMD         : out std_logic_vector(31 downto 0);
+            W           : out std_logic_vector(31 downto 0);
+            ALU         : out std_logic_vector(31 downto 0);
+            HI          : out std_logic_vector(31 downto 0);
+            LO          : out std_logic_vector(31 downto 0);
+            ZE          : out std_logic;
+            NE          : out std_logic;
+            OV          : out std_logic;
+            FL          : out std_logic;
+            ER          : out std_logic);
 end mips_cpu_top;
 
 architecture Structural of mips_cpu_top is
@@ -39,7 +40,9 @@ architecture Structural of mips_cpu_top is
     end component;
 
     component control_comb is
-        port(   OPCODE      : in  std_logic_vector(5 downto 0);
+        port(   clk         : in  std_logic;
+                rst         : in  std_logic;
+                OPCODE      : in  std_logic_vector(5 downto 0);
                 FUNCT       : in  std_logic_vector(5 downto 0);
                 SorZ        : out std_logic;
                 BorI        : out std_logic;
@@ -73,6 +76,7 @@ architecture Structural of mips_cpu_top is
     end component;
 
     component datapath_top is
+        generic(mult_pipe       : boolean := true);
         port(   clk             : in  std_logic;
                 rst             : in  std_logic;
                 PC_write        : in  std_logic;
@@ -162,7 +166,9 @@ architecture Structural of mips_cpu_top is
                 data_out    => Bus_DMDout);
 
     CONTROLCOMB : control_comb
-    port map(   OPCODE      => opcode,
+    port map(   clk         => clk,
+                rst         => rst,
+                OPCODE      => opcode,
                 FUNCT       => funct,
                 SorZ        => SorZ,
                 BorI        => BorI,
@@ -194,6 +200,7 @@ architecture Structural of mips_cpu_top is
                 RF_write    => RF_write);
 
     DATAPATH : datapath_top
+    generic map(mult_pipe       => mult_pipe)
     port map(   clk             => clk,
                 rst             => rst,
                 PC_write        => PC_write,

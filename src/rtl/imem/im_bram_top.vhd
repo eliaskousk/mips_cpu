@@ -13,47 +13,47 @@ end im_bram_top;
 architecture Structural of im_bram_top is
 
     component im_bram_512x32_0 is 
-        port(   clk     : in  std_logic;
-                we      : in  std_logic;
-                en      : in  std_logic;
-                ssr     : in  std_logic;
-                dop     : out std_logic_vector(3 downto 0);
-                a       : in  std_logic_vector(8 downto 0);
-                di      : in  std_logic_vector(31 downto 0);
-                do      : out std_logic_vector(31 downto 0));
+        port(   clk : in  std_logic;
+                we  : in  std_logic;
+                en  : in  std_logic;
+                ssr : in  std_logic;
+                a   : in  std_logic_vector(8 downto 0);
+                di  : in  std_logic_vector(31 downto 0);
+                do  : out std_logic_vector(31 downto 0);
+                dop : out std_logic_vector(3 downto 0));
     end component;
 
     component im_bram_512x32_1 is 
-        port(   clk     : in  std_logic;
-                we      : in  std_logic;
-                en      : in  std_logic;
-                ssr     : in  std_logic;
-                dop     : out std_logic_vector(3 downto 0);
-                a       : in  std_logic_vector(8 downto 0);
-                di      : in  std_logic_vector(31 downto 0);
-                do      : out std_logic_vector(31 downto 0));
+        port(   clk : in  std_logic;
+                we  : in  std_logic;
+                en  : in  std_logic;
+                ssr : in  std_logic;
+                a   : in  std_logic_vector(8 downto 0);
+                di  : in  std_logic_vector(31 downto 0);
+                do  : out std_logic_vector(31 downto 0);
+                dop : out std_logic_vector(3 downto 0));
     end component;
 
     component im_bram_512x32_2 is 
-        port(   clk     : in  std_logic; 
-                we      : in  std_logic;
-                en      : in  std_logic;
-                ssr     : in  std_logic;
-                dop     : out std_logic_vector(3 downto 0);
-                a       : in  std_logic_vector(8 downto 0);
-                di      : in  std_logic_vector(31 downto 0);
-                do      : out std_logic_vector(31 downto 0));
+        port(   clk : in  std_logic;
+                we  : in  std_logic;
+                en  : in  std_logic;
+                ssr : in  std_logic;
+                a   : in  std_logic_vector(8 downto 0);
+                di  : in  std_logic_vector(31 downto 0);
+                do  : out std_logic_vector(31 downto 0);
+                dop : out std_logic_vector(3 downto 0));
     end component;
 
     component im_bram_512x32_3 is 
-        port(   clk     : in  std_logic; 
-                we      : in  std_logic;
-                en      : in  std_logic;
-                ssr     : in  std_logic;
-                dop     : out std_logic_vector(3 downto 0);
-                a       : in  std_logic_vector(8 downto 0);
-                di      : in  std_logic_vector(31 downto 0);
-                do      : out std_logic_vector(31 downto 0));
+        port(   clk : in  std_logic;
+                we  : in  std_logic;
+                en  : in  std_logic;
+                ssr : in  std_logic;
+                a   : in  std_logic_vector(8 downto 0);
+                di  : in  std_logic_vector(31 downto 0);
+                do  : out std_logic_vector(31 downto 0);
+                dop : out std_logic_vector(3 downto 0));
     end component;
 
     type do_array_type is array (natural range<>) of std_logic_vector(31 downto 0);
@@ -73,7 +73,8 @@ begin
                 ssr => sl(0),
                 a   => address (8 downto 0),
                 di  => (others => '0'),
-                do  => do_internal(0));
+                do  => do_internal(0),
+                dop => open);
 
     IM_1 : im_bram_512x32_1
     port map (
@@ -83,7 +84,8 @@ begin
                 ssr => sl(1),
                 a   => address (8 downto 0),
                 di  => (others => '0'),
-                do  => do_internal(1));
+                do  => do_internal(1),
+                dop => open);
 
     IM_2 : im_bram_512x32_2
     port map (
@@ -93,7 +95,8 @@ begin
                 ssr => sl(2),
                 a   => address (8 downto 0),
                 di  => (others => '0'),
-                do  => do_internal(2));
+                do  => do_internal(2),
+                dop => open);
 
     IM_3 : im_bram_512x32_3
     port map (
@@ -103,7 +106,8 @@ begin
                 ssr => sl(3),
                 a   => address (8 downto 0),
                 di  => (others => '0'),
-                do  => do_internal(3));
+                do  => do_internal(3),
+                dop => open);
 
     process (address)
     begin

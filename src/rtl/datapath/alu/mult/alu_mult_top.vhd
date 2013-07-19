@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity alu_mult_top is
+    generic(mult_pipe   : boolean := true);
     port(   clk         : in  std_logic;
             rst         : in  std_logic;
             bist_init   : in  std_logic;
@@ -9,7 +10,7 @@ entity alu_mult_top is
             Y           : in  std_logic_vector(31 downto 0);
             P_HI        : out std_logic_vector(31 downto 0);
             P_LO        : out std_logic_vector(31 downto 0);
-            bist_result : out std_logic);
+            bist_fail   : out std_logic);
 end alu_mult_top;
 
 architecture Structural of alu_mult_top is
@@ -18,9 +19,10 @@ architecture Structural of alu_mult_top is
         port(clk          : in  std_logic;
              rst          : in  std_logic;
              bist_init    : in  std_logic;
+             bist_finish  : in  std_logic_vector(2 downto 0);
              bist_check   : out std_logic;
              bist_mode    : out std_logic_vector(1 downto 0);
-             bist_start   : out std_logic_vector(2 downto 0);
+             bist_enable  : out std_logic_vector(2 downto 0);
              lfsr_seed_hi : out std_logic_vector(31 downto 0);
              lfsr_seed_lo : out std_logic_vector(31 downto 0));
     end component alu_mult_control;
@@ -28,7 +30,8 @@ architecture Structural of alu_mult_top is
     component alu_mult_lfsr
         port(clk         : in  std_logic;
              rst         : in  std_logic;
-             start       : in  std_logic;
+             enable      : in  std_logic;
+             finish      : out std_logic;
              seed_hi     : in  std_logic_vector(31 downto 0);
              seed_lo     : in  std_logic_vector(31 downto 0);
              data_out_hi : out std_logic_vector(31 downto 0);
@@ -38,7 +41,8 @@ architecture Structural of alu_mult_top is
     component alu_mult_counter
         port(clk         : in  std_logic;
              rst         : in  std_logic;
-             start       : in  std_logic;
+             enable      : in  std_logic;
+             finish      : out std_logic;
              data_out_hi : out std_logic_vector(31 downto 0);
              data_out_lo : out std_logic_vector(31 downto 0));
     end component alu_mult_counter;
@@ -46,13 +50,17 @@ architecture Structural of alu_mult_top is
     component alu_mult_atpg
         port(clk         : in  std_logic;
              rst         : in  std_logic;
-             start       : in  std_logic;
+             enable      : in  std_logic;
+             finish      : out std_logic;
              data_out_hi : out std_logic_vector(31 downto 0);
              data_out_lo : out std_logic_vector(31 downto 0));
     end component alu_mult_atpg;
 
     component alu_mult_mux
-        port(mux_select         : in  std_logic_vector(1 downto 0);
+        port(
+             clk                : in std_logic;
+             rst                : in std_logic;
+             mux_select         : in  std_logic_vector(1 downto 0);
              data_in_normal_hi  : in  std_logic_vector(31 downto 0);
              data_in_normal_lo  : in  std_logic_vector(31 downto 0);
              data_in_lfsr_hi    : in  std_logic_vector(31 downto 0);
@@ -66,10 +74,12 @@ architecture Structural of alu_mult_top is
     end component alu_mult_mux;
 
     component alu_mult_unit
-        port(X    : in  std_logic_vector(31 downto 0);
-             Y    : in  std_logic_vector(31 downto 0);
-             P_HI : out std_logic_vector(31 downto 0);
-             P_LO : out std_logic_vector(31 downto 0));
+        generic(mult_pipe   : boolean := true);
+        port(   clk         : in std_logic;
+                X           : in std_logic_vector(31 downto 0);
+                Y           : in std_logic_vector(31 downto 0);
+                P_HI        : out std_logic_vector(31 downto 0);
+                P_LO        : out std_logic_vector(31 downto 0));
     end component alu_mult_unit;
 
     component alu_mult_misr
@@ -88,7 +98,7 @@ architecture Structural of alu_mult_top is
              bist_mode  : in  std_logic_vector(1 downto 0);
              data_in_hi : in  std_logic_vector(31 downto 0);
              data_in_lo : in  std_logic_vector(31 downto 0);
-             result     : out std_logic);
+             fail       : out std_logic);
     end component alu_mult_comparator;
 
     signal data_in_lfsr_hi      : std_logic_vector(31 downto 0);
@@ -105,10 +115,10 @@ architecture Structural of alu_mult_top is
     signal signature_lo         : std_logic_vector(31 downto 0);
     signal lfsr_seed_hi         : std_logic_vector(31 downto 0);
     signal lfsr_seed_lo         : std_logic_vector(31 downto 0);
-    signal bist_start           : std_logic_vector(2 downto 0);
+    signal bist_finish          : std_logic_vector(2 downto 0);
+    signal bist_enable          : std_logic_vector(2 downto 0);
     signal bist_mode            : std_logic_vector(1 downto 0);
     signal bist_check           : std_logic;
-    signal compare_result       : std_logic;
 
 begin
 
@@ -116,16 +126,18 @@ begin
         port map(clk          => clk,
                  rst          => rst,
                  bist_init    => bist_init,
+                 bist_finish  => bist_finish,
                  bist_check   => bist_check,
                  bist_mode    => bist_mode,
-                 bist_start   => bist_start,
+                 bist_enable  => bist_enable,
                  lfsr_seed_hi => lfsr_seed_hi,
                  lfsr_seed_lo => lfsr_seed_lo);
 
     MULT_LFSR : alu_mult_lfsr
         port map(clk         => clk,
                  rst         => rst,
-                 start       => bist_start(0),
+                 enable      => bist_enable(0),
+                 finish      => bist_finish(0),
                  seed_hi     => lfsr_seed_hi,
                  seed_lo     => lfsr_seed_lo,
                  data_out_hi => data_in_lfsr_hi,
@@ -134,19 +146,23 @@ begin
     MULT_COUNTER : alu_mult_counter
         port map(clk         => clk,
                  rst         => rst,
-                 start       => bist_start(1),
+                 enable      => bist_enable(1),
+                 finish      => bist_finish(1),
                  data_out_hi => data_in_counter_hi,
                  data_out_lo => data_in_counter_lo);
 
     MULT_ATPG : alu_mult_atpg
         port map(clk         => clk,
                  rst         => rst,
-                 start       => bist_start(2),
+                 enable      => bist_enable(2),
+                 finish      => bist_finish(2),
                  data_out_hi => data_in_atpg_hi,
                  data_out_lo => data_in_atpg_lo);
 
     MULT_MUX : alu_mult_mux
-        port map(mux_select         => bist_mode,
+        port map(clk                => clk,
+                 rst                => rst,
+                 mux_select         => bist_mode,
                  data_in_normal_hi  => X,
                  data_in_normal_lo  => Y,
                  data_in_lfsr_hi    => data_in_lfsr_hi,
@@ -159,10 +175,12 @@ begin
                  data_mux_lo        => data_mux_lo);
 
     MULT_UNIT : alu_mult_unit
-        port map(X    => data_mux_hi,
-                 Y    => data_mux_lo,
-                 P_HI => product_hi,
-                 P_LO => product_lo);
+        generic map(mult_pipe   => mult_pipe)
+        port map(clk            => clk,
+                 X              => data_mux_hi,
+                 Y              => data_mux_lo,
+                 P_HI           => product_hi,
+                 P_LO           => product_lo);
 
     MULT_MISR : alu_mult_misr
         port map(clk          => clk,
@@ -179,11 +197,10 @@ begin
                  bist_mode  => bist_mode,
                  data_in_hi => signature_hi,
                  data_in_lo => signature_lo,
-                 result     => compare_result);
+                 fail       => bist_fail);
 
 
     P_HI        <= product_hi;
     P_LO        <= product_lo;
-    bist_result <= compare_result;
 
 end Structural;

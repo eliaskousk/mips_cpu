@@ -20,7 +20,7 @@ architecture Behavioral of alu_mult_counter is
 
 begin
 
-    process (clk)
+    process (clk, rst, enable)
     begin
         if(rst = '1') then
             counter <= (others => '0');

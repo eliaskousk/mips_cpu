@@ -32,7 +32,7 @@ architecture Behavioral of alu_mult_lfsr_tb is
     signal data_out_lo  : std_logic_vector(31 downto 0);
 
     -- Clock period definitions
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 20 ns;
 
 begin
 

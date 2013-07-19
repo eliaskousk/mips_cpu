@@ -38,7 +38,8 @@ begin
                         ssr => ssr(I),
                         a   => address,
                         di  => data_in(((8*I)+7) downto (8*I)),
-                        do  => data_out(((8*I)+7) downto (8*I)));
+                        do  => data_out(((8*I)+7) downto (8*I)),
+                        dop => open);
 
     end generate GenDM;
 

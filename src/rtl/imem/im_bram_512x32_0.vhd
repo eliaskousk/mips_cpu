@@ -12,10 +12,10 @@ entity im_bram_512x32_0 is
             we  : in  std_logic;
             en  : in  std_logic;
             ssr : in  std_logic;
-            dop : out std_logic_vector(3 downto 0);
             a   : in  std_logic_vector(8 downto 0);
             di  : in  std_logic_vector(31 downto 0);
-            do  : out std_logic_vector(31 downto 0));
+            do  : out std_logic_vector(31 downto 0);
+            dop : out std_logic_vector(3 downto 0));
 end im_bram_512x32_0;
 
     -- 512 x 32 RAM Bank

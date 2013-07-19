@@ -32,14 +32,14 @@ architecture Behavioral of alu_mult_atpg is
 
 begin
 
-    process(clk)
+    process(clk, rst, enable)
     begin
         if(rst = '1') then
             address <= (others => '0');
             finish  <= '0';
         else
-            if (clk'event and clk='1') then
-                if enable = '0' then
+            if (clk'event and clk = '1') then
+                if (enable = '0') then
                     address <= (others => '0');
                     finish  <= '0';
                 elsif enable = '1' and address = X"7F" then

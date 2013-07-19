@@ -9,20 +9,21 @@ architecture Behavioral of mips_cpu_top_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component mips_cpu_top
-        port(clk    : in  std_logic;
-             rst    : in  std_logic;
-             IR     : out std_logic_vector(31 downto 0);
-             PC     : out std_logic_vector(31 downto 0);
-             DMA    : out std_logic_vector(31 downto 0);
-             DMD    : out std_logic_vector(31 downto 0);
-             W      : out std_logic_vector(31 downto 0);
-             ALU    : out std_logic_vector(31 downto 0);
-             HI     : out std_logic_vector(31 downto 0);
-             LO     : out std_logic_vector(31 downto 0);
-             ZE     : out std_logic;
-             NE     : out std_logic;
-             OV     : out std_logic;
-             ER     : out std_logic);
+        generic(mult_pipe   : boolean := true);
+        port(clk            : in  std_logic;
+             rst            : in  std_logic;
+             IR             : out std_logic_vector(31 downto 0);
+             PC             : out std_logic_vector(31 downto 0);
+             DMA            : out std_logic_vector(31 downto 0);
+             DMD            : out std_logic_vector(31 downto 0);
+             W              : out std_logic_vector(31 downto 0);
+             ALU            : out std_logic_vector(31 downto 0);
+             HI             : out std_logic_vector(31 downto 0);
+             LO             : out std_logic_vector(31 downto 0);
+             ZE             : out std_logic;
+             NE             : out std_logic;
+             OV             : out std_logic;
+             ER             : out std_logic);
     end component mips_cpu_top;
 
     --Inputs
@@ -45,25 +46,29 @@ architecture Behavioral of mips_cpu_top_tb is
 
     -- Clock period definitions
     constant clk_period : time := 20 ns;
+    
+    -- Set multiplier mode
+    constant mult_pipe : boolean := true;
 
 begin
 
     -- Instantiate the Unit Under Test (UUT)
     uut: mips_cpu_top
-        port map(clk     => clk,
-                 rst     => rst,
-                 IR      => IR,
-                 PC      => PC,
-                 DMA     => DMA,
-                 DMD     => DMD,
-                 W       => W,
-                 ALU     => ALU,
-                 HI      => HI,
-                 LO      => LO,
-                 ZE      => ZE,
-                 NE      => NE,
-                 OV      => OV,
-                 ER      => ER);
+        generic map(mult_pipe => true)
+        port map(clk          => clk,
+                 rst          => rst,
+                 IR           => IR,
+                 PC           => PC,
+                 DMA          => DMA,
+                 DMD          => DMD,
+                 W            => W,
+                 ALU          => ALU,
+                 HI           => HI,
+                 LO           => LO,
+                 ZE           => ZE,
+                 NE           => NE,
+                 OV           => OV,
+                 ER           => ER);
 
     -- Clock process definitions
     clk_process :process

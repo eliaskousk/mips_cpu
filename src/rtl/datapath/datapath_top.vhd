@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity datapath_top is
+    generic(mult_pipe       : boolean := true);
     port(   clk             : in  std_logic;
             rst             : in  std_logic;
             PC_write        : in  std_logic;
@@ -134,6 +135,7 @@ architecture Structural of datapath_top is
     end component;
 
     component alu_top is
+        generic(mult_pipe   : boolean := true);
         port(   clk         : in  std_logic;
                 rst         : in  std_logic;
                 sv          : in  std_logic;
@@ -146,14 +148,16 @@ architecture Structural of datapath_top is
                 Bus_B       : in  std_logic_vector(31 downto 0);
                 Zero        : out std_logic;
                 ov          : out std_logic;
-                Fail        : out std_logic;
+                bist_fail   : out std_logic;
                 Bus_S       : out std_logic_vector(31 downto 0);
                 Bus_mult_HI : out std_logic_vector(31 downto 0);
                 Bus_mult_LO : out std_logic_vector(31 downto 0));
     end component;
 
     component alu_mux is
-        port(   data_regA_in    : in  std_logic_vector(31 downto 0);
+        port(   clk             : in std_logic;
+                rst             : in std_logic;
+                data_regA_in    : in  std_logic_vector(31 downto 0);
                 data_regB_in    : in  std_logic_vector(31 downto 0);
                 data_imm_in     : in  std_logic_vector(31 downto 0);
                 AluSelect       : in  std_logic;
@@ -203,7 +207,7 @@ architecture Structural of datapath_top is
     signal Bus_FLAGS    : std_logic_vector(3 downto 0);
     signal Zero         : std_logic;
     signal Overflow     : std_logic;
-    signal Fail         : std_logic;
+    signal bist_fail    : std_logic;
 
     signal Bus_ALUO     : std_logic_vector(31 downto 0);
     signal Bus_HI       : std_logic_vector(31 downto 0);
@@ -214,6 +218,7 @@ architecture Structural of datapath_top is
     signal Bus_MDRI     : std_logic_vector(31 downto 0);
     signal Bus_MDRO     : std_logic_vector(31 downto 0);
     signal Bus_MAR      : std_logic_vector(31 downto 0);
+    signal Bus_SHAMT    : std_logic_vector(4 downto 0);
 
 begin
 
@@ -226,7 +231,7 @@ begin
     Bus_MULTLOout   <= Bus_MULTLO;
     Bus_Wout        <= Bus_W;
 
-    Bus_ALUFLAGS    <= Fail & Overflow & Bus_ALU(31) & Zero;
+    Bus_ALUFLAGS    <= bist_fail & Overflow & Bus_ALU(31) & Zero;
 
     PC : reg_we
     port map(   clk         => clk,
@@ -277,6 +282,13 @@ begin
                 rst         => rst,
                 data_in     => Bus_ADD,
                 data_out    => Bus_M);
+
+    S : reg
+    generic map( W          => 5)
+    port map(   clk         => clk,
+                rst         => rst,
+                data_in     => Bus_IRin(10 downto 6),
+                data_out    => Bus_SHAMT);
 
     ALUOUT : reg
     port map(   clk         => clk,
@@ -389,6 +401,7 @@ begin
                 data_out    => Bus_SL2);
 
     ALU : alu_top
+    generic map(mult_pipe   => mult_pipe)
     port map(   clk         => clk,
                 rst         => rst,
                 sv          => sv,
@@ -396,18 +409,20 @@ begin
                 MT          => MT,
                 HIorLO      => HIorLO,
                 ALUop       => ALUop,
-                shamt       => Bus_IRin(10 downto 6),
+                shamt       => Bus_SHAMT,
                 Bus_A       => Bus_ALUMUXA,
                 Bus_B       => Bus_ALUMUXB,
                 Zero        => Zero,
                 ov          => Overflow,
-                Fail        => Fail,
+                bist_fail   => bist_fail,
                 Bus_S       => Bus_ALU,
                 Bus_mult_HI => Bus_MULTHI,
                 Bus_mult_LO => Bus_MULTLO);
 
     ALUMUX : alu_mux
-    port map(   data_regA_in    => Bus_A,
+    port map(   clk             => clk,
+                rst             => rst,
+                data_regA_in    => Bus_A,
                 data_regB_in    => Bus_B,
                 data_imm_in     => Bus_I,
                 AluSelect       => BorI,

@@ -3,6 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity alu_top is
+    generic(mult_pipe   : boolean := true);
     port(   clk         : in  std_logic;
             rst         : in  std_logic;
             sv          : in  std_logic;
@@ -15,7 +16,7 @@ entity alu_top is
             Bus_B       : in  std_logic_vector(31 downto 0);
             Zero        : out std_logic;
             ov          : out std_logic;
-            Fail        : out std_logic;
+            bist_fail   : out std_logic;
             Bus_S       : out std_logic_vector(31 downto 0);
             Bus_mult_HI : out std_logic_vector(31 downto 0);
             Bus_mult_LO : out std_logic_vector(31 downto 0));
@@ -32,6 +33,7 @@ architecture Behavioral of alu_top is
     end component;
 
     component alu_mult_top is
+        generic(mult_pipe   : boolean := true);
         port(   clk         : in  std_logic;
                 rst         : in  std_logic;
                 bist_init   : in  std_logic;
@@ -39,7 +41,7 @@ architecture Behavioral of alu_top is
                 Y           : in  std_logic_vector(31 downto 0);
                 P_HI        : out std_logic_vector(31 downto 0);
                 P_LO        : out std_logic_vector(31 downto 0);
-                bist_result : out std_logic);
+                bist_fail   : out std_logic);
     end component;
 
     signal tmp_result_hi    : std_logic_vector(31 downto 0);
@@ -56,6 +58,7 @@ architecture Behavioral of alu_top is
 begin
 
     MULT : alu_mult_top
+    generic map(mult_pipe   => mult_pipe)
     port map(   clk         => clk,
                 rst         => rst,
                 bist_init   => TestMult,
@@ -63,7 +66,7 @@ begin
                 Y           => Bus_B,
                 P_HI        => tmp_result_hi,
                 P_LO        => tmp_result_lo,
-                bist_result => Fail);
+                bist_fail   => bist_fail);
 
     SHIFTER : alu_shifter
     port map(   left        => left,

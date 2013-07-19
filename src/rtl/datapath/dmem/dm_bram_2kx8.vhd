@@ -14,10 +14,10 @@ entity dm_bram_2Kx8 is
             we  : in  std_logic;
             en  : in  std_logic;
             ssr : in  std_logic;
-            dop : out std_logic_vector(0 downto 0);
             a   : in  std_logic_vector(10 downto 0);
             di  : in  std_logic_vector(7 downto 0);
-            do  : out std_logic_vector(7 downto 0));
+            do  : out std_logic_vector(7 downto 0);
+            dop : out std_logic_vector(0 downto 0));
 end dm_bram_2Kx8;
 
 -- 2K x 8 RAM Bank

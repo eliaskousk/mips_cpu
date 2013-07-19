@@ -15,7 +15,7 @@ architecture Behavioral of alu_mult_comparator_tb is
              bist_mode  : in  std_logic_vector(1 downto 0);
              data_in_hi : in  std_logic_vector(31 downto 0);
              data_in_lo : in  std_logic_vector(31 downto 0);
-             result     : out std_logic);
+             fail       : out std_logic);
     end component alu_mult_comparator;
 
     --Inputs
@@ -27,10 +27,10 @@ architecture Behavioral of alu_mult_comparator_tb is
     signal data_in_lo   : std_logic_vector(31 downto 0) := (others => '0');
 
     --Outputs
-    signal result       : std_logic;
+    signal fail         : std_logic;
 
     -- Clock period definitions
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 20 ns;
 
 begin
 
@@ -42,7 +42,7 @@ begin
                 bist_mode  => bist_mode,
                 data_in_hi => data_in_hi,
                 data_in_lo => data_in_lo,
-                result     => result);
+                fail       => fail);
 
     -- Clock process definitions
     clk_process :process

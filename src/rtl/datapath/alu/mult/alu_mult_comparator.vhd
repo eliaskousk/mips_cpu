@@ -9,7 +9,7 @@ entity alu_mult_comparator is
         bist_mode   : in  std_logic_vector(1 downto 0);
         data_in_hi  : in  std_logic_vector(31 downto 0);
         data_in_lo  : in  std_logic_vector(31 downto 0);
-        result      : out std_logic);
+        fail        : out std_logic);
 end entity alu_mult_comparator;
 
 architecture Behavioral of alu_mult_comparator is
@@ -23,21 +23,21 @@ architecture Behavioral of alu_mult_comparator is
 
 begin
 
-    process (clk)
+    process (clk, rst, bist_check, bist_mode, data_in_hi, data_in_lo)
     begin
         if(rst = '1') then
-            result <= '0';
+            fail <= '0';
         else
             if (clk'event and clk='1') then
                 if bist_check = '1' then
                     if(bist_mode = "01" and (data_in_hi /= lfsr_hi_correct or data_in_lo /= lfsr_lo_correct)) then
-                        result <= '1';
+                        fail <= '1';
                     elsif(bist_mode = "10" and (data_in_hi /= counter_hi_correct or data_in_lo /= counter_lo_correct)) then
-                        result <= '1';
+                        fail <= '1';
                     elsif(bist_mode = "11" and (data_in_hi /= atpg_hi_correct or data_in_lo /= atpg_lo_correct)) then
-                        result <= '1';
+                        fail <= '1';
                     else
-                        result <= '0';
+                        fail <= '0';
                     end if;
                 end if;
             end if;
