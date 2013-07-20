@@ -8,7 +8,8 @@ entity mips_cpu_top is
             IR          : out std_logic_vector(31 downto 0);
             PC          : out std_logic_vector(31 downto 0);
             DMA         : out std_logic_vector(31 downto 0);
-            DMD         : out std_logic_vector(31 downto 0);
+            DMDR        : out std_logic_vector(31 downto 0);
+            DMDW        : out std_logic_vector(31 downto 0);
             W           : out std_logic_vector(31 downto 0);
             ALU         : out std_logic_vector(31 downto 0);
             HI          : out std_logic_vector(31 downto 0);
@@ -40,6 +41,7 @@ architecture Structural of mips_cpu_top is
     end component;
 
     component control_comb is
+        generic(mult_pipe   : boolean := true);
         port(   clk         : in  std_logic;
                 rst         : in  std_logic;
                 OPCODE      : in  std_logic_vector(5 downto 0);
@@ -64,6 +66,7 @@ architecture Structural of mips_cpu_top is
     end component;
 
     component control_fsm is
+        generic(mult_pipe   : boolean := true);
         port(   clk         : in  std_logic;
                 rst         : in  std_logic;
                 OPCODE      : in  std_logic_vector(5 downto 0);
@@ -72,7 +75,9 @@ architecture Structural of mips_cpu_top is
                 IR_write    : out std_logic;
                 MAR_write   : out std_logic;
                 DMD_write   : out std_logic;
-                RF_write    : out std_logic);
+                RF_write    : out std_logic;
+                HI_write    : out std_logic;
+                LO_write    : out std_logic);
     end component;
 
     component datapath_top is
@@ -83,6 +88,8 @@ architecture Structural of mips_cpu_top is
                 RF_write        : in  std_logic;
                 MAR_write       : in  std_logic;
                 DMD_write       : in  std_logic;
+                HI_write        : in  std_logic;
+                LO_write        : in  std_logic;
                 RorI            : in  std_logic;
                 SorZ            : in  std_logic;
                 BorI            : in  std_logic;
@@ -107,8 +114,8 @@ architecture Structural of mips_cpu_top is
                 Bus_FLAGSout    : out std_logic_vector(4 downto 0);
                 Bus_PCout       : out std_logic_vector(31 downto 0);
                 Bus_ALUout      : out std_logic_vector(31 downto 0);
-                Bus_MULTHIout   : out std_logic_vector(31 downto 0);
-                Bus_MULTLOout   : out std_logic_vector(31 downto 0);
+                Bus_HIout       : out std_logic_vector(31 downto 0);
+                Bus_LOout       : out std_logic_vector(31 downto 0);
                 Bus_Wout        : out std_logic_vector(31 downto 0);
                 Bus_DMWEout     : out std_logic_vector(3 downto 0);
                 Bus_DMAout      : out std_logic_vector(31 downto 0);
@@ -120,6 +127,8 @@ architecture Structural of mips_cpu_top is
     signal RF_write     : std_logic;
     signal MAR_write    : std_logic;
     signal DMD_write    : std_logic;
+    signal HI_write     : std_logic;
+    signal LO_write     : std_logic;
     signal RorI         : std_logic;
     signal SorZ         : std_logic;
     signal BorI         : std_logic;
@@ -166,6 +175,7 @@ architecture Structural of mips_cpu_top is
                 data_out    => Bus_DMDout);
 
     CONTROLCOMB : control_comb
+    generic map(mult_pipe   => mult_pipe)
     port map(   clk         => clk,
                 rst         => rst,
                 OPCODE      => opcode,
@@ -189,6 +199,7 @@ architecture Structural of mips_cpu_top is
                 TestMult    => TestMult);
 
     CONTROLFSM : control_fsm
+    generic map(mult_pipe   => mult_pipe)
     port map(   clk         => clk,
                 rst         => rst,
                 OPCODE      => opcode,
@@ -197,7 +208,9 @@ architecture Structural of mips_cpu_top is
                 IR_write    => IR_write,
                 MAR_write   => MAR_write,
                 DMD_write   => DMD_write,
-                RF_write    => RF_write);
+                RF_write    => RF_write,
+                HI_write    => HI_write,
+                LO_write    => LO_write);
 
     DATAPATH : datapath_top
     generic map(mult_pipe       => mult_pipe)
@@ -207,6 +220,8 @@ architecture Structural of mips_cpu_top is
                 RF_write        => RF_write,
                 MAR_write       => MAR_write,
                 DMD_write       => DMD_write,
+                HI_write        => HI_write,
+                LO_write        => LO_write,
                 RorI            => RorI,
                 SorZ            => SorZ,
                 BorI            => BorI,
@@ -230,8 +245,8 @@ architecture Structural of mips_cpu_top is
                 funct           => funct,
                 Bus_PCout       => Bus_PCout,
                 Bus_ALUout      => ALU,
-                Bus_MULTHIout   => HI,
-                Bus_MULTLOout   => LO,
+                Bus_HIout       => HI,
+                Bus_LOout       => LO,
                 Bus_FLAGSout    => Bus_Flags,
                 Bus_Wout        => W,
                 Bus_DMWEout     => Bus_DMWE,
@@ -241,7 +256,8 @@ architecture Structural of mips_cpu_top is
     IR      <= Bus_IRin;
     PC      <= Bus_PCout;
     DMA     <= Bus_DMA;
-    DMD     <= Bus_DMDout;
+    DMDR    <= Bus_DMDout;
+    DMDW    <= Bus_DMDin;
     ZE      <= Bus_Flags(0);
     NE      <= Bus_Flags(1);
     OV      <= Bus_Flags(2);

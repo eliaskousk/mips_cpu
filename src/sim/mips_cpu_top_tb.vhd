@@ -15,7 +15,8 @@ architecture Behavioral of mips_cpu_top_tb is
              IR             : out std_logic_vector(31 downto 0);
              PC             : out std_logic_vector(31 downto 0);
              DMA            : out std_logic_vector(31 downto 0);
-             DMD            : out std_logic_vector(31 downto 0);
+             DMDR           : out std_logic_vector(31 downto 0);
+             DMDW           : out std_logic_vector(31 downto 0);
              W              : out std_logic_vector(31 downto 0);
              ALU            : out std_logic_vector(31 downto 0);
              HI             : out std_logic_vector(31 downto 0);
@@ -34,7 +35,8 @@ architecture Behavioral of mips_cpu_top_tb is
     signal IR           : std_logic_vector(31 downto 0);
     signal PC           : std_logic_vector(31 downto 0);
     signal DMA          : std_logic_vector(31 downto 0);
-    signal DMD          : std_logic_vector(31 downto 0);
+    signal DMDR         : std_logic_vector(31 downto 0);
+    signal DMDW         : std_logic_vector(31 downto 0);
     signal W            : std_logic_vector(31 downto 0);
     signal ALU          : std_logic_vector(31 downto 0);
     signal HI           : std_logic_vector(31 downto 0);
@@ -60,7 +62,8 @@ begin
                  IR           => IR,
                  PC           => PC,
                  DMA          => DMA,
-                 DMD          => DMD,
+                 DMDR         => DMDR,
+                 DMDW         => DMDW,
                  W            => W,
                  ALU          => ALU,
                  HI           => HI,

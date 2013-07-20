@@ -71,6 +71,7 @@ use ieee.std_logic_1164.all;
 -- This is the ID stage for this compinational control (on par with the sequential)
 
 entity control_comb is
+    generic(mult_pipe   : boolean := true);
     port(   clk         : in  std_logic;
             rst         : in  std_logic;
             OPCODE      : in  std_logic_vector(5 downto 0);
@@ -720,12 +721,12 @@ begin
                         when MULTR =>
                             SorZ        <= '-';
                             BorI        <= '1';
-                            ALUop       <= "----";
+                            ALUop       <= "--00";
                             sv          <= '-';
                             MF          <= '-';
-                            MT          <= '-';
+                            MT          <= '0';
                             HIorLO      <= '-';
-                            DMorALU     <= '0';
+                            DMorALU     <= '-';
                             DMWT        <= "---";
                             Link        <= '-';
                             RorI        <= '-';

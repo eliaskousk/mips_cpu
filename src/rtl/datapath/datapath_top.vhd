@@ -9,6 +9,8 @@ entity datapath_top is
             RF_write        : in  std_logic;
             MAR_write       : in  std_logic;
             DMD_write       : in  std_logic;
+            HI_write        : in  std_logic;
+            LO_write        : in  std_logic;
             RorI            : in  std_logic;
             SorZ            : in  std_logic;
             BorI            : in  std_logic;
@@ -33,8 +35,8 @@ entity datapath_top is
             Bus_FLAGSout    : out std_logic_vector(4 downto 0);
             Bus_PCout       : out std_logic_vector(31 downto 0);
             Bus_ALUout      : out std_logic_vector(31 downto 0);
-            Bus_MULTHIout   : out std_logic_vector(31 downto 0);
-            Bus_MULTLOout   : out std_logic_vector(31 downto 0);
+            Bus_HIout       : out std_logic_vector(31 downto 0);
+            Bus_LOout       : out std_logic_vector(31 downto 0);
             Bus_Wout        : out std_logic_vector(31 downto 0);
             Bus_DMWEout     : out std_logic_vector(3 downto 0);
             Bus_DMAout      : out std_logic_vector(31 downto 0);
@@ -227,8 +229,8 @@ begin
     Bus_FLAGSout    <= FlagE(0) & Bus_FLAGS;
     Bus_PCout       <= Bus_PC;
     Bus_ALUout      <= Bus_ALU;
-    Bus_MULTHIout   <= Bus_MULTHI;
-    Bus_MULTLOout   <= Bus_MULTLO;
+    Bus_HIout   <= Bus_HI;
+    Bus_LOout   <= Bus_LO;
     Bus_Wout        <= Bus_W;
 
     Bus_ALUFLAGS    <= bist_fail & Overflow & Bus_ALU(31) & Zero;
@@ -296,15 +298,17 @@ begin
                 data_in     => Bus_ALU,
                 data_out    => Bus_ALUO);
 
-    HI : reg
+    HI : reg_we
     port map(   clk         => clk,
                 rst         => rst,
+                we          => HI_write,
                 data_in     => Bus_MULTHI,
                 data_out    => Bus_HI);
 
-    LO : reg
+    LO : reg_we
     port map(   clk         => clk,
                 rst         => rst,
+                we          => LO_write,
                 data_in     => Bus_MULTLO,
                 data_out    => Bus_LO);
 

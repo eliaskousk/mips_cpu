@@ -9,14 +9,15 @@ architecture Behavioral of alu_mult_top_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component alu_mult_top
-        port(clk        : in  std_logic;
-             rst        : in  std_logic;
-             bist_init  : in  std_logic;
-             X          : in  std_logic_vector(31 downto 0);
-             Y          : in  std_logic_vector(31 downto 0);
-             P_HI       : out std_logic_vector(31 downto 0);
-             P_LO       : out std_logic_vector(31 downto 0);
-             bist_fail  : out std_logic);
+        generic(mult_pipe   : boolean := true);
+        port(clk            : in  std_logic;
+             rst            : in  std_logic;
+             bist_init      : in  std_logic;
+             X              : in  std_logic_vector(31 downto 0);
+             Y              : in  std_logic_vector(31 downto 0);
+             P_HI           : out std_logic_vector(31 downto 0);
+             P_LO           : out std_logic_vector(31 downto 0);
+             bist_fail      : out std_logic);
     end component alu_mult_top;
 
     --Inputs
@@ -33,19 +34,21 @@ architecture Behavioral of alu_mult_top_tb is
 
     -- Clock period definitions
     constant clk_period : time := 20 ns;
+    constant mult_pipe  : boolean := true;
 
 begin
 
     -- Instantiate the Unit Under Test (UUT)
     uut: alu_mult_top
-        port map(clk        => clk,
-                 rst        => rst,
-                 bist_init  => bist_init,
-                 X          => X,
-                 Y          => Y,
-                 P_HI       => P_HI,
-                 P_LO       => P_LO,
-                 bist_fail  => bist_fail);
+        generic map(mult_pipe => mult_pipe)
+        port map(clk          => clk,
+                 rst          => rst,
+                 bist_init    => bist_init,
+                 X            => X,
+                 Y            => Y,
+                 P_HI         => P_HI,
+                 P_LO         => P_LO,
+                 bist_fail    => bist_fail);
 
     -- Clock process definitions
     clk_process :process

@@ -29,12 +29,13 @@ architecture Behavioral of alu_mult_unit_tb is
 
         -- Clock period definitions
     constant clk_period : time := 20 ns;
+    constant mult_pipe  : boolean := true;
 
 begin
 
     -- Instantiate the Unit Under Test (UUT)
     uut: alu_mult_unit
-        generic map(mult_pipe => true)
+        generic map(mult_pipe => mult_pipe)
         port map(   clk       => clk,
                     X         => X,
                     Y         => Y,

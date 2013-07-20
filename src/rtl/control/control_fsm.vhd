@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 -- LW   $s1, 100($s2)   Load word
 -- SW   $s1, 100($s2)   Store word
@@ -66,6 +67,7 @@ use ieee.std_logic_1164.all;
 -- TEST                 Halt cpu and test multiplier
 
 entity control_fsm is
+    generic(mult_pipe   : boolean := true);
     port(   clk         : in  std_logic;
             rst         : in  std_logic;
             OPCODE      : in  std_logic_vector(5 downto 0);
@@ -74,13 +76,15 @@ entity control_fsm is
             IR_write    : out std_logic;
             MAR_write   : out std_logic;
             DMD_write   : out std_logic;
-            RF_write    : out std_logic);
+            RF_write    : out std_logic;
+            HI_write    : out std_logic;
+            LO_write    : out  std_logic);
 end control_fsm;
 
 architecture Behavioral of control_fsm is
 
     -- state definition
-    type control_states is (S0, S1, S2A, S2B, S2C, S3, S4A, S4B, S4C);
+    type control_states is (S0, S1, S2A, S2B, S2C, S2C1, S2D, S2E, S2F, S3, S4A, S4B, S4C);
     signal current_state, next_state : control_states;
 
     -- OPCODE definition as constants
@@ -136,22 +140,61 @@ architecture Behavioral of control_fsm is
     constant SLTR   : std_logic_vector(5 downto 0) := "101010"; -- 0x2A
     constant SLTRU  : std_logic_vector(5 downto 0) := "101011"; -- 0x2B
 
+    signal mult_counter : std_logic_vector(1 downto 0);
+    signal mult_cycles  : std_logic_vector(1 downto 0);
+
 begin
+
+    -- Multiplier cycles
+
+    pipelined: if (mult_pipe = true) generate
+
+        -- Pipelined multiplier (4 clock cycles latency)
+
+        mult_cycles <= "11";
+
+    end generate;
+
+    normal: if(mult_pipe = false) generate
+
+         -- Normal Multiplier (1 clock cycle latency)
+
+         mult_cycles <= "00";
+
+    end generate;
 
     -- common synchronous process for all FSMs
     SYNCHR: process (clk, rst)
     begin
 
         if(rst = '1') then
-            current_state <= S0; -- initial state
+            mult_counter    <= (others => '0');
+            
+            current_state   <= S0; -- initial state
+            
         elsif(clk'event and clk = '1') then
+        
+            case current_state is
+
+                when S0 =>      mult_counter <= (others => '0');    
+
+                when S2C1 =>    if(mult_counter = mult_cycles) then
+                                    mult_counter <= (others => '0');
+                                else
+                                    mult_counter <= std_logic_vector(unsigned(mult_counter) + 1);
+                                end if;
+
+                when others =>  null;
+
+                end case;    
+        
             current_state <= next_state;
         end if;
 
     end process;
 
     -- asynchronous process to create output logic and next state logic
-    ASYNCHR: process (current_state, OPCODE, FUNCT)
+    ASYNCHR: process (current_state, OPCODE, FUNCT, mult_counter)
     begin
 
         -- Next state is by default the current_state
@@ -161,13 +204,15 @@ begin
 
             when S0 =>      -- IF
 
-                if(OPCODE = "000000" AND FUNCT = "000000") then
-                    next_state      <= S0;
-                elsif(OPCODE = "000000" and (FUNCT = MFHI or FUNCT = MFLO)) then
-                    next_state      <= S4A;
-                else
-                    next_state      <= S1;
-                end if;
+                --if(OPCODE = "000000" AND FUNCT = "000000") then
+                --    next_state      <= S0;
+                --elsif(OPCODE = "000000" and (FUNCT = MFHI or FUNCT = MFLO)) then
+                --    next_state      <= S4A;
+                --else
+                --    next_state      <= S1;
+                --end if;
+                
+                next_state <= S1;
 
             when S1 =>      -- ID
 
@@ -210,8 +255,10 @@ begin
                             when SRAVR  =>  next_state  <= S2B;
                             when JR     =>  next_state  <= S4C;
                             when JALR   =>  next_state  <= S4A;
-                            when MTHI   =>  next_state  <= S2C;
-                            when MTLO   =>  next_state  <= S2C;
+                            when MFHI   =>  next_state  <= S4A;
+                            when MFLO   =>  next_state  <= S4A;
+                            when MTHI   =>  next_state  <= S2E;
+                            when MTLO   =>  next_state  <= S2F;
                             when MULTR  =>  next_state  <= S2C;
                             when ADDR   =>  next_state  <= S2B;
                             when ADDRU  =>  next_state  <= S2B;
@@ -269,8 +316,20 @@ begin
                     when others =>  next_state  <= S0;
 
                 end case;
+            
+            when S2C =>     next_state <= S2C1;
 
-            when S2C =>     next_state  <= S0;  -- EX & WB (MTHI & MTLO & MULT)
+            when S2C1 =>    if(mult_counter = mult_cycles) then    -- EX (MULT)
+                                next_state <= S2D;                 -- 4 cycles here for pipelined multiplier
+                            else                                   -- 1 cycle here for normal multiplier
+                                next_state  <= S2C1;
+                            end if;
+
+            when S2D =>     next_state  <= S0;  -- EX & WB (MULT)
+            
+            when S2E =>     next_state  <= S0;  -- EX & WB (MTHI)
+            
+            when S2F =>     next_state  <= S0;  -- EX & WB (MTLO)
 
             when S3 =>      next_state  <= S4A; -- MEM (LW, LH, LHU, LB, LBU)
 
@@ -288,21 +347,31 @@ begin
     -- combinational logic for outputs
 
     IR_write    <=  '1' when current_state = S0 else
-                            '0';
+                    '0';
 
     MAR_write   <=  '1' when current_state = S2A else
-                            '0';
+                    '0';
 
     DMD_write   <=  '1' when current_state = S4B else
-                            '0';
+                    '0';
 
     RF_write    <=  '1' when current_state = S4A else
-                            '0';
+                    '0';
 
-    PC_write    <=  '1' when current_state = S2C
+    PC_write    <=  '1' when current_state = S2D
+                            or current_state = S2E
+                            or current_state = S2F
                             or current_state = S4A
                             or current_state = S4B
                             or current_state = S4C else
-                            '0';
+                    '0';
+
+    HI_write    <=  '1' when current_state = S2D 
+                            or current_state = S2E else
+                    '0';
+
+    LO_write    <=  '1' when current_state = S2D 
+                            or current_state = S2F else
+                    '0';
 
 end Behavioral;

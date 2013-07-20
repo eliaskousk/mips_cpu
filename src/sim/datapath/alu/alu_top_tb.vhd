@@ -9,21 +9,21 @@ architecture Behavioral of alu_top_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component alu_top
-        port(clk         : in  std_logic;
-             rst         : in  std_logic;
-             sv          : in  std_logic;
-             TestMult    : in  std_logic;
-             MT          : in  std_logic;
-             HIorLO      : in  std_logic;
-             ALUop       : in  std_logic_vector(3 downto 0);
-             shamt       : in  std_logic_vector(4 downto 0);
-             Bus_A       : in  std_logic_vector(31 downto 0);
-             Bus_B       : in  std_logic_vector(31 downto 0);
-             Zero        : out std_logic;
-             ov          : out std_logic;
-             Bus_S       : out std_logic_vector(31 downto 0);
-             Bus_mult_HI : out std_logic_vector(31 downto 0);
-             Bus_mult_LO : out std_logic_vector(31 downto 0));
+        port(clk          : in  std_logic;
+             rst          : in  std_logic;
+             sv           : in  std_logic;
+             TestMult     : in  std_logic;
+             MT           : in  std_logic;
+             HIorLO       : in  std_logic;
+             ALUop        : in  std_logic_vector(3 downto 0);
+             shamt        : in  std_logic_vector(4 downto 0);
+             Bus_A        : in  std_logic_vector(31 downto 0);
+             Bus_B        : in  std_logic_vector(31 downto 0);
+             Zero         : out std_logic;
+             ov           : out std_logic;
+             Bus_S        : out std_logic_vector(31 downto 0);
+             Bus_mult_HI  : out std_logic_vector(31 downto 0);
+             Bus_mult_LO  : out std_logic_vector(31 downto 0));
     end component alu_top;
 
     --Inputs
@@ -47,6 +47,7 @@ architecture Behavioral of alu_top_tb is
 
     -- Clock period definitions
     constant clk_period : time := 20 ns;
+    constant mult_pipe  : boolean := true;
 
     constant ADDOP      : std_logic_vector(3 downto 0) := "1000";
     constant ADDUOP     : std_logic_vector(3 downto 0) := "1001";
@@ -66,21 +67,22 @@ begin
 
     -- Instantiate the Unit Under Test (UUT)
     uut: alu_top
-        port map(clk         => clk,
-                 rst         => rst,
-                 sv          => sv,
-                 TestMult    => TestMult,
-                 MT          => MT,
-                 HIorLO      => HIorLO,
-                 ALUop       => ALUop,
-                 shamt       => shamt,
-                 Bus_A       => Bus_A,
-                 Bus_B       => Bus_B,
-                 Zero        => Zero,
-                 ov          => ov,
-                 Bus_S       => Bus_S,
-                 Bus_mult_HI => Bus_mult_HI,
-                 Bus_mult_LO => Bus_mult_LO);
+        generic map(mult_pipe => mult_pipe)
+        port map(clk          => clk,
+                 rst          => rst,
+                 sv           => sv,
+                 TestMult     => TestMult,
+                 MT           => MT,
+                 HIorLO       => HIorLO,
+                 ALUop        => ALUop,
+                 shamt        => shamt,
+                 Bus_A        => Bus_A,
+                 Bus_B        => Bus_B,
+                 Zero         => Zero,
+                 ov           => ov,
+                 Bus_S        => Bus_S,
+                 Bus_mult_HI  => Bus_mult_HI,
+                 Bus_mult_LO  => Bus_mult_LO);
 
     -- Clock process definitions
     clk_process :process

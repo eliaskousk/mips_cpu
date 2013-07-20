@@ -57,6 +57,7 @@ begin
         if(DMWT(2) = '1') then      -- LW, SW
             data_read   <= data_dmd_in;
             data_write  <= data_mdr_in;
+            data_we     <= "1111";
         elsif(DMWT(1) = '1') then   -- LH, LHU, SH
             if(lsbits = "00") then
                 data_read(15 downto 0)      <= data_dmd_in(15 downto 0);
