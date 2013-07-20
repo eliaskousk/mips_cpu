@@ -131,23 +131,23 @@ slt:    slti    $7, $6, 0xBBBB                  # Reg[07] = x"00000001",        
         sltu    $10, $5, $6                     # Reg[10] = x"00000000",        Bus_w = x"00000000",    PC=304 x"00"
         sw      $10, 148($1)                    # DM(148) = x"00000000",        Bus_w = x"FFFFFFFF",    PC=308 x"24"
 
-beq:    beq     $3, $7, 0x148                   # Branch taken
+beq:    beq     $3, $7, 0x144                   # Branch taken
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=316 x"00"
         sw      $11, 152($1)                    # DM(152) = x"--------",        Bus_w = x"FFFFFFFF",    PC=320 x"24"
 
-bne:    bne     $3, $7, 0x154                   # Branch not taken
+bne:    bne     $3, $7, 0x150                   # Branch not taken
         addu    $11, $11, $2                    # Reg[11] = x"00003333",        Bus_w = x"00000000",    PC=328 x"00"
         sw      $11, 156($1)                    # DM(156) = x"00003333",        Bus_w = x"FFFFFFFF",    PC=332 x"24"
 
-blez:   blez    $3, 0x160                       # Branch not taken
+blez:   blez    $3, 0x15C                       # Branch not taken
         addu    $11, $11, $2                    # Reg[11] = x"00004444",        Bus_w = x"00000000",    PC=340 x"00"
         sw      $11, 160($1)                    # DM(160) = x"00004444",        Bus_w = x"FFFFFFFF",    PC=344 x"24"
 
-bgtz:   bgtz    $3, 0x16C                       # Branch taken
+bgtz:   bgtz    $3, 0x168                       # Branch taken
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=352 x"00"
         sw      $11, 164($1)                    # DM(164) = x"--------",        Bus_w = x"FFFFFFFF",    PC=356 x"24"
 
-bltz:   bltz    $3, 0x178                       # Branch not taken
+bltz:   bltz    $3, 0x174                       # Branch not taken
         addu    $11, $11, $2                    # Reg[11] = x"00005555",        Bus_w = x"00000000",    PC=364 x"00"
         sw      $11, 168($1)                    # DM(168) = x"00005555",        Bus_w = x"FFFFFFFF",    PC=368 x"24"
 
