@@ -131,27 +131,27 @@ slt:    slti    $7, $6, 0xBBBB                  # Reg[07] = x"00000001",        
         sltu    $10, $5, $6                     # Reg[10] = x"00000000",        Bus_w = x"00000000",    PC=304 x"00"
         sw      $10, 148($1)                    # DM(148) = x"00000000",        Bus_w = x"FFFFFFFF",    PC=308 x"24"
 
-beq:    beq     $3, $7, 0x154                   # Branch taken
+beq:    beq     $3, $7, 0x150                   # Branch taken
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=316 x"00"
         sw      $11, 152($1)                    # DM(152) = x"--------",        Bus_w = x"FFFFFFFF",    PC=320 x"24"
 
-bne:    bne     $3, $7, 0x164                   # Branch not taken
+bne:    bne     $3, $7, 0x160                   # Branch not taken
         addu    $11, $11, $2                    # Reg[11] = x"00003333",        Bus_w = x"00000000",    PC=328 x"00"
         sw      $11, 156($1)                    # DM(156) = x"00003333",        Bus_w = x"FFFFFFFF",    PC=332 x"24"
 
-blez:   blez    $3, 0x174                       # Branch not taken
+blez:   blez    $3, 0x170                       # Branch not taken
         addu    $11, $11, $2                    # Reg[11] = x"00004444",        Bus_w = x"00000000",    PC=340 x"00"
         sw      $11, 160($1)                    # DM(160) = x"00004444",        Bus_w = x"FFFFFFFF",    PC=344 x"24"
 
-bgtz:   bgtz    $3, 0x184                       # Branch taken
+bgtz:   bgtz    $3, 0x180                       # Branch taken
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=352 x"00"
         sw      $11, 164($1)                    # DM(164) = x"--------",        Bus_w = x"FFFFFFFF",    PC=356 x"24"
 
-bltz:   bltz    $3, 0x194                       # Branch not taken
+bltz:   bltz    $3, 0x190                       # Branch not taken
         addu    $11, $11, $2                    # Reg[11] = x"00005555",        Bus_w = x"00000000",    PC=364 x"00"
         sw      $11, 168($1)                    # DM(168) = x"00005555",        Bus_w = x"FFFFFFFF",    PC=368 x"24"
 
-bgez:   bgez    $3, 0x1A4                       # Branch taken
+bgez:   bgez    $3, 0x1A0                      # Branch taken
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=376 x"00"
         sw      $11, 172($1)                    # DM(172) = x"--------",        Bus_w = x"FFFFFFFF",    PC=380 x"24"
 
