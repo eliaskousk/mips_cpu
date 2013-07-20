@@ -60,4 +60,4 @@ $(PROGRAMS_BUILD_DIR)/%.code: $(PROGRAMS_DIR)/%.s
 	$(AS_MIPS) -O0 -mips3 -o $(PROGRAMS_BUILD_DIR)/$*.o $<
 	$(LD_MIPS) -EL -Ttext 0x00000000 -emain -Map $(PROGRAMS_BUILD_DIR)/$*.map -s -N -o $(PROGRAMS_BUILD_DIR)/$* $(PROGRAMS_BUILD_DIR)/$*.o
 	$(DUMP_MIPS) --prefix-address --show-raw-insn --disassemble --disassemble-zeroes $(PROGRAMS_BUILD_DIR)/$* > $(PROGRAMS_BUILD_DIR)/$*.disasm
-	cat $(PROGRAMS_BUILD_DIR)/$*.disasm | tail -n+6 | cut -f1 | cut -f2 -d' ' > $(PROGRAMS_BUILD_DIR)/$*.code
+	cat $(PROGRAMS_BUILD_DIR)/$*.disasm | tail -n+6 | sed '/nop/d' | cut -f1 | cut -f2 -d' ' > $(PROGRAMS_BUILD_DIR)/$*.code
