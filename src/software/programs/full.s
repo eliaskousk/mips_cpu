@@ -6,11 +6,13 @@
 # without any particular purpose
 # =================================
 
-        .text                                   # Text section
+        .set noat
 
         .globl main                             # Call main by SPIM
 
-setup:  add     $1, $0, $0                      # Reg[01] = x"00000000",        Bus_w = x"00000000",    PC=00 x"00"
+        .text                                   # Text section
+
+main:   add     $1, $0, $0                      # Reg[01] = x"00000000",        Bus_w = x"00000000",    PC=00 x"00"
 
         addiu   $2, $0, 0x1111                  # Reg[02] = x"00001111",        Bus_w = x"00001111",    PC=04 x"04"
         sw      $2, 0($1)                       # DM(0)   = x"00001111",        Bus_w = x"00001111",    PC=08 x"08"

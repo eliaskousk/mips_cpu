@@ -1,12 +1,12 @@
           .data
 
 theArray: .space 160
-  
-          .text
 
           .globl main                # Call main by SPIM
 
-main      .word 0x3C1D7FFF , 0x37BDEBA0 , 0x3C1C1000 , 0x379C8000
+          .text
+
+main:     .word 0x3C1D7FFF , 0x37BDEBA0 , 0x3C1C1000 , 0x379C8000
 
           li    $t6, 1              # Sets t6 to 1
           li    $t7, 4              # Sets t7 to 4

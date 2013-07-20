@@ -47,9 +47,9 @@ matrixP:    .space  256
 #           .word   1039029, 1544299, 1883597, 1362841, 1525494, 1919119, 1033671, 2040519
 #           .word   1194940, 1477520, 1575392, 1229177, 1809521, 1944500, 1064533, 1944320
 
-            .text                         # Text Section
-
             .globl main                   # Call main by SPIM
+
+            .text                         # Text Section
 
 main:       addiu   $v0, $zero, 0x8       # size = 8
             addiu   $v1, $zero, 0x20
