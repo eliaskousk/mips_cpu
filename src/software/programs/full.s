@@ -155,12 +155,12 @@ bgez:   bgez    $3, jr                          # Branch taken
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=376 x"00"
         sw      $11, 172($1)                    # DM(172) = x"--------",        Bus_w = x"FFFFFFFF",    PC=380 x"24"
 
-jr:     addiu   $12, 0x190                      # Reg[12] = x"00000178",        Bus_w = x"00000000",    PC=384 x"00"
+jr:     addiu   $12, $0, 0x190                  # Reg[12] = x"00000190",        Bus_w = x"00000000",    PC=384 x"00"
         jr      $12                             # Reg[XX] = x"XXXXXXXX",        Bus_w = x"XXXXXXXX",    PC=388 x"00"
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=392 x"00"
         sw      $11, 176($1)                    # DM(176) = x"--------",        Bus_w = x"FFFFFFFF",    PC=396 x"24"
 
-jalr:   addiu   $12, 0x1A0                      # Reg[12] = x"00000188",        Bus_w = x"00000000",    PC=400 x"00"
+jalr:   addiu   $12, $0, 0x1A0                  # Reg[12] = x"00000188",        Bus_w = x"00000000",    PC=400 x"00"
         jalr    $12                             # Reg[31] = x"00000180",        Bus_w = x"00000000",    PC=404 x"00"
         addu    $11, $11, $2                    # Reg[11] = x"--------",        Bus_w = x"00000000",    PC=408 x"00"
         sw      $11, 180($1)                    # DM(180) = x"--------",        Bus_w = x"FFFFFFFF",    PC=412 x"24"
