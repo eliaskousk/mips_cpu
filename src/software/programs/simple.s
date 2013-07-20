@@ -7,10 +7,10 @@
 # ==============================
 
         .text                           # Text section
+
         .globl main                     # Call main by SPIM
 
-main:
-        addiu   $2, $0, 0x2222          # Reg[02] = x"00002222",                Bus_w = x"00002222"     PC=00 x"00" 
+main:   addiu   $2, $0, 0x2222          # Reg[02] = x"00002222",                Bus_w = x"00002222"     PC=00 x"00" 
         addiu   $3, $0, 0x5555          # Reg[03] = x"00005555",                Bus_w = x"00005555"     PC=04 x"04"
         subu    $4, $3, $2              # Reg[04] = x"00003333",                Bus_w = x"00003333"     PC=08 x"08"
 

@@ -4,9 +4,11 @@ theArray: .space 160
   
           .text
 
-          .word 0x3C1D7FFF , 0x37BDEBA0 , 0x3C1C1000 , 0x379C8000
+          .globl main                # Call main by SPIM
 
-main:     li    $t6, 1              # Sets t6 to 1
+main      .word 0x3C1D7FFF , 0x37BDEBA0 , 0x3C1C1000 , 0x379C8000
+
+          li    $t6, 1              # Sets t6 to 1
           li    $t7, 4              # Sets t7 to 4
           sw    $t6, theArray($0)   # Sets the first term to 1
           sw    $t6, theArray($t7)  # Sets the second term to 1
