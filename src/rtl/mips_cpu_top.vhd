@@ -46,6 +46,7 @@ architecture Structural of mips_cpu_top is
                 rst         : in  std_logic;
                 OPCODE      : in  std_logic_vector(5 downto 0);
                 FUNCT       : in  std_logic_vector(5 downto 0);
+                RT          : in  std_logic_vector(4 downto 0);
                 SorZ        : out std_logic;
                 BorI        : out std_logic;
                 ALUop       : out std_logic_vector(3 downto 0);
@@ -74,6 +75,7 @@ architecture Structural of mips_cpu_top is
                 PC_write    : out std_logic;
                 IR_write    : out std_logic;
                 MAR_write   : out std_logic;
+                DMD_read    : out std_logic;
                 DMD_write   : out std_logic;
                 RF_write    : out std_logic;
                 HI_write    : out std_logic;
@@ -87,6 +89,7 @@ architecture Structural of mips_cpu_top is
                 PC_write        : in  std_logic;
                 RF_write        : in  std_logic;
                 MAR_write       : in  std_logic;
+                DMD_read        : in  std_logic;
                 DMD_write       : in  std_logic;
                 HI_write        : in  std_logic;
                 LO_write        : in  std_logic;
@@ -111,6 +114,7 @@ architecture Structural of mips_cpu_top is
                 Bus_DMDin       : in std_logic_vector(31 downto 0);
                 opcode          : out std_logic_vector(5 downto 0);
                 funct           : out std_logic_vector(5 downto 0);
+                rt              : out std_logic_vector(4 downto 0);
                 Bus_FLAGSout    : out std_logic_vector(4 downto 0);
                 Bus_PCout       : out std_logic_vector(31 downto 0);
                 Bus_ALUout      : out std_logic_vector(31 downto 0);
@@ -126,6 +130,7 @@ architecture Structural of mips_cpu_top is
     signal IR_write     : std_logic;
     signal RF_write     : std_logic;
     signal MAR_write    : std_logic;
+    signal DMD_read     : std_logic;
     signal DMD_write    : std_logic;
     signal HI_write     : std_logic;
     signal LO_write     : std_logic;
@@ -149,6 +154,7 @@ architecture Structural of mips_cpu_top is
     signal ALUop        : std_logic_vector(3 downto 0);
     signal opcode       : std_logic_vector(5 downto 0);
     signal funct        : std_logic_vector(5 downto 0);
+    signal rt           : std_logic_vector(4 downto 0);
     signal Bus_Flags    : std_logic_vector(4 downto 0);
     signal Bus_PCout    : std_logic_vector(31 downto 0);
     signal Bus_IRin     : std_logic_vector(31 downto 0);
@@ -156,8 +162,12 @@ architecture Structural of mips_cpu_top is
     signal Bus_DMA      : std_logic_vector(31 downto 0);
     signal Bus_DMDin    : std_logic_vector(31 downto 0);
     signal Bus_DMDout   : std_logic_vector(31 downto 0);
+    
+    signal dm_enable    : std_logic_vector(3 downto 0);
 
     begin
+
+    dm_enable <=  (others => DMD_read or DMD_write);
 
     INSTMEM : im_bram_top
     port map(   clk         => clk,
@@ -167,7 +177,7 @@ architecture Structural of mips_cpu_top is
 
     DATAMEM : dm_bram_top
     port map(   clk         => clk,
-                en          => "1111",
+                en          => dm_enable,
                 we          => Bus_DMWE,
                 ssr         => "0000",
                 address     => Bus_DMA(12 downto 2),
@@ -180,6 +190,7 @@ architecture Structural of mips_cpu_top is
                 rst         => rst,
                 OPCODE      => opcode,
                 FUNCT       => funct,
+                RT          => rt,
                 SorZ        => SorZ,
                 BorI        => BorI,
                 ALUop       => ALUop,
@@ -207,6 +218,7 @@ architecture Structural of mips_cpu_top is
                 PC_write    => PC_write,
                 IR_write    => IR_write,
                 MAR_write   => MAR_write,
+                DMD_read    => DMD_read,
                 DMD_write   => DMD_write,
                 RF_write    => RF_write,
                 HI_write    => HI_write,
@@ -219,6 +231,7 @@ architecture Structural of mips_cpu_top is
                 PC_write        => PC_write,
                 RF_write        => RF_write,
                 MAR_write       => MAR_write,
+                DMD_read        => DMD_read,
                 DMD_write       => DMD_write,
                 HI_write        => HI_write,
                 LO_write        => LO_write,
@@ -243,6 +256,7 @@ architecture Structural of mips_cpu_top is
                 Bus_DMDin       => Bus_DMDout,
                 opcode          => opcode,
                 funct           => funct,
+                rt              => rt,
                 Bus_PCout       => Bus_PCout,
                 Bus_ALUout      => ALU,
                 Bus_HIout       => HI,

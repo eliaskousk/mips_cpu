@@ -75,7 +75,7 @@ begin
                 shift_in    => Bus_B,
                 shift_out   => output);
 
-    shift       <= Bus_A(4 downto 0) when (sv = '1') else shamt;
+    shift       <= Bus_A(4 downto 0) when (sv = '1') else "10000" when (HIorLO = '1' and ALUop = "0000") else shamt;
     Bus_mult_HI <= tmp_result_hi when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '1') else (others => '-');
     Bus_mult_LO <= tmp_result_lo when (ALUop(1 downto 0) = "00" and MT = '0') else Bus_A when (MT = '1' and HIorLO = '0') else (others => '-');
     Zero        <= '1' when (A_out = X"00000000") else '0';

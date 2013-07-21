@@ -15,6 +15,7 @@ architecture Behavioral of datapath_top_tb is
              PC_write       : in  std_logic;
              RF_write       : in  std_logic;
              MAR_write      : in  std_logic;
+             DMD_read       : in  std_logic;
              DMD_write      : in  std_logic;
              HI_write       : in  std_logic;
              LO_write       : in  std_logic;
@@ -37,6 +38,7 @@ architecture Behavioral of datapath_top_tb is
              Bus_DMDin      : in  std_logic_vector(31 downto 0);
              opcode         : out std_logic_vector(5 downto 0);
              funct          : out std_logic_vector(5 downto 0);
+             rt             : out std_logic_vector(4 downto 0);
              Bus_FLAGSout   : out std_logic_vector(4 downto 0);
              Bus_PCout      : out std_logic_vector(31 downto 0);
              Bus_ALUout     : out std_logic_vector(31 downto 0);
@@ -54,6 +56,7 @@ architecture Behavioral of datapath_top_tb is
     signal PC_write         : std_logic := '0';
     signal RF_write         : std_logic := '0';
     signal MAR_write        : std_logic := '0';
+    signal DMD_read         : std_logic := '0';
     signal DMD_write        : std_logic := '0';
     signal HI_write         : std_logic := '0';
     signal LO_write         : std_logic := '0';
@@ -78,6 +81,7 @@ architecture Behavioral of datapath_top_tb is
     --Outputs
     signal opcode           : std_logic_vector(5 downto 0);
     signal funct            : std_logic_vector(5 downto 0);
+    signal rt               : std_logic_vector(4 downto 0);
     signal Bus_FLAGSout     : std_logic_vector(4 downto 0);
     signal Bus_PCout        : std_logic_vector(31 downto 0);
     signal Bus_ALUout       : std_logic_vector(31 downto 0);
@@ -102,6 +106,7 @@ begin
                  PC_write       => PC_write,
                  RF_write       => RF_write,
                  MAR_write      => MAR_write,
+                 DMD_read       => DMD_read,
                  DMD_write      => DMD_write,
                  HI_write       => HI_write,
                  LO_write       => LO_write,
@@ -124,6 +129,7 @@ begin
                  Bus_DMDin      => Bus_DMDin,
                  opcode         => opcode,
                  funct          => funct,
+                 rt             => rt,
                  Bus_FLAGSout   => Bus_FLAGSout,
                  Bus_PCout      => Bus_PCout,
                  Bus_ALUout     => Bus_ALUout,

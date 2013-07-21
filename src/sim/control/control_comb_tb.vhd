@@ -15,6 +15,7 @@ architecture Behavioral of control_comb_tb is
              rst          : in  std_logic;
              OPCODE       : in  std_logic_vector(5 downto 0);
              FUNCT        : in  std_logic_vector(5 downto 0);
+             RT           : in  std_logic_vector(4 downto 0);
              SorZ         : out std_logic;
              BorI         : out std_logic;
              ALUop        : out std_logic_vector(3 downto 0);
@@ -37,6 +38,7 @@ architecture Behavioral of control_comb_tb is
     signal rst                  : std_logic := '0';
     signal OPCODE               : std_logic_vector(5 downto 0) := (others => '0');
     signal FUNCT                : std_logic_vector(5 downto 0) := (others => '0');
+    signal RT                   : std_logic_vector(4 downto 0) := (others => '0');
 
     --Outputs
     signal SorZ                 : std_logic;
@@ -70,6 +72,7 @@ begin
                  rst          => rst,
                  OPCODE       => OPCODE,
                  FUNCT        => FUNCT,
+                 RT           => RT,
                  SorZ         => SorZ,
                  BorI         => BorI,
                  ALUop        => ALUop,

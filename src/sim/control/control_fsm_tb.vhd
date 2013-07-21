@@ -18,6 +18,7 @@ architecture Behavioral of control_fsm_tb is
              PC_write     : out std_logic;
              IR_write     : out std_logic;
              MAR_write    : out std_logic;
+             DMD_read     : out std_logic;
              DMD_write    : out std_logic;
              RF_write     : out std_logic;
              HI_write     : out std_logic;
@@ -34,6 +35,7 @@ architecture Behavioral of control_fsm_tb is
     signal PC_write             : std_logic;
     signal IR_write             : std_logic;
     signal MAR_write            : std_logic;
+    signal DMD_read             : std_logic;
     signal DMD_write            : std_logic;
     signal RF_write             : std_logic;
     signal HI_write             : std_logic;
@@ -57,6 +59,7 @@ begin
                  PC_write      => PC_write,
                  IR_write      => IR_write,
                  MAR_write     => MAR_write,
+                 DMD_read      => DMD_read,
                  DMD_write     => DMD_write,
                  RF_write      => RF_write,
                  HI_write      => HI_write,

@@ -76,6 +76,7 @@ entity control_comb is
             rst         : in  std_logic;
             OPCODE      : in  std_logic_vector(5 downto 0);
             FUNCT       : in  std_logic_vector(5 downto 0);
+            RT          : in  std_logic_vector(4 downto 0);
             SorZ        : out std_logic;
             BorI        : out std_logic;
             ALUop       : out std_logic_vector(3 downto 0);
@@ -152,7 +153,7 @@ architecture Behavioral of control_comb is
 
 begin
 
-    cntr_comb: process (clk, rst, OPCODE, FUNCT)
+    cntr_comb: process (clk, rst, OPCODE, FUNCT, RT)
     begin
 
         if(rst = '1') then
@@ -353,7 +354,7 @@ begin
                     TestMult    <= '0';
 
                 when BLTZ =>
-        --      when BGEZ =>
+                -- when BGEZ =>
                     SorZ        <= '1';
                     BorI        <= '1';
                     ALUop       <= "1010";
@@ -366,7 +367,7 @@ begin
                     Link        <= '-';
                     RorI        <= '-';
                     BranchType  <= "11";
-                    NEorEQ      <= '1';     -- Wrong for BLTZ
+                    NEorEQ      <= RT(0);
                     RTZero      <= '1';
                     Jump        <= '0';
                     JumpPSD     <= '-';
@@ -582,13 +583,13 @@ begin
                     TestMult    <= '0';
 
                 when LUI =>
-                    SorZ        <= '0';
+                    SorZ        <= '-';
                     BorI        <= '0';
                     ALUop       <= "0000";
                     sv          <= '-';
                     MF          <= '0';
                     MT          <= '-';
-                    HIorLO      <= '-';
+                    HIorLO      <= '1';
                     DMorALU     <= '0';
                     DMWT        <= "---";
                     Link        <= '0';
@@ -1120,7 +1121,9 @@ begin
                     TestMult    <= '-';
             
             end case;
+
         end if;
+
     end process;
 
 end Behavioral;

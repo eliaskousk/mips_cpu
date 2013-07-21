@@ -59,7 +59,11 @@ begin
 
         X <= X"11111111";
         Y <= X"22222222";
-        wait for clk_period * 10;
+        wait for clk_period * 4;
+        
+        X <= X"FFFF0000";
+        Y <= X"00002222";
+        wait for clk_period * 4;
 
         wait;
     end process;

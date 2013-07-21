@@ -75,6 +75,7 @@ entity control_fsm is
             PC_write    : out std_logic;
             IR_write    : out std_logic;
             MAR_write   : out std_logic;
+            DMD_read    : out std_logic;
             DMD_write   : out std_logic;
             RF_write    : out std_logic;
             HI_write    : out std_logic;
@@ -350,6 +351,9 @@ begin
                     '0';
 
     MAR_write   <=  '1' when current_state = S2A else
+                    '0';
+
+    DMD_read    <=  '1' when current_state = S3 else
                     '0';
 
     DMD_write   <=  '1' when current_state = S4B else

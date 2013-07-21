@@ -8,6 +8,7 @@ entity datapath_top is
             PC_write        : in  std_logic;
             RF_write        : in  std_logic;
             MAR_write       : in  std_logic;
+            DMD_read        : in  std_logic;
             DMD_write       : in  std_logic;
             HI_write        : in  std_logic;
             LO_write        : in  std_logic;
@@ -32,6 +33,7 @@ entity datapath_top is
             Bus_DMDin       : in std_logic_vector(31 downto 0);
             opcode          : out std_logic_vector(5 downto 0);
             funct           : out std_logic_vector(5 downto 0);
+            rt              : out std_logic_vector(4 downto 0);
             Bus_FLAGSout    : out std_logic_vector(4 downto 0);
             Bus_PCout       : out std_logic_vector(31 downto 0);
             Bus_ALUout      : out std_logic_vector(31 downto 0);
@@ -226,6 +228,7 @@ begin
 
     opcode          <= Bus_IRin(31 downto 26);
     funct           <= Bus_IRin(5 downto 0);
+    rt              <= BUS_IRin(20 downto 16);
     Bus_FLAGSout    <= FlagE(0) & Bus_FLAGS;
     Bus_PCout       <= Bus_PC;
     Bus_ALUout      <= Bus_ALU;
