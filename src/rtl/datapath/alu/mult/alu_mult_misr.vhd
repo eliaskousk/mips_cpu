@@ -19,13 +19,13 @@ begin
 
     data_in <= data_in_hi & data_in_lo;
 
-    process (clk)
+    process(clk, rst)
         variable lfsr_tap : std_logic;
     begin
 
-    if (clk'event and clk = '1') then
+    if(clk'event and clk = '1') then
         if rst = '1' then
-            lfsr_reg <= data_in;
+            lfsr_reg    <= data_in;
         else
             lfsr_tap    := lfsr_reg(0) xor lfsr_reg(1) xor lfsr_reg(3) xor lfsr_reg(4);
             lfsr_reg    <= (lfsr_reg(62 downto 0) & lfsr_tap) xor data_in;

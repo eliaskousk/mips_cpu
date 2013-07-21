@@ -14,12 +14,12 @@ end alu_mult_lfsr;
 
 architecture Behavioral of alu_mult_lfsr is
 
-    constant last_vector    : std_logic_vector(63 downto 0) := X"FFFFFFFFFFFFFFFF";
+    constant last_vector    : std_logic_vector(63 downto 0) := X"5F670D48BECE1A91";
     signal lfsr_reg         : std_logic_vector(63 downto 0);
 
 begin
 
-    process (clk, rst, enable, seed_hi, seed_lo)
+    process (clk, rst, enable, seed_hi, seed_lo, lfsr_reg)
         variable lfsr_tap : std_logic;
     begin
         if(rst = '1') then

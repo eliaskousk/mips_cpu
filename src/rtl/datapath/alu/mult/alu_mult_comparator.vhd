@@ -14,12 +14,12 @@ end entity alu_mult_comparator;
 
 architecture Behavioral of alu_mult_comparator is
 
-    constant lfsr_hi_correct    : std_logic_vector(31 downto 0) := X"AAAAAAAA";
-    constant lfsr_lo_correct    : std_logic_vector(31 downto 0) := X"BBBBBBBB";
-    constant counter_hi_correct : std_logic_vector(31 downto 0) := X"CCCCCCCC";
-    constant counter_lo_correct : std_logic_vector(31 downto 0) := X"DDDDDDDD";
-    constant atpg_hi_correct    : std_logic_vector(31 downto 0) := X"EEEEEEEE";
-    constant atpg_lo_correct    : std_logic_vector(31 downto 0) := X"FFFFFFFF";
+    constant lfsr_hi_correct    : std_logic_vector(31 downto 0) := X"C018CB25";  
+    constant lfsr_lo_correct    : std_logic_vector(31 downto 0) := X"1750F803";
+    constant counter_hi_correct : std_logic_vector(31 downto 0) := X"F4DA9748";
+    constant counter_lo_correct : std_logic_vector(31 downto 0) := X"F9DBB48A";
+    constant atpg_hi_correct    : std_logic_vector(31 downto 0) := X"C921B21F";
+    constant atpg_lo_correct    : std_logic_vector(31 downto 0) := X"41721733";
 
 begin
 

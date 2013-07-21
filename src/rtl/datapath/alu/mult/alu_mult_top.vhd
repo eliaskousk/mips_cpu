@@ -20,6 +20,7 @@ architecture Structural of alu_mult_top is
              rst          : in  std_logic;
              bist_init    : in  std_logic;
              bist_finish  : in  std_logic_vector(2 downto 0);
+             bist_start   : out std_logic;
              bist_check   : out std_logic;
              bist_mode    : out std_logic_vector(1 downto 0);
              bist_enable  : out std_logic_vector(2 downto 0);
@@ -119,6 +120,7 @@ architecture Structural of alu_mult_top is
     signal bist_enable          : std_logic_vector(2 downto 0);
     signal bist_mode            : std_logic_vector(1 downto 0);
     signal bist_check           : std_logic;
+    signal bist_start           : std_logic;
 
 begin
 
@@ -127,6 +129,7 @@ begin
                  rst          => rst,
                  bist_init    => bist_init,
                  bist_finish  => bist_finish,
+                 bist_start   => bist_start,
                  bist_check   => bist_check,
                  bist_mode    => bist_mode,
                  bist_enable  => bist_enable,
@@ -184,7 +187,7 @@ begin
 
     MULT_MISR : alu_mult_misr
         port map(clk          => clk,
-                 rst          => rst,
+                 rst          => bist_start,
                  data_in_hi   => product_hi,
                  data_in_lo   => product_lo,
                  signature_hi => signature_hi,
@@ -198,7 +201,6 @@ begin
                  data_in_hi => signature_hi,
                  data_in_lo => signature_lo,
                  fail       => bist_fail);
-
 
     P_HI        <= product_hi;
     P_LO        <= product_lo;

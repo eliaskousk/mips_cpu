@@ -28,7 +28,8 @@ architecture Behavioral of alu_mult_atpg is
              data_vector : out std_logic_vector(31 downto 0));
     end component alu_mult_atpg_bram_lo;
 
-    signal address  : std_logic_vector(6 downto 0);
+    signal address          : std_logic_vector(6 downto 0);
+    constant last_address   : std_logic_vector(6 downto 0) := "1101100"; -- Total vectors = 108
 
 begin
 
@@ -42,7 +43,7 @@ begin
                 if (enable = '0') then
                     address <= (others => '0');
                     finish  <= '0';
-                elsif enable = '1' and address = X"7F" then
+                elsif enable = '1' and address = last_address then
                     address <= (others => '0');
                     finish  <= '1';
                 else
