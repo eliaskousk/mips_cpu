@@ -50,6 +50,15 @@ full: $(PROGRAMS_BUILD_DIR)/full.code $(TOOLS_DIR)create_imem
 matrix: $(PROGRAMS_BUILD_DIR)/matrix.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
+lfsr: $(PROGRAMS_BUILD_DIR)/lfsr.code $(TOOLS_DIR)create_imem
+	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
+
+counter: $(PROGRAMS_BUILD_DIR)/misr.code $(TOOLS_DIR)create_imem
+	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
+
+atpg: $(PROGRAMS_BUILD_DIR)/misr.code $(TOOLS_DIR)create_imem
+	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
+
 misr: $(PROGRAMS_BUILD_DIR)/misr.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 

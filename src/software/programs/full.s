@@ -173,6 +173,7 @@ jal:    jal     0x1B8                           # Reg[31] = x"000001B0",        
         addu    $11, $11, $2                    # Reg[11] = x"00005555",        Bus_w = x"XXXXXXXX",    PC=432 x"1B0"
         sw      $11, 188($1)                    # DM(188) = x"00000000",        Bus_w = x"XXXXXXXX",    PC=436 x"1B4"
 
+# Replace the 2nd to last instruction (add $0, $0, $0 = 00000020) with the test one (test = c0000000)
 test:   add     $0, $0, $0                      # Reg[XX] = x"XXXXXXXX",        Bus_w = x"XXXXXXXX",    PC=440 x"1B8"
 
 end:    addu    $11, $11, $2                    # Reg[11] = x"00006666",        Bus_w = x"00006666",    PC=444 x"1BC"

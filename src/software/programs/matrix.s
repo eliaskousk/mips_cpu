@@ -67,12 +67,14 @@ multloop:   mul     $t0, $s0, $v0         # create A[i][k] address
             add     $t1, $t0, $s1         # (k * 32) + (4 * j)
             lw      $t5, matrixB($t1)     # load B[k][j]
 
-            mul     $t6, $t4, $t5         # A[i][k] * B[k][j]
+            mult    $t4, $t5              # A[i][k] * B[k][j]
+            mflo    $t6                   # Get mult result
             add     $t3, $t3, $t6         # P[i][j] = P[i][j] + A[i][k] * B[k][j]
             addiu   $s2, $s2, 0x4         # k++ and test inner loop condition
             bne     $s2, $v1, multloop    # loop inner
 
-            mul     $t0, $s0, $v0         # create P[i][j] address
+            mult    $s0, $v0              # create P[i][j] address
+            mflo    $t0                   # Get result
             add     $t1, $t0, $s1         # (i * n) + j
             sw      $t3, matrixP($t1)     # store P[i][j]
 
