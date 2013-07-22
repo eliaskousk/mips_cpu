@@ -10,8 +10,7 @@ entity datapath_top is
             MAR_write       : in  std_logic;
             DMD_read        : in  std_logic;
             DMD_write       : in  std_logic;
-            HI_write        : in  std_logic;
-            LO_write        : in  std_logic;
+            HILO_write      : in  std_logic;
             RorI            : in  std_logic;
             SorZ            : in  std_logic;
             BorI            : in  std_logic;
@@ -212,6 +211,8 @@ architecture Structural of datapath_top is
     signal Zero         : std_logic;
     signal Overflow     : std_logic;
     signal bist_fail    : std_logic;
+    signal HI_we        : std_logic;
+    signal LO_we        : std_logic;
 
     signal Bus_ALUO     : std_logic_vector(31 downto 0);
     signal Bus_HI       : std_logic_vector(31 downto 0);
@@ -232,11 +233,13 @@ begin
     Bus_FLAGSout    <= FlagE(0) & Bus_FLAGS;
     Bus_PCout       <= Bus_PC;
     Bus_ALUout      <= Bus_ALU;
-    Bus_HIout   <= Bus_HI;
-    Bus_LOout   <= Bus_LO;
+    Bus_HIout       <= Bus_HI;
+    Bus_LOout       <= Bus_LO;
     Bus_Wout        <= Bus_W;
-
     Bus_ALUFLAGS    <= bist_fail & Overflow & Bus_ALU(31) & Zero;
+    
+    HI_we           <= HILO_write or (HILO_write and MT and HIorLO);
+    LO_we           <= HILO_write or (HILO_write and MT and (not HIorLO));
 
     PC : reg_we
     port map(   clk         => clk,
@@ -304,14 +307,14 @@ begin
     HI : reg_we
     port map(   clk         => clk,
                 rst         => rst,
-                we          => HI_write,
+                we          => HI_we,
                 data_in     => Bus_MULTHI,
                 data_out    => Bus_HI);
 
     LO : reg_we
     port map(   clk         => clk,
                 rst         => rst,
-                we          => LO_write,
+                we          => LO_we,
                 data_in     => Bus_MULTLO,
                 data_out    => Bus_LO);
 

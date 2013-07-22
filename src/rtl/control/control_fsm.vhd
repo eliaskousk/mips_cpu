@@ -29,6 +29,8 @@ use ieee.numeric_std.all;
 -- NOR  $r1, $r2, $r3   Bitwise NOR
 -- XOR  $r1, $r2, $r3   Bitwise XOR
 
+-- MULT $r1, $r2        Multiply (signed numbers)
+
 -- MFHI $t1             Move from Hi
 -- MFLO $t1             Move from Lo
 -- MTHI $t1             Move to Hi
@@ -78,20 +80,19 @@ entity control_fsm is
             DMD_read    : out std_logic;
             DMD_write   : out std_logic;
             RF_write    : out std_logic;
-            HI_write    : out std_logic;
-            LO_write    : out  std_logic);
+            HILO_write    : out std_logic);
 end control_fsm;
 
 architecture Behavioral of control_fsm is
 
     -- state definition
-    type control_states is (S0, S1, S2A, S2B, S2C, S2C1, S2D, S2E, S2F, S3, S4A, S4B, S4C);
+    type control_states is (S0, S1, S2A, S2B, S2C, S2D, S2E, S2F, S3, S4A, S4B, S4C);
     signal current_state, next_state : control_states;
 
     -- OPCODE definition as constants
     constant RTYPE  : std_logic_vector(5 downto 0) := "000000"; -- 0x00
     constant BLTZ   : std_logic_vector(5 downto 0) := "000001"; -- 0x01
-    --constant BGEZ   : std_logic_vector(5 downto 0) := "000001"; -- 0x01
+    --constant BGEZ   : std_logic_vector(5 downto 0) := "000001"; -- 0x01   -- Don't need it because it has the same opcode
     constant J      : std_logic_vector(5 downto 0) := "000010"; -- 0x02
     constant JAL    : std_logic_vector(5 downto 0) := "000011"; -- 0x03
     constant BEQ    : std_logic_vector(5 downto 0) := "000100"; -- 0x04
@@ -179,7 +180,7 @@ begin
 
                 when S0 =>      mult_counter <= (others => '0');    
 
-                when S2C1 =>    if(mult_counter = mult_cycles) then
+                when S2D =>     if(mult_counter = mult_cycles) then
                                     mult_counter <= (others => '0');
                                 else
                                     mult_counter <= std_logic_vector(unsigned(mult_counter) + 1);
@@ -204,14 +205,6 @@ begin
         case current_state is
 
             when S0 =>      -- IF
-
-                --if(OPCODE = "000000" AND FUNCT = "000000") then
-                --    next_state      <= S0;
-                --elsif(OPCODE = "000000" and (FUNCT = MFHI or FUNCT = MFLO)) then
-                --    next_state      <= S4A;
-                --else
-                --    next_state      <= S1;
-                --end if;
                 
                 next_state <= S1;
 
@@ -220,7 +213,7 @@ begin
                 case OPCODE is
 
                     when BLTZ   =>  next_state  <= S2B;
-    --              when BGEZ   =>  next_state  <= S2B;
+                    -- when BGEZ   =>  next_state  <= S2B;
                     when J      =>  next_state  <= S4C;
                     when JAL    =>  next_state  <= S4A;
                     when BEQ    =>  next_state  <= S2B;
@@ -258,7 +251,7 @@ begin
                             when JALR   =>  next_state  <= S4A;
                             when MFHI   =>  next_state  <= S4A;
                             when MFLO   =>  next_state  <= S4A;
-                            when MTHI   =>  next_state  <= S2E;
+                            when MTHI   =>  next_state  <= S2F;
                             when MTLO   =>  next_state  <= S2F;
                             when MULTR  =>  next_state  <= S2C;
                             when ADDR   =>  next_state  <= S2B;
@@ -318,19 +311,17 @@ begin
 
                 end case;
             
-            when S2C =>     next_state <= S2C1;
+            when S2C =>     next_state <= S2D;
 
-            when S2C1 =>    if(mult_counter = mult_cycles) then    -- EX (MULT)
-                                next_state <= S2D;                 -- 4 cycles here for pipelined multiplier
+            when S2D =>    if(mult_counter = mult_cycles) then     -- EX (MULT)
+                                next_state <= S2E;                 -- 4 cycles here for pipelined multiplier
                             else                                   -- 1 cycle here for normal multiplier
-                                next_state  <= S2C1;
+                                next_state  <= S2D;
                             end if;
 
-            when S2D =>     next_state  <= S0;  -- EX & WB (MULT)
+            when S2E =>     next_state  <= S0;  -- EX & WB (MULT)
             
-            when S2E =>     next_state  <= S0;  -- EX & WB (MTHI)
-            
-            when S2F =>     next_state  <= S0;  -- EX & WB (MTLO)
+            when S2F =>     next_state  <= S0;  -- EX & WB (MTHI, MTLO)
 
             when S3 =>      next_state  <= S4A; -- MEM (LW, LH, LHU, LB, LBU)
 
@@ -362,19 +353,14 @@ begin
     RF_write    <=  '1' when current_state = S4A else
                     '0';
 
-    PC_write    <=  '1' when current_state = S2D
-                            or current_state = S2E
+    PC_write    <=  '1' when current_state = S2E
                             or current_state = S2F
                             or current_state = S4A
                             or current_state = S4B
                             or current_state = S4C else
                     '0';
 
-    HI_write    <=  '1' when current_state = S2D 
-                            or current_state = S2E else
-                    '0';
-
-    LO_write    <=  '1' when current_state = S2D 
+    HILO_write    <=  '1' when current_state = S2E
                             or current_state = S2F else
                     '0';
 

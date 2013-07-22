@@ -17,8 +17,7 @@ architecture Behavioral of datapath_top_tb is
              MAR_write      : in  std_logic;
              DMD_read       : in  std_logic;
              DMD_write      : in  std_logic;
-             HI_write       : in  std_logic;
-             LO_write       : in  std_logic;
+             HILO_write     : in  std_logic;
              RorI           : in  std_logic;
              SorZ           : in  std_logic;
              BorI           : in  std_logic;
@@ -58,8 +57,7 @@ architecture Behavioral of datapath_top_tb is
     signal MAR_write        : std_logic := '0';
     signal DMD_read         : std_logic := '0';
     signal DMD_write        : std_logic := '0';
-    signal HI_write         : std_logic := '0';
-    signal LO_write         : std_logic := '0';
+    signal HILO_write       : std_logic := '0';
     signal RorI             : std_logic := '0';
     signal SorZ             : std_logic := '0';
     signal BorI             : std_logic := '0';
@@ -108,8 +106,7 @@ begin
                  MAR_write      => MAR_write,
                  DMD_read       => DMD_read,
                  DMD_write      => DMD_write,
-                 HI_write       => HI_write,
-                 LO_write       => LO_write,
+                 HILO_write     => HILO_write,
                  RorI           => RorI,
                  SorZ           => SorZ,
                  BorI           => BorI,

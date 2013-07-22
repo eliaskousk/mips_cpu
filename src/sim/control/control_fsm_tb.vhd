@@ -21,8 +21,7 @@ architecture Behavioral of control_fsm_tb is
              DMD_read     : out std_logic;
              DMD_write    : out std_logic;
              RF_write     : out std_logic;
-             HI_write     : out std_logic;
-             LO_write     : out std_logic);
+             HILO_write   : out std_logic);
     end component control_fsm;
 
     --Inputs
@@ -39,7 +38,6 @@ architecture Behavioral of control_fsm_tb is
     signal DMD_write            : std_logic;
     signal RF_write             : std_logic;
     signal HI_write             : std_logic;
-    signal LO_write             : std_logic;
 
     signal mult_cycles_total    : std_logic_vector(3 downto 0);
 
@@ -62,8 +60,7 @@ begin
                  DMD_read      => DMD_read,
                  DMD_write     => DMD_write,
                  RF_write      => RF_write,
-                 HI_write      => HI_write,
-                 LO_write      => LO_write);
+                 HILO_write    => HI_write);
 
     -- Clock process definitions
     clk_process: process

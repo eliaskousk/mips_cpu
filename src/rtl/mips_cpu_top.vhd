@@ -78,8 +78,7 @@ architecture Structural of mips_cpu_top is
                 DMD_read    : out std_logic;
                 DMD_write   : out std_logic;
                 RF_write    : out std_logic;
-                HI_write    : out std_logic;
-                LO_write    : out std_logic);
+                HILO_write  : out std_logic);
     end component;
 
     component datapath_top is
@@ -91,8 +90,7 @@ architecture Structural of mips_cpu_top is
                 MAR_write       : in  std_logic;
                 DMD_read        : in  std_logic;
                 DMD_write       : in  std_logic;
-                HI_write        : in  std_logic;
-                LO_write        : in  std_logic;
+                HILO_write      : in  std_logic;
                 RorI            : in  std_logic;
                 SorZ            : in  std_logic;
                 BorI            : in  std_logic;
@@ -132,8 +130,7 @@ architecture Structural of mips_cpu_top is
     signal MAR_write    : std_logic;
     signal DMD_read     : std_logic;
     signal DMD_write    : std_logic;
-    signal HI_write     : std_logic;
-    signal LO_write     : std_logic;
+    signal HILO_write   : std_logic;
     signal RorI         : std_logic;
     signal SorZ         : std_logic;
     signal BorI         : std_logic;
@@ -221,8 +218,7 @@ architecture Structural of mips_cpu_top is
                 DMD_read    => DMD_read,
                 DMD_write   => DMD_write,
                 RF_write    => RF_write,
-                HI_write    => HI_write,
-                LO_write    => LO_write);
+                HILO_write  => HILO_write);
 
     DATAPATH : datapath_top
     generic map(mult_pipe       => mult_pipe)
@@ -233,8 +229,7 @@ architecture Structural of mips_cpu_top is
                 MAR_write       => MAR_write,
                 DMD_read        => DMD_read,
                 DMD_write       => DMD_write,
-                HI_write        => HI_write,
-                LO_write        => LO_write,
+                HILO_write      => HILO_write,
                 RorI            => RorI,
                 SorZ            => SorZ,
                 BorI            => BorI,

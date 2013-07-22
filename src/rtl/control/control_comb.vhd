@@ -30,6 +30,8 @@ use ieee.std_logic_1164.all;
 -- NOR  $r1, $r2, $r3   Bitwise NOR
 -- XOR  $r1, $r2, $r3   Bitwise XOR
 
+-- MULT $r1, $r2        Multiply (signed numbers)
+
 -- MFHI $t1             Move from Hi
 -- MFLO $t1             Move from Lo
 -- MTHI $t1             Move to Hi

@@ -24,6 +24,7 @@ architecture Behavioral of mips_cpu_top_tb is
              ZE             : out std_logic;
              NE             : out std_logic;
              OV             : out std_logic;
+             FL             : out std_logic;
              ER             : out std_logic);
     end component mips_cpu_top;
 
@@ -44,6 +45,7 @@ architecture Behavioral of mips_cpu_top_tb is
     signal ZE           : std_logic;
     signal NE           : std_logic;
     signal OV           : std_logic;
+    signal FL           : std_logic;
     signal ER           : std_logic;
 
     -- Clock period definitions
