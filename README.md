@@ -8,11 +8,10 @@ Spring-Summer 2013
 Description
 ===========
 
-This is a VHDL implementation of a MIPS R2000 RISC cpu clone.
-
+This is a VHDL implementation of a MIPS R2000 RISC cpu.
 It supports 48 instructions and has BIST functionality
-for the alu multiplier that can automatically test it with
-three different methods: LFSR, Deterministic Counter and ATPG
+for the alu multiplier that can automatically test (it) with
+three different methods: LFSR, Deterministic Counter and ATPG.
 
 Credits
 =======
@@ -28,6 +27,7 @@ Xilinx ISE 14.5 with ISim
 Sigasi 2.14 VHDL Editor
 GNU Binutils 2.23
 MARS 4.3 MIPS Simulator
+Git
 
 
 Statistics 
@@ -35,8 +35,10 @@ Statistics
 
 (After Post Place and Route for xc3s1000-5fg676 FPGA)
 
-Slices Used: 1845 / 7680 (24%)
-BRAMs Used : 10 / 24 (41%)
+Slices:     1845 / 7680     (24%)
+Flip-Flops: 1382 / 15360    (8%)
+Total LUTs: 3492 / 15360    (22%)
+BRAMs:        10 / 24       (41%)
 
 Minimum period:  12.490ns (Maximum frequency:  80.064MHz) 
 
