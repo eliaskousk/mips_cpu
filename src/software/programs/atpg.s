@@ -13,7 +13,7 @@ main:   #lui     $10, 0xC921             # Correct result HI
         #lui     $11, 0x4172            # Correct result LO
         #ori     $11, $11, 0x1733
 
-        lui     $10, 0x00000            # Correct result 32 bits
+        lui     $10, 0x00000            # Correct result 32 bits (Edit this!)
         ori     $10, $10, 0x0000
 
         addi    $12, $0, 0x6C           # Vector limit = 108
@@ -45,7 +45,6 @@ misr:   sll     $24, $23, 31
         addi    $14, $14, 4
         addi    $1, $1, 1
         bne     $14, $12, atpg
-        sub     $13, $10, $23           # Check misr signature in $23 with correct result
-        #sub     $14, $11, $23
+        slt     $13, $10, $23           # Check misr signature in $23 with correct result
 
 end:

@@ -13,7 +13,7 @@ main:   #lui     $10, 0xC018            # Correct result HI
         #lui     $11, 0x1750            # Correct result LO
         #ori     $11, $11, 0xF803
 
-        lui     $10, 0x00000            # Correct result 32 bits
+        lui     $10, 0x00000            # Correct result 32 bits (Edit this!)
         ori     $10, $10, 0x0000
 
         lui     $15, 0x0123             # LFSR Seed
@@ -21,7 +21,7 @@ main:   #lui     $10, 0xC018            # Correct result HI
         lui     $16, 0x89AB             # LFSR Seed
         ori     $16, $16, 0xCDEF
 
-        addi    $12, $0, 0x64           # Last vector before repeat
+        addi    $12, $0, 0x00           # Last vector before repeat (Edit!)
 
         # Prepare registers for MISR
         lui     $22, 0x1800
@@ -36,9 +36,9 @@ lfsr:   andi    $2, $9, 1
         andi    $3, $9, 2
         andi    $4, $9, 8
         andi    $5, $9, 16
-        slr     $3, $3, 1
-        slr     $4, $4, 3
-        slr     $5, $5, 4
+        srl     $3, $3, 0x1
+        srl     $4, $4, 0x3
+        srl     $5, $5, 0x4
         xor     $2, $2, $3
         xor     $2, $2, $4
         xor     $2, $2, $5
@@ -59,8 +59,7 @@ misr:   sll     $24, $23, 0x001f
 
         addi    $1, $1, 1
         bne     $14, $12, lfsr
-        sub     $13, $10, $23           # Check misr signature in $23 with correct result
-        #sub    $14, $11, $23
+        slt     $13, $10, $23           # Check misr signature in $23 with correct result
 
 end:
      

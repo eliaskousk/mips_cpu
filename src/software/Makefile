@@ -39,10 +39,8 @@ $(TOOLS_DIR)create_imem: tools/create_imem.c
 # Programs
 # ========
 
-programs: fibonacci full matrix misr simple
+programs: full matrix simple fibonacci lfsr counter atpg misr 
 
-fibonacci: $(PROGRAMS_BUILD_DIR)/fibonacci.code $(TOOLS_DIR)create_imem
-	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
 full: $(PROGRAMS_BUILD_DIR)/full.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
@@ -50,20 +48,24 @@ full: $(PROGRAMS_BUILD_DIR)/full.code $(TOOLS_DIR)create_imem
 matrix: $(PROGRAMS_BUILD_DIR)/matrix.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
+simple: $(PROGRAMS_BUILD_DIR)/simple.code $(TOOLS_DIR)create_imem
+	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
+
+fibonacci: $(PROGRAMS_BUILD_DIR)/fibonacci.code $(TOOLS_DIR)create_imem
+	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
+
 lfsr: $(PROGRAMS_BUILD_DIR)/lfsr.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
-counter: $(PROGRAMS_BUILD_DIR)/misr.code $(TOOLS_DIR)create_imem
+counter: $(PROGRAMS_BUILD_DIR)/counter.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
-atpg: $(PROGRAMS_BUILD_DIR)/misr.code $(TOOLS_DIR)create_imem
+atpg: $(PROGRAMS_BUILD_DIR)/atpg.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
 misr: $(PROGRAMS_BUILD_DIR)/misr.code $(TOOLS_DIR)create_imem
 	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
-simple: $(PROGRAMS_BUILD_DIR)/simple.code $(TOOLS_DIR)create_imem
-	$(TOOLS_DIR)/create_imem tools/imem_template.vhd $(PROGRAMS_BUILD_DIR)/$@.code ../rtl/imem/im_bram_512x32_0_$@.vhd
 
 $(PROGRAMS_BUILD_DIR)/%.code: $(PROGRAMS_DIR)/%.s
 	$(AS_MIPS) -O0 -mips3 -o $(PROGRAMS_BUILD_DIR)/$*.o $<
