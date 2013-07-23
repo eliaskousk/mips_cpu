@@ -9,6 +9,7 @@ architecture Behavioral of alu_top_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component alu_top
+        generic(mult_pipe : boolean := true);
         port(clk          : in  std_logic;
              rst          : in  std_logic;
              sv           : in  std_logic;

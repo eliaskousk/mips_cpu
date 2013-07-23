@@ -29,6 +29,7 @@ architecture Behavioral of datapath_top_tb is
              JumpPSD        : in  std_logic;
              BranchType     : in  std_logic_vector(1 downto 0);
              NEorEQ         : in  std_logic;
+             RTZero         : in  std_logic;
              Link           : in  std_logic;
              DMorALU        : in  std_logic;
              TestMult       : in  std_logic;
@@ -69,6 +70,7 @@ architecture Behavioral of datapath_top_tb is
     signal JumpPSD          : std_logic := '0';
     signal BranchType       : std_logic_vector(1 downto 0) := (others => '0');
     signal NEorEQ           : std_logic := '0';
+    signal RTZero           : std_logic := '0';
     signal Link             : std_logic := '0';
     signal DMorALU          : std_logic := '0';
     signal TestMult         : std_logic := '0';
@@ -118,6 +120,7 @@ begin
                  JumpPSD        => JumpPSD,
                  BranchType     => BranchType,
                  NEorEQ         => NEorEQ,
+                 RTZero         => RTZero,
                  Link           => Link,
                  DMorALU        => DMorALU,
                  TestMult       => TestMult,
