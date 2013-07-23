@@ -27,6 +27,7 @@ Software Used
 Xilinx ISE 14.5 with ISim
 Sigasi 2.14 VHDL Editor
 GNU Binutils 2.23
+MARS 4.3 MIPS Simulator
 
 
 Statistics 

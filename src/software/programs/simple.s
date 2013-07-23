@@ -43,7 +43,7 @@ label1: addiu   $19, $0, 96             # Reg[19] = x"00000060",                
         bne     $10, $20, end           # the condition is satisfied;           Bus_w = x"XXXXXXXX"     PC=92 x"5C"
         jr      $31                     # PC = "54", loop until $13 < 160       Bus_w = x"XXXXXXXX"     PC=96 x"60"
 
-func1:  addiu   $6, 2                   # Reg[06] = x"00000002", inc by 2       Bus_w = x"00000002"     PC=100 x"64"
+func1:  addiu   $6, $6, 2                   # Reg[06] = x"00000002", inc by 2       Bus_w = x"00000002"     PC=100 x"64"
         slti    $20, $6, 0x000A         # Reg[20] = x"0000000 1 or 0",          Bus_w = x"00000001"     PC=104 x"68"
         bne     $0, $20, func1          # check loop condition;                 Bus_w = x"XXXXXXXX"     PC=108 x"6C"
         sw      $6, 8($5)               # DM(1026) = x"0000000A",               Bus_w = x"XXXXXXXX"     PC=112 x"70"
