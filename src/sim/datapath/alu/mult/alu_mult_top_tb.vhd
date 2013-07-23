@@ -17,6 +17,7 @@ architecture Behavioral of alu_mult_top_tb is
              Y              : in  std_logic_vector(31 downto 0);
              P_HI           : out std_logic_vector(31 downto 0);
              P_LO           : out std_logic_vector(31 downto 0);
+             bist_done      : out std_logic;
              bist_fail      : out std_logic);
     end component alu_mult_top;
 
@@ -30,6 +31,7 @@ architecture Behavioral of alu_mult_top_tb is
     --Outputs
     signal P_HI         : std_logic_vector(31 downto 0);
     signal P_LO         : std_logic_vector(31 downto 0);
+    signal bist_done    : std_logic;
     signal bist_fail    : std_logic;
 
     -- Clock period definitions
@@ -48,6 +50,7 @@ begin
                  Y            => Y,
                  P_HI         => P_HI,
                  P_LO         => P_LO,
+                 bist_done    => bist_done,
                  bist_fail    => bist_fail);
 
     -- Clock process definitions

@@ -9,6 +9,7 @@ entity alu_mult_control is
         bist_init       : in  std_logic;
         bist_finish     : in  std_logic_vector(2 downto 0);
         bist_start      : out std_logic;
+        bist_done       : out std_logic;
         bist_check      : out std_logic;
         bist_mode       : out std_logic_vector(1 downto 0);
         bist_enable     : out std_logic_vector(2 downto 0);
@@ -30,7 +31,7 @@ architecture Behavioral of alu_mult_control is
 
     signal bist_method      : std_logic_vector(1 downto 0);
     signal bist_active      : std_logic_vector(2 downto 0);
-    signal bist_done        : std_logic;
+    signal bist_done_i      : std_logic;
     signal before_counter   : std_logic_vector(2 downto 0);
     signal after_counter    : std_logic_vector(2 downto 0);
     
@@ -47,7 +48,7 @@ begin
         if(rst = '1') then
 
             state           <= s0;
-            bist_done       <= '0';
+            bist_done_i     <= '0';
             before_counter  <= (others => '0');
             after_counter   <= (others => '0');
             bist_method     <= (others => '0');
@@ -90,7 +91,7 @@ begin
                                     end if;
 
                 when s7   =>        if(bist_method = "11") then
-                                        bist_done <= '1';
+                                        bist_done_i <= '1';
                                     end if;
 
                 when others => null;
@@ -109,7 +110,7 @@ begin
     -- Combinational process, changes state based on current state and input
     -- =====================================================================
 
-    combinational : process (state, bist_init, bist_finish, bist_method, bist_done, before_counter, after_counter)
+    combinational : process (state, bist_init, bist_finish, bist_method, bist_done_i, before_counter, after_counter)
     begin
 
         next_state <= state;
@@ -121,7 +122,7 @@ begin
                 -- ==============
 
                 -- Normal operation
-                when s0 =>      if bist_init = '1' and bist_done = '0' then
+                when s0 =>      if bist_init = '1' and bist_done_i = '0' then
                                     next_state <= s1;
                                 else
                                     next_state <= s0;
@@ -130,7 +131,7 @@ begin
                 -- BIST
                 
                 -- Main BIST loop for all 3 methods (LFSR, Counter, ATPG)
-                when s1 =>      if(bist_done = '1') then
+                when s1 =>      if(bist_done_i = '1') then
                                     next_state <= s0;
                                 else
                                     next_state <= s2;
@@ -194,5 +195,7 @@ begin
 
     lfsr_seed_hi    <= seed_hi;
     lfsr_seed_lo    <= seed_lo;
+
+    bist_done       <= bist_done_i;
 
 end architecture Behavioral;

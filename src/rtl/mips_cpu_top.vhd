@@ -4,22 +4,24 @@ use ieee.std_logic_1164.all;
 entity mips_cpu_top is
     generic(mult_pipe   : boolean := true);
     port (  clk         : in  std_logic;
-            rst         : in  std_logic;
-            IR          : out std_logic_vector(31 downto 0);
-            PC          : out std_logic_vector(31 downto 0);
-            DMA         : out std_logic_vector(31 downto 0);
-            DMWE        : out std_logic_vector(3 downto 0);
-            DMDR        : out std_logic_vector(31 downto 0);
-            DMDW        : out std_logic_vector(31 downto 0);
-            W           : out std_logic_vector(31 downto 0);
-            ALU         : out std_logic_vector(31 downto 0);
-            HI          : out std_logic_vector(31 downto 0);
-            LO          : out std_logic_vector(31 downto 0);
-            ZE          : out std_logic;
-            NE          : out std_logic;
-            OV          : out std_logic;
-            FL          : out std_logic;
-            ER          : out std_logic);
+            rst            : in  std_logic;
+            PC             : out std_logic_vector(31 downto 0);
+            IR             : out std_logic_vector(31 downto 0);
+            DMADDR         : out std_logic_vector(31 downto 0);
+            DMWE           : out std_logic_vector(3 downto 0);
+            DMREAD         : out std_logic_vector(31 downto 0);
+            DMWRITE        : out std_logic_vector(31 downto 0);       
+            DMERROR        : out std_logic;
+            RFWRITE        : out std_logic_vector(31 downto 0);
+            ALU            : out std_logic_vector(31 downto 0);
+            HI             : out std_logic_vector(31 downto 0);
+            LO             : out std_logic_vector(31 downto 0);
+            ZERO           : out std_logic;
+            NEGATIVE       : out std_logic;
+            OVERFLOW       : out std_logic;
+            BISTSTART      : out std_logic;
+            BISTDONE       : out std_logic;
+            BISTFAIL       : out std_logic);
 end mips_cpu_top;
 
 architecture Structural of mips_cpu_top is
@@ -114,7 +116,7 @@ architecture Structural of mips_cpu_top is
                 opcode          : out std_logic_vector(5 downto 0);
                 funct           : out std_logic_vector(5 downto 0);
                 rt              : out std_logic_vector(4 downto 0);
-                Bus_FLAGSout    : out std_logic_vector(4 downto 0);
+                Bus_FLAGSout    : out std_logic_vector(5 downto 0);
                 Bus_PCout       : out std_logic_vector(31 downto 0);
                 Bus_ALUout      : out std_logic_vector(31 downto 0);
                 Bus_HIout       : out std_logic_vector(31 downto 0);
@@ -153,13 +155,14 @@ architecture Structural of mips_cpu_top is
     signal opcode       : std_logic_vector(5 downto 0);
     signal funct        : std_logic_vector(5 downto 0);
     signal rt           : std_logic_vector(4 downto 0);
-    signal Bus_Flags    : std_logic_vector(4 downto 0);
+    signal Bus_Flags    : std_logic_vector(5 downto 0);
     signal Bus_PCout    : std_logic_vector(31 downto 0);
     signal Bus_IRin     : std_logic_vector(31 downto 0);
     signal Bus_DMWE     : std_logic_vector(3 downto 0);
     signal Bus_DMA      : std_logic_vector(31 downto 0);
     signal Bus_DMDin    : std_logic_vector(31 downto 0);
     signal Bus_DMDout   : std_logic_vector(31 downto 0);
+    signal Bus_Wout     : std_logic_vector(31 downto 0);
     
     signal dm_enable    : std_logic_vector(3 downto 0);
 
@@ -258,21 +261,26 @@ architecture Structural of mips_cpu_top is
                 Bus_HIout       => HI,
                 Bus_LOout       => LO,
                 Bus_FLAGSout    => Bus_Flags,
-                Bus_Wout        => W,
+                Bus_Wout        => Bus_Wout,
                 Bus_DMWEout     => Bus_DMWE,
                 Bus_DMAout      => Bus_DMA,
                 Bus_DMDout      => Bus_DMDin);
 
-    IR      <= Bus_IRin;
-    PC      <= Bus_PCout;
-    DMA     <= Bus_DMA;
-    DMWE    <= Bus_DMWE;
-    DMDR    <= Bus_DMDout;
-    DMDW    <= Bus_DMDin;
-    ZE      <= Bus_Flags(0);
-    NE      <= Bus_Flags(1);
-    OV      <= Bus_Flags(2);
-    FL      <= Bus_Flags(3);
-    ER      <= Bus_Flags(4);
+    -- Outputs
+
+    PC          <= Bus_PCout;
+    IR          <= Bus_IRin;
+    DMADDR      <= Bus_DMA;
+    DMWE        <= Bus_DMWE;
+    DMREAD      <= Bus_DMDout;
+    DMWRITE     <= Bus_DMDin;
+    DMERROR     <= Bus_Flags(5);
+    RFWRITE     <= Bus_Wout;
+    ZERO        <= Bus_Flags(0);
+    NEGATIVE    <= Bus_Flags(1);
+    OVERFLOW    <= Bus_Flags(2);
+    BISTSTART   <= TestMult;
+    BISTDONE    <= Bus_Flags(3);
+    BISTFAIL    <= Bus_Flags(4);
 
 end Structural;

@@ -21,6 +21,8 @@ architecture Behavioral of alu_top_tb is
              Bus_B        : in  std_logic_vector(31 downto 0);
              Zero         : out std_logic;
              ov           : out std_logic;
+             bist_done    : out std_logic;
+             bist_fail    : out std_logic;
              Bus_S        : out std_logic_vector(31 downto 0);
              Bus_mult_HI  : out std_logic_vector(31 downto 0);
              Bus_mult_LO  : out std_logic_vector(31 downto 0));
@@ -41,6 +43,8 @@ architecture Behavioral of alu_top_tb is
     --Outputs
     signal Zero         : std_logic;
     signal ov           : std_logic;
+    signal bist_done    : std_logic;
+    signal bist_fail    : std_logic;
     signal Bus_S        : std_logic_vector(31 downto 0);
     signal Bus_mult_HI  : std_logic_vector(31 downto 0);
     signal Bus_mult_LO  : std_logic_vector(31 downto 0);
@@ -80,6 +84,8 @@ begin
                  Bus_B        => Bus_B,
                  Zero         => Zero,
                  ov           => ov,
+                 bist_done    => bist_done,
+                 bist_fail    => bist_fail,
                  Bus_S        => Bus_S,
                  Bus_mult_HI  => Bus_mult_HI,
                  Bus_mult_LO  => Bus_mult_LO);

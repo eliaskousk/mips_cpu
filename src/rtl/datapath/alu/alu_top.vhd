@@ -16,6 +16,7 @@ entity alu_top is
             Bus_B       : in  std_logic_vector(31 downto 0);
             Zero        : out std_logic;
             ov          : out std_logic;
+            bist_done   : out std_logic;
             bist_fail   : out std_logic;
             Bus_S       : out std_logic_vector(31 downto 0);
             Bus_mult_HI : out std_logic_vector(31 downto 0);
@@ -41,6 +42,7 @@ architecture Behavioral of alu_top is
                 Y           : in  std_logic_vector(31 downto 0);
                 P_HI        : out std_logic_vector(31 downto 0);
                 P_LO        : out std_logic_vector(31 downto 0);
+                bist_done   : out std_logic;
                 bist_fail   : out std_logic);
     end component;
 
@@ -66,6 +68,7 @@ begin
                 Y           => Bus_B,
                 P_HI        => tmp_result_hi,
                 P_LO        => tmp_result_lo,
+                bist_done   => bist_done,
                 bist_fail   => bist_fail);
 
     SHIFTER : alu_shifter

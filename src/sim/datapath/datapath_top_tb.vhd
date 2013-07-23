@@ -38,7 +38,7 @@ architecture Behavioral of datapath_top_tb is
              opcode         : out std_logic_vector(5 downto 0);
              funct          : out std_logic_vector(5 downto 0);
              rt             : out std_logic_vector(4 downto 0);
-             Bus_FLAGSout   : out std_logic_vector(4 downto 0);
+             Bus_FLAGSout   : out std_logic_vector(5 downto 0);
              Bus_PCout      : out std_logic_vector(31 downto 0);
              Bus_ALUout     : out std_logic_vector(31 downto 0);
              Bus_HIout      : out std_logic_vector(31 downto 0);
@@ -80,7 +80,7 @@ architecture Behavioral of datapath_top_tb is
     signal opcode           : std_logic_vector(5 downto 0);
     signal funct            : std_logic_vector(5 downto 0);
     signal rt               : std_logic_vector(4 downto 0);
-    signal Bus_FLAGSout     : std_logic_vector(4 downto 0);
+    signal Bus_FLAGSout     : std_logic_vector(5 downto 0);
     signal Bus_PCout        : std_logic_vector(31 downto 0);
     signal Bus_ALUout       : std_logic_vector(31 downto 0);
     signal Bus_HIout        : std_logic_vector(31 downto 0);

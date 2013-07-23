@@ -11,21 +11,23 @@ architecture Behavioral of mips_cpu_top_tb is
     component mips_cpu_top
         port(clk            : in  std_logic;
              rst            : in  std_logic;
-             IR             : out std_logic_vector(31 downto 0);
              PC             : out std_logic_vector(31 downto 0);
-             DMA            : out std_logic_vector(31 downto 0);
+             IR             : out std_logic_vector(31 downto 0);
+             DMADDR         : out std_logic_vector(31 downto 0);
              DMWE           : out std_logic_vector(3 downto 0);
-             DMDR           : out std_logic_vector(31 downto 0);
-             DMDW           : out std_logic_vector(31 downto 0);
-             W              : out std_logic_vector(31 downto 0);
+             DMREAD         : out std_logic_vector(31 downto 0);
+             DMWRITE        : out std_logic_vector(31 downto 0);       
+             DMERROR        : out std_logic;
+             RFWRITE        : out std_logic_vector(31 downto 0);
              ALU            : out std_logic_vector(31 downto 0);
              HI             : out std_logic_vector(31 downto 0);
              LO             : out std_logic_vector(31 downto 0);
-             ZE             : out std_logic;
-             NE             : out std_logic;
-             OV             : out std_logic;
-             FL             : out std_logic;
-             ER             : out std_logic);
+             ZERO           : out std_logic;
+             NEGATIVE       : out std_logic;
+             OVERFLOW       : out std_logic;
+             BISTSTART      : out std_logic;
+             BISTDONE       : out std_logic;
+             BISTFAIL       : out std_logic);
     end component mips_cpu_top;
 
     --Inputs
@@ -33,21 +35,23 @@ architecture Behavioral of mips_cpu_top_tb is
     signal rst          : std_logic := '0';
 
     --Outputs
-    signal IR           : std_logic_vector(31 downto 0);
     signal PC           : std_logic_vector(31 downto 0);
-    signal DMA          : std_logic_vector(31 downto 0);
+    signal IR           : std_logic_vector(31 downto 0);
+    signal DMADDR       : std_logic_vector(31 downto 0);
     signal DMWE         : std_logic_vector(3 downto 0);
-    signal DMDR         : std_logic_vector(31 downto 0);
-    signal DMDW         : std_logic_vector(31 downto 0);
-    signal W            : std_logic_vector(31 downto 0);
+    signal DMREAD       : std_logic_vector(31 downto 0);
+    signal DMWRITE      : std_logic_vector(31 downto 0);
+    signal DMERROR      : std_logic;
+    signal RFWRITE      : std_logic_vector(31 downto 0);
     signal ALU          : std_logic_vector(31 downto 0);
     signal HI           : std_logic_vector(31 downto 0);
     signal LO           : std_logic_vector(31 downto 0);
-    signal ZE           : std_logic;
-    signal NE           : std_logic;
-    signal OV           : std_logic;
-    signal FL           : std_logic;
-    signal ER           : std_logic;
+    signal ZERO         : std_logic;
+    signal NEGATIVE     : std_logic;
+    signal OVERFLOW     : std_logic;
+    signal BISTSTART    : std_logic;
+    signal BISTDONE     : std_logic;
+    signal BISTFAIL     : std_logic;
 
     -- Clock period definitions
     constant clk_period : time := 20 ns;
@@ -61,21 +65,23 @@ begin
     uut: mips_cpu_top
         port map(clk          => clk,
                  rst          => rst,
-                 IR           => IR,
                  PC           => PC,
-                 DMA          => DMA,
-                 DMDR         => DMDR,
+                 IR           => IR,
+                 DMADDR       => DMADDR,
+                 DMREAD       => DMREAD,
                  DMWE         => DMWE,
-                 DMDW         => DMDW,
-                 W            => W,
+                 DMWRITE      => DMWRITE,
+                 DMERROR      => DMERROR,
+                 RFWRITE      => RFWRITE,
                  ALU          => ALU,
                  HI           => HI,
                  LO           => LO,
-                 ZE           => ZE,
-                 NE           => NE,
-                 OV           => OV,
-                 FL           => FL,
-                 ER           => ER);
+                 ZERO         => ZERO,
+                 NEGATIVE     => NEGATIVE,
+                 OVERFLOW     => OVERFLOW,
+                 BISTSTART    => BISTSTART,
+                 BISTDONE     => BISTDONE,
+                 BISTFAIL     => BISTFAIL);
 
     -- Clock process definitions
     clk_process :process

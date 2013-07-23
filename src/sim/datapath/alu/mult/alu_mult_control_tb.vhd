@@ -14,6 +14,7 @@ architecture Behavioral of alu_mult_control_tb is
              bist_init      : in  std_logic;
              bist_finish    : in  std_logic_vector(2 downto 0);
              bist_check     : out std_logic;
+             bist_done      : out std_logic;
              bist_mode      : out std_logic_vector(1 downto 0);
              bist_enable    : out std_logic_vector(2 downto 0);
              lfsr_seed_hi   : out std_logic_vector(31 downto 0);
@@ -28,6 +29,7 @@ architecture Behavioral of alu_mult_control_tb is
     
 
     --Outputs
+    signal bist_done    : std_logic;
     signal bist_check   : std_logic;
     signal bist_mode    : std_logic_vector(1 downto 0);
     signal bist_enable  : std_logic_vector(2 downto 0);
@@ -46,6 +48,7 @@ BEGIN
                  rst          => rst,
                  bist_init    => bist_init,
                  bist_finish  => bist_finish,
+                 bist_done    => bist_done,
                  bist_check   => bist_check,
                  bist_mode    => bist_mode,
                  bist_enable  => bist_enable,

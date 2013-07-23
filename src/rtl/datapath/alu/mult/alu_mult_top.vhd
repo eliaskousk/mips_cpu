@@ -10,6 +10,7 @@ entity alu_mult_top is
             Y           : in  std_logic_vector(31 downto 0);
             P_HI        : out std_logic_vector(31 downto 0);
             P_LO        : out std_logic_vector(31 downto 0);
+            bist_done   : out std_logic;
             bist_fail   : out std_logic);
 end alu_mult_top;
 
@@ -22,6 +23,7 @@ architecture Structural of alu_mult_top is
              bist_finish  : in  std_logic_vector(2 downto 0);
              bist_start   : out std_logic;
              bist_check   : out std_logic;
+             bist_done    : out std_logic;
              bist_mode    : out std_logic_vector(1 downto 0);
              bist_enable  : out std_logic_vector(2 downto 0);
              lfsr_seed_hi : out std_logic_vector(31 downto 0);
@@ -130,6 +132,7 @@ begin
                  bist_init    => bist_init,
                  bist_finish  => bist_finish,
                  bist_start   => bist_start,
+                 bist_done    => bist_done,
                  bist_check   => bist_check,
                  bist_mode    => bist_mode,
                  bist_enable  => bist_enable,

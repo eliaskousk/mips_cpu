@@ -33,7 +33,7 @@ entity datapath_top is
             opcode          : out std_logic_vector(5 downto 0);
             funct           : out std_logic_vector(5 downto 0);
             rt              : out std_logic_vector(4 downto 0);
-            Bus_FLAGSout    : out std_logic_vector(4 downto 0);
+            Bus_FLAGSout    : out std_logic_vector(5 downto 0);
             Bus_PCout       : out std_logic_vector(31 downto 0);
             Bus_ALUout      : out std_logic_vector(31 downto 0);
             Bus_HIout       : out std_logic_vector(31 downto 0);
@@ -151,6 +151,7 @@ architecture Structural of datapath_top is
                 Bus_B       : in  std_logic_vector(31 downto 0);
                 Zero        : out std_logic;
                 ov          : out std_logic;
+                bist_done   : out std_logic;
                 bist_fail   : out std_logic;
                 Bus_S       : out std_logic_vector(31 downto 0);
                 Bus_mult_HI : out std_logic_vector(31 downto 0);
@@ -207,10 +208,11 @@ architecture Structural of datapath_top is
     signal Bus_ALU      : std_logic_vector(31 downto 0);
     signal Bus_MULTHI   : std_logic_vector(31 downto 0);
     signal Bus_MULTLO   : std_logic_vector(31 downto 0);
-    signal Bus_ALUFLAGS : std_logic_vector(3 downto 0);
-    signal Bus_FLAGS    : std_logic_vector(3 downto 0);
+    signal Bus_ALUFLAGS : std_logic_vector(4 downto 0);
+    signal Bus_FLAGS    : std_logic_vector(4 downto 0);
     signal Zero         : std_logic;
     signal Overflow     : std_logic;
+    signal bist_done    : std_logic;
     signal bist_fail    : std_logic;
     signal HI_we        : std_logic;
     signal LO_we        : std_logic;
@@ -237,7 +239,7 @@ begin
     Bus_HIout       <= Bus_HI;
     Bus_LOout       <= Bus_LO;
     Bus_Wout        <= Bus_W;
-    Bus_ALUFLAGS    <= bist_fail & Overflow & Bus_ALU(31) & Zero;
+    Bus_ALUFLAGS    <= bist_fail & bist_done & Overflow & Bus_ALU(31) & Zero;
     
     HI_we           <= HILO_write or (HILO_write and MT and HIorLO);
     LO_we           <= HILO_write or (HILO_write and MT and (not HIorLO));
@@ -320,7 +322,7 @@ begin
                 data_out    => Bus_LO);
 
     FLAGS : reg
-    generic map(    W       => 4)
+    generic map(    W       => 5)
     port map(   clk         => clk,
                 rst         => rst,
                 data_in     => Bus_ALUFLAGS,
@@ -425,6 +427,7 @@ begin
                 Bus_B       => Bus_ALUMUXB,
                 Zero        => Zero,
                 ov          => Overflow,
+                bist_done   => bist_done,
                 bist_fail   => bist_fail,
                 Bus_S       => Bus_ALU,
                 Bus_mult_HI => Bus_MULTHI,
