@@ -30,13 +30,13 @@ main:   add     $1, $0, $0                      # Reg[01] = x"00000000",        
 load:   lw      $6, 12($1)                      # Reg[06] = x"FFFF0000",        Bus_w = x"FFFF0000",    PC=40 x"28"
         sw      $6, 16($1)                      # DM(16)  = x"FFFF0000",        Bus_w = x"XXXXXXXX",    PC=44 x"2C"
 
-        lh      $7, 14($1)                      # Reg[07] = x"0000FFFF",        Bus_w = x"0000FFFF",    PC=48 x"30"
-        sw      $7, 20($1)                      # DM(20)  = x"0000FFFF",        Bus_w = x"XXXXXXXX",    PC=52 x"34"
+        lh      $7, 14($1)                      # Reg[07] = x"FFFFFFFF",        Bus_w = x"FFFFFFFF",    PC=48 x"30"
+        sw      $7, 20($1)                      # DM(20)  = x"FFFFFFFF",        Bus_w = x"XXXXXXXX",    PC=52 x"34"
 
         lhu     $8, 14($1)                      # Reg[08] = x"0000FFFF",        Bus_w = x"0000FFFF",    PC=56 x"38"
         sw      $8, 24($1)                      # DM(24)  = x"0000FFFF",        Bus_w = x"XXXXXXXX",    PC=60 x"3C"
 
-        lb      $9, 15($1)                      # Reg[09] = x"000000FF",        Bus_w = x"000000FF",    PC=64 x"40"
+        lb      $9, 15($1)                      # Reg[09] = x"FFFFFFFF",        Bus_w = x"FFFFFFFF",    PC=64 x"40"
         sw      $9, 28($1)                      # DM(28)  = x"000000FF",        Bus_w = x"XXXXXXXX",    PC=68 x"44"
 
         lbu     $10, 15($1)                     # Reg[10] = x"000000FF",        Bus_w = x"000000FF",    PC=72 x"48"
