@@ -37,7 +37,7 @@ load:   lw      $6, 12($1)                      # Reg[06] = x"FFFF0000",        
         sw      $8, 24($1)                      # DM(24)  = x"0000FFFF",        Bus_w = x"XXXXXXXX",    PC=60 x"3C"
 
         lb      $9, 15($1)                      # Reg[09] = x"FFFFFFFF",        Bus_w = x"FFFFFFFF",    PC=64 x"40"
-        sw      $9, 28($1)                      # DM(28)  = x"000000FF",        Bus_w = x"XXXXXXXX",    PC=68 x"44"
+        sw      $9, 28($1)                      # DM(28)  = x"FFFFFFFF",        Bus_w = x"XXXXXXXX",    PC=68 x"44"
 
         lbu     $10, 15($1)                     # Reg[10] = x"000000FF",        Bus_w = x"000000FF",    PC=72 x"48"
         sw      $10, 32($1)                     # DM(32)  = x"000000FF",        Bus_w = x"XXXXXXXX",    PC=76 x"4C"
@@ -115,7 +115,6 @@ shift:  sll     $26, $3, 3                      # Reg[26] = x"00000008",        
         srav    $31, $4, $26                    # Reg[31] = x"FFFFFF80",        Bus_w = x"FFFFFF80",    PC=264 x"108"
         sw      $31, 128($1)                    # DM(128) = x"FFFFFF80",        Bus_w = x"XXXXXXXX",    PC=268 x"10C"
 
-
 lui:    lui     $6, 0xAAAA                      # Reg[06] = x"AAAA0000",        Bus_w = x"AAAA0000",    PC=272 x"110"
         sw      $6, 132($1)                     # DM(132) = x"AAAA0000",        Bus_w = x"XXXXXXXX",    PC=276 x"114"
 
@@ -173,8 +172,12 @@ jal:    jal     0x1B8                           # Reg[31] = x"000001B0",        
         addu    $11, $11, $2                    # Reg[11] = x"00005555",        Bus_w = x"XXXXXXXX",    PC=432 x"1B0"
         sw      $11, 188($1)                    # DM(188) = x"00000000",        Bus_w = x"XXXXXXXX",    PC=436 x"1B4"
 
-# Replace the 2nd to last instruction (add $0, $0, $0 = 00000020) with the test one (test = c0000000)
+# Replace the 2nd to last instruction (add $0, $0, $0 = 00000020)
+# with the test one (test = c0000000) in the BRAM
+# to test the multiplier with the three BIST methods
+
 test:   add     $0, $0, $0                      # Reg[XX] = x"XXXXXXXX",        Bus_w = x"XXXXXXXX",    PC=440 x"1B8"
 
-end:    addu    $11, $11, $2                    # Reg[11] = x"00006666",        Bus_w = x"00006666",    PC=444 x"1BC"
-        sw      $11, 192($1)                    # DM(192) = x"00006666",        Bus_w = x"XXXXXXXX",    PC=448 x"1C0"
+# Those will not execute
+end:    addu    $11, $11, $2                    # Reg[11] = x"00005555",        Bus_w = x"00006666",    PC=444 x"1BC"
+        sw      $11, 192($1)                    # DM(192) = x"00005555",        Bus_w = x"XXXXXXXX",    PC=448 x"1C0"
