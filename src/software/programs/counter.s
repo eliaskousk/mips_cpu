@@ -2,44 +2,53 @@
 # Counter SBST assembly program
 # =================================
 
-# =================================
-
         .set noat
 
-        .globl main             # Call main by SPIM
+        .globl main                     # Call main by SPIM
 
-        .text                   # Text section
+        .text                           # Text section
 
-main:   lui     $6, 0x1234      # Correct result
-        ori     $6, $6, 0x5678
-        addi    $5, $0, 256     # Vector limit = 256
-        lui     $22, 1800       # Mask
-        ori     $22, 2
-        addi    $23, $0, 0
-        addi    $2, $0, 0       # Temp = 0
-        addi    $1, $0, 1       # Counter = 1
+main:   #lui     $10, 0xF4DA            # Correct result HI
+        #ori     $10, $10, 0x9748 
+        #lui     $11, 0xF9DB            # Correct result LO
+        #ori     $11, $11, 0xB48A
 
-count:  add     $2, $1, $0      # Set 7 downto 0
+        lui     $10, 0x00000            # Correct result 32 bits
+        ori     $10, $10, 0x0000
+
+        addi    $12, $0, 256            # Counter limit = 256
+
+        # Prepare registers for MISR
+        lui     $22, 0x1800
+        ori     $22, $22, 0x0002
+        not     $23, $0
+
+        add     $1, $0, $0              # i = 0
+        add     $2, $0, $0
+
+count:  add     $2, $1, $0              # Set 0th byte
         sll     $2, $2, 8
-        ori     $2, $2, $1      # Set 15 downto 0
+        ori     $2, $2, $1              # Set 1st byte
         sll     $2, $2, 8
-        or      $2, $2, $1      # Set 23 downto 0
+        or      $2, $2, $1              # Set 2nd byte
         sll     $2, $2, 8
-        or      $2, $2, $1      # Set 31 downto 0
+        or      $2, $2, $1              # Set 3rd byte
         mult    $2, $2
         mfhi    $3
         mflo    $4
-        xor     $4, $4, $3
+        xor     $13, $3, $4
 
-misr:   sll     $24, $23, 31
-        sra     $25, $24, 31
+misr:   sll     $24, $23, 0x001f  
+        sra     $25, $24, 0x001f  
         and     $25, $25, $22
         xor     $23, $23, $25
-        srl     $23, $23, 1
+        srl     $23, $23, 0x1
         addu    $23, $23, $24
-        xor     $23, $23, $4    # Signature on $23
+        xor     $23, $23, $13
+
         addi    $1, $1, 1
-        bne     $1, $5, count
-        sub     $7, $6, $23     # Check output with correct result
+        bne     $1, $12, count
+        sub     $13, $10, $23           # Check misr signature in $23 with correct result
+        #sub    $14, $11, $23
 
 end:

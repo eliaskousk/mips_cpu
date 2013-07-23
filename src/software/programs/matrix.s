@@ -16,6 +16,8 @@
 
             .align  2
 
+# The following data should be inserted in the data memory's BRAMs
+
 matrixA:    .word   439, 195, 923, 347, 696, 290, 715, 940
             .word   566, 506, 863, 738, 211, 668, 76, 701
             .word   631, 285, 457, 970, 280, 437, 508, 778

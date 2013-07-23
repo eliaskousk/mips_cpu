@@ -1,3 +1,8 @@
+/*  Fills BRAMs with machine code
+    Modified from the Plasma Opencore MIPS clone
+    http://opencores.org/project,plasma
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
