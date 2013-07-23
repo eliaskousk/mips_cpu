@@ -13,6 +13,7 @@ architecture Behavioral of dm_control_tb is
              data_mar_in  : in  std_logic_vector(31 downto 0);
              data_dmd_in  : in  std_logic_vector(31 downto 0);
              DMWT         : in  std_logic_vector(2 downto 0);
+             DMD_re       : in  std_logic;
              DMD_we       : in  std_logic;
              Error        : out std_logic_vector(0 downto 0);
              data_mdr_out : out std_logic_vector(31 downto 0);
@@ -26,6 +27,7 @@ architecture Behavioral of dm_control_tb is
     signal data_mar_in  : std_logic_vector(31 downto 0) := (others => '0');
     signal data_dmd_in  : std_logic_vector(31 downto 0) := (others => '0');
     signal DMWT         : std_logic_vector(2 downto 0) := (others => '0');
+    signal DMD_re       : std_logic := '0';
     signal DMD_we       : std_logic := '0';
 
     --Outputs
@@ -43,6 +45,7 @@ begin
                  data_mar_in  => data_mar_in,
                  data_dmd_in  => data_dmd_in,
                  DMWT         => DMWT,
+                 DMD_re       => DMD_re,
                  DMD_we       => DMD_we,
                  Error        => Error,
                  data_mdr_out => data_mdr_out,
@@ -61,7 +64,8 @@ begin
         -- Loads
         -- =====
         -- =====
-
+    
+        DMD_re          <= '1';
         DMD_we          <= '0';
         
         -- ==
@@ -143,6 +147,7 @@ begin
         -- ======
         -- ======
 
+        DMD_re          <= '0';
         DMD_we          <= '1';
         data_dmd_in     <= (others => '-');
         

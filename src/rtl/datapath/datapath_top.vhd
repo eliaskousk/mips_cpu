@@ -173,6 +173,7 @@ architecture Structural of datapath_top is
                 data_mar_in     : in  std_logic_vector(31 downto 0);
                 data_dmd_in     : in  std_logic_vector(31 downto 0);
                 DMWT            : in  std_logic_vector(2 downto 0);
+                DMD_re          : in  std_logic;
                 DMD_we          : in  std_logic;
                 Error           : out std_logic_vector(0 downto 0);
                 data_mdr_out    : out std_logic_vector(31 downto 0);
@@ -444,6 +445,7 @@ begin
                 data_mar_in     => Bus_MAR,
                 data_dmd_in     => Bus_DMDin,
                 DMWT            => DMWT,
+                DMD_re          => DMD_read,
                 DMD_we          => DMD_write,
                 Error           => Error,
                 data_mdr_out    => Bus_MDRO,

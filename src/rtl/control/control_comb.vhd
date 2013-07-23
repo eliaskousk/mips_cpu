@@ -593,7 +593,7 @@ begin
                     -- SorZ        <= '-';
                     BorI        <= '0';
                     ALUop       <= "0000";
-                    sv          <= '-';
+                    sv          <= '0';
                     MF          <= '0';
                     MT          <= '-';
                     HIorLO      <= '1';
@@ -942,7 +942,7 @@ begin
                             sv          <= '0';
                             MF          <= '0';
                             MT          <= '-';
-                            HIorLO      <= '-';
+                            HIorLO      <= '0';
                             DMorALU     <= '0';
                             DMWT        <= "---";
                             Link        <= '0';
@@ -999,7 +999,7 @@ begin
                             sv          <= '1';
                             MF          <= '0';
                             MT          <= '-';
-                            HIorLO      <= '-';
+                            HIorLO      <= '0';
                             DMorALU     <= '0';
                             DMWT        <= "---";
                             Link        <= '0';

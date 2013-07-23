@@ -8,6 +8,7 @@ entity mips_cpu_top is
             IR          : out std_logic_vector(31 downto 0);
             PC          : out std_logic_vector(31 downto 0);
             DMA         : out std_logic_vector(31 downto 0);
+            DMWE        : out std_logic_vector(3 downto 0);
             DMDR        : out std_logic_vector(31 downto 0);
             DMDW        : out std_logic_vector(31 downto 0);
             W           : out std_logic_vector(31 downto 0);
@@ -265,6 +266,7 @@ architecture Structural of mips_cpu_top is
     IR      <= Bus_IRin;
     PC      <= Bus_PCout;
     DMA     <= Bus_DMA;
+    DMWE    <= Bus_DMWE;
     DMDR    <= Bus_DMDout;
     DMDW    <= Bus_DMDin;
     ZE      <= Bus_Flags(0);

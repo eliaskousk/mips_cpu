@@ -9,12 +9,12 @@ architecture Behavioral of mips_cpu_top_tb is
     -- Component Declaration for the Unit Under Test (UUT)
 
     component mips_cpu_top
-        generic(mult_pipe   : boolean := true);
         port(clk            : in  std_logic;
              rst            : in  std_logic;
              IR             : out std_logic_vector(31 downto 0);
              PC             : out std_logic_vector(31 downto 0);
              DMA            : out std_logic_vector(31 downto 0);
+             DMWE           : out std_logic_vector(3 downto 0);
              DMDR           : out std_logic_vector(31 downto 0);
              DMDW           : out std_logic_vector(31 downto 0);
              W              : out std_logic_vector(31 downto 0);
@@ -36,6 +36,7 @@ architecture Behavioral of mips_cpu_top_tb is
     signal IR           : std_logic_vector(31 downto 0);
     signal PC           : std_logic_vector(31 downto 0);
     signal DMA          : std_logic_vector(31 downto 0);
+    signal DMWE         : std_logic_vector(3 downto 0);
     signal DMDR         : std_logic_vector(31 downto 0);
     signal DMDW         : std_logic_vector(31 downto 0);
     signal W            : std_logic_vector(31 downto 0);
@@ -58,13 +59,13 @@ begin
 
     -- Instantiate the Unit Under Test (UUT)
     uut: mips_cpu_top
-        generic map(mult_pipe => true)
         port map(clk          => clk,
                  rst          => rst,
                  IR           => IR,
                  PC           => PC,
                  DMA          => DMA,
                  DMDR         => DMDR,
+                 DMWE         => DMWE,
                  DMDW         => DMDW,
                  W            => W,
                  ALU          => ALU,
@@ -73,6 +74,7 @@ begin
                  ZE           => ZE,
                  NE           => NE,
                  OV           => OV,
+                 FL           => FL,
                  ER           => ER);
 
     -- Clock process definitions

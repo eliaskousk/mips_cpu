@@ -6,6 +6,7 @@ entity dm_control is
             data_mar_in     : in  std_logic_vector(31 downto 0);
             data_dmd_in     : in  std_logic_vector(31 downto 0);
             DMWT            : in  std_logic_vector(2 downto 0);
+            DMD_re          : in  std_logic;
             DMD_we          : in  std_logic;
             Error           : out std_logic_vector(0 downto 0);
             data_mdr_out    : out std_logic_vector(31 downto 0);
@@ -25,7 +26,8 @@ architecture Behavioral of dm_control is
 begin
 
     lsbits      <= data_mar_in(1 downto 0);
-    Error(0)    <= data_error;
+
+    Error(0)    <= data_error when (DMD_re = '1' or DMD_we = '1') else '0';
 
     process(DMWT, lsbits, data_mar_in)
     begin
