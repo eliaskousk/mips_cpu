@@ -56,18 +56,20 @@ matrixP:    .space  256
 main:       addiu   $v0, $zero, 0x8       # size = 8
             addiu   $v1, $zero, 0x20
 
-            addu    $s0, $zero, $zero     # i = 0
-            addu    $s1, $zero, $zero     # j = 0
-            addu    $s2, $zero, $zero     # k = 0
-            addu    $t3, $zero, $zero     # P[i][j] = 0
+            addiu   $s0, $zero, 0x0       # i = 0
+            addiu   $s1, $zero, 0x0       # j = 0
+            addiu   $s2, $zero, 0x0       # k = 0
+            addiu   $t3, $zero, 0x0       # P[i][j] = 0
 
-multloop:   mul     $t0, $s0, $v0         # create A[i][k] address
+multloop:   mult    $s0, $v0              # create A[i][k] address
+            mflo    $t0
             add     $t1, $t0, $s2         # (i * 32) + (4 * k)
-            lw      $t4, matrixA($t1)     # load A[i][k]
+            lw      $t4, 0($t1)           # load A[i][k]
 
-            mul     $t0, $s2, $v0         # create B[k][j] address
+            mult    $s2, $v0              # create B[k][j] address
+            mflo    $t0
             add     $t1, $t0, $s1         # (k * 32) + (4 * j)
-            lw      $t5, matrixB($t1)     # load B[k][j]
+            lw      $t5, 256($t1)         # load B[k][j]
 
             mult    $t4, $t5              # A[i][k] * B[k][j]
             mflo    $t6                   # Get mult result
@@ -78,14 +80,14 @@ multloop:   mul     $t0, $s0, $v0         # create A[i][k] address
             mult    $s0, $v0              # create P[i][j] address
             mflo    $t0                   # Get result
             add     $t1, $t0, $s1         # (i * n) + j
-            sw      $t3, matrixP($t1)     # store P[i][j]
+            sw      $t3, 512($t1)         # store P[i][j]
 
-            addu    $s2, $zero, $zero     # k = 0
-            addu    $t3, $zero, $zero     # P[i][j] = 0
+            addiu   $s2, $zero, 0x0       # k = 0
+            addiu   $t3, $zero, 0x0       # P[i][j] = 0
             addiu   $s1, $s1, 0x4         # j++
             bne     $s1, $v1, multloop    # loop columns
 
-            addu    $s1, $zero, $zero     # j = 0
+            addiu   $s1, $zero, 0x0       # j = 0
             addiu   $s0, $s0, 0x4         # i++
             bne     $s0, $v1, multloop    # loop rows
 end:
