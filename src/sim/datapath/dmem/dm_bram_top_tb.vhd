@@ -30,7 +30,7 @@ architecture Behavioral of dm_bram_top_tb is
     signal data_out     : std_logic_vector(31 downto 0);
 
     -- Clock period definitions
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 20 ns;
 
 begin
 
@@ -71,43 +71,43 @@ begin
         wait for clk_period * 1;
 
         address <= "000" & X"01";
-        data_in <= X"00000000";
+        data_in <= X"00000001";
         wait for clk_period * 1;
 
         address <= "000" & X"02";
-        data_in <= X"00000000";
+        data_in <= X"00000002";
         wait for clk_period * 1;
 
         address <= "000" & X"03";
-        data_in <= X"00000000";
+        data_in <= X"00000003";
         wait for clk_period * 1;
 
         address <= "000" & X"04";
-        data_in <= X"00000000";
+        data_in <= X"00000004";
         wait for clk_period * 1;
 
         address <= "000" & X"05";
-        data_in <= X"00000000";
+        data_in <= X"00000005";
         wait for clk_period * 1;
 
         address <= "000" & X"06";
-        data_in <= X"00000000";
+        data_in <= X"00000006";
         wait for clk_period * 1;
 
         address <= "000" & X"07";
-        data_in <= X"00000000";
+        data_in <= X"00000007";
         wait for clk_period * 1;
 
         address <= "000" & X"08";
-        data_in <= X"00000000";
+        data_in <= X"00000008";
         wait for clk_period * 1;
 
         address <= "000" & X"09";
-        data_in <= X"00000000";
+        data_in <= X"00000009";
         wait for clk_period * 1;
 
         address <= "000" & X"0A";
-        data_in <= X"00000000";
+        data_in <= X"0000000A";
         wait for clk_period * 1;
 
         -- End writes
@@ -121,43 +121,43 @@ begin
         wait for clk_period * 1;
 
         address <= "000" & X"01";
-        data_in <= X"00000000";
+        data_in <= X"00000001";
         wait for clk_period * 1;
 
         address <= "000" & X"02";
-        data_in <= X"00000000";
+        data_in <= X"00000002";
         wait for clk_period * 1;
 
         address <= "000" & X"03";
-        data_in <= X"00000000";
+        data_in <= X"00000003";
         wait for clk_period * 1;
 
         address <= "000" & X"04";
-        data_in <= X"00000000";
+        data_in <= X"00000004";
         wait for clk_period * 1;
 
         address <= "000" & X"05";
-        data_in <= X"00000000";
+        data_in <= X"00000005";
         wait for clk_period * 1;
 
         address <= "000" & X"06";
-        data_in <= X"00000000";
+        data_in <= X"00000006";
         wait for clk_period * 1;
 
         address <= "000" & X"07";
-        data_in <= X"00000000";
+        data_in <= X"00000007";
         wait for clk_period * 1;
 
         address <= "000" & X"08";
-        data_in <= X"00000000";
+        data_in <= X"00000008";
         wait for clk_period * 1;
 
         address <= "000" & X"09";
-        data_in <= X"00000000";
+        data_in <= X"00000009";
         wait for clk_period * 1;
 
         address <= "000" & X"0A";
-        data_in <= X"00000000";
+        data_in <= X"0000000A";
         wait for clk_period * 1;
 
         -- End reads

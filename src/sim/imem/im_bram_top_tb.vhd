@@ -24,7 +24,7 @@ architecture Behavioral of im_bram_top_tb is
     signal data_out     : std_logic_vector(31 downto 0);
 
     -- Clock period definitions
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 20 ns;
 
 begin
 

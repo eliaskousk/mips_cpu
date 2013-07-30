@@ -61,8 +61,32 @@ begin
         Y <= X"22222222";
         wait for clk_period * 4;
         
-        X <= X"FFFF0000";
-        Y <= X"00002222";
+        X <= X"22222222";
+        Y <= X"33333333";
+        wait for clk_period * 4;
+        
+        X <= X"33333333";
+        Y <= X"44444444";
+        wait for clk_period * 4;
+        
+        X <= X"44444444";
+        Y <= X"55555555";
+        wait for clk_period * 4;
+        
+        X <= X"55555555";
+        Y <= X"66666666";
+        wait for clk_period * 4;
+        
+        X <= X"77777777";
+        Y <= X"88888888";
+        wait for clk_period * 4;
+        
+        X <= X"88888888";
+        Y <= X"99999999";
+        wait for clk_period * 4;
+        
+        X <= X"99999999";
+        Y <= X"AAAAAAAA";
         wait for clk_period * 4;
 
         wait;
